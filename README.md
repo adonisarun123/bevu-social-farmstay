@@ -1,66 +1,23 @@
-# Bevu Social Farmstay — Website
+# Griha Pravesh — House Warming Invitation
 
-A premium, sustainable farmstay website built with **Next.js 14 (App Router)**, **Tailwind CSS**, **Framer Motion**, and **Lucide icons** — fully SEO and AEO (Answer Engine Optimization) ready.
+A single-page Next.js invitation for the Griha Pravesh ceremony at SF 3 on 20th June, with a WhatsApp RSVP.
 
-## Run Locally
+## Run
 
 ```bash
-cd bevu-social-farmstay
+cd invite
 npm install
 npm run dev
 ```
 
 Open http://localhost:3000
 
-Production build:
+## Before Sharing
 
-```bash
-npm run build
-npm start
-```
+1. RSVPs go to WhatsApp +91 97173 34639 (set in `components/RSVPForm.jsx`).
+2. The Google Maps link is already wired to the location you shared.
+3. The page is set to `noindex` — it won't appear in search engines.
 
-## Pages
+## Design
 
-| Route | Page |
-|---|---|
-| `/` | Home (hero, why Bevu, stay, experiences, food & sustainability, ideal for, location, testimonials, FAQ, CTA) |
-| `/about` | Story, "Social Farmstay" meaning, philosophy, what makes Bevu different |
-| `/stay` | Stay overview, units (placeholder), amenities, inclusions, expectations |
-| `/experiences` | All 13 experiences |
-| `/sustainability` | Six sustainability pillars + responsible tourism guidelines |
-| `/gallery` | Filterable gallery (categories: Farm Life, Stay Spaces, Food, People & Gatherings, Nature, Evening Moments) |
-| `/location` | Where we are, distance, drive, map placeholder, travel tips |
-| `/contact` | Inquiry form, WhatsApp/call/email CTAs, full FAQ |
-
-## SEO & AEO Built In
-
-- **Server-rendered HTML** — every page is statically generated; crawlers and answer engines see full content.
-- **Per-page metadata** — unique titles, descriptions, canonical URLs via the Next.js Metadata API.
-- **Open Graph + Twitter cards** with the farmstay hero image.
-- **JSON-LD structured data**:
-  - `LodgingBusiness` + `Resort` (site-wide, with amenities, area served, keywords)
-  - `WebSite`
-  - `FAQPage` (Home + Contact — strong AEO signal)
-  - `BreadcrumbList` on every inner page
-- **`/sitemap.xml`** and **`/robots.txt`** auto-generated (`app/sitemap.js`, `app/robots.js`), with AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) explicitly allowed.
-- One `H1` per page, `H2`/`H3` hierarchy, alt text on all images, lazy loading, `next/image` optimization.
-
-## Updating Content
-
-- **Contact details (phone / WhatsApp / email)**: edit `data/site.js` — used everywhere automatically. Replace the `XXXXXXXXXX` placeholders.
-- **Production domain**: update `url` in `data/site.js` (drives canonical URLs, sitemap, JSON-LD).
-- **Experiences / features / FAQs / gallery**: edit files in `data/`.
-- **Real photos**: drop into `public/images/` and update `data/gallery.js`. The uploaded farmstay photo is at `public/images/bevu-hero.jpeg` (hero + about + contact).
-- **Inquiry form**: currently shows a success message client-side; wire `components/InquiryForm.jsx` `handleSubmit` to an API/booking engine later.
-
-## Brand Theme (tailwind.config.js)
-
-Forest `#1F3D2B` · Olive `#6F7D4E` · Beige `#F4EBDD` · Clay `#A46A3F` · Terracotta `#B5552D` · Laterite `#8C4A2F` · Sand `#E8D8BF` · Charcoal `#222222` · Off-white `#FAF7F1` · Amber `#E8A84C`
-
-Terracotta/laterite/amber tones were drawn from the farmstay's handcrafted brick architecture photo.
-
-Fonts: Playfair Display (headings) + Inter (body), loaded from Google Fonts.
-
-## Deploy
-
-Works out of the box on Vercel/Netlify: `npm run build`. Remember to set the real domain in `data/site.js` before going live, and submit `/sitemap.xml` in Google Search Console.
+Palette and motifs follow the reference artwork: parchment cream background, deep forest green, antique gold, terracotta; script font (Great Vibes) for flourishes, Cormorant Garamond for headings, EB Garamond for body. Your house photo is featured in a gold-ringed frame.

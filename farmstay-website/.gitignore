@@ -4,6 +4,3 @@ out/
 .env*
 .DS_Store
 npm-debug.log*
-WhatsApp Image*.jpeg
-invite/
-website/

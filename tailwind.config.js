@@ -1,29 +1,30 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./app/**/*.{js,jsx}",
-    "./components/**/*.{js,jsx}",
-  ],
+  content: ["./app/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
-        forest: "#1F3D2B",
-        olive: "#6F7D4E",
-        beige: "#F4EBDD",
-        clay: "#A46A3F",
-        terracotta: "#B5552D",
-        laterite: "#8C4A2F",
-        sand: "#E8D8BF",
-        charcoal: "#222222",
-        offwhite: "#FAF7F1",
-        amber: "#E8A84C",
+        // Palette drawn from the reference invite artwork
+        parchment: "#F6F1E4",
+        cream: "#FBF8EF",
+        forest: "#2E5234",
+        deepgreen: "#1F3D2B",
+        sage: "#8FA876",
+        leaf: "#A8BC8F",
+        gold: "#B98A3E",
+        softgold: "#D8B570",
+        terracotta: "#A5673F",
+        rust: "#8C4A2F",
+        ink: "#3D3327",
       },
       fontFamily: {
-        heading: ["'Playfair Display'", "Georgia", "serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        script: ["'Great Vibes'", "cursive"],
+        display: ["'Cormorant Garamond'", "Georgia", "serif"],
+        body: ["'EB Garamond'", "Georgia", "serif"],
       },
-      maxWidth: {
-        content: "72rem",
+      backgroundImage: {
+        "paper-texture":
+          "radial-gradient(ellipse at top left, rgba(168,188,143,0.12), transparent 50%), radial-gradient(ellipse at bottom right, rgba(185,138,62,0.10), transparent 50%)",
       },
     },
   },
