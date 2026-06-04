@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Check, X, Minus, Plus, MessageCircle } from "lucide-react";
+import { Check, X, Minus, Plus, MessageCircle, Mail } from "lucide-react";
 
-// RSVP via WhatsApp — composes a pre-filled message to Ankit.
+// RSVP via WhatsApp (primary) or email (fallback) — pre-filled message to Ankit.
 const HOST_WHATSAPP = "919717334639";
+const HOST_EMAIL = "ankit.r@gmail.com";
 
 export default function RSVPForm() {
   const [name, setName] = useState("");
@@ -28,6 +29,12 @@ export default function RSVPForm() {
   function sendWhatsApp() {
     const url = `https://wa.me/${HOST_WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
     window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function sendEmail() {
+    const subj = encodeURIComponent("RSVP — Bevu Social Farmstay Griha Pravesh");
+    const body = encodeURIComponent(buildMessage());
+    window.location.href = `mailto:${HOST_EMAIL}?subject=${subj}&body=${body}`;
   }
 
   const toggleBase =
@@ -141,9 +148,17 @@ export default function RSVPForm() {
           <MessageCircle className="h-5 w-5" aria-hidden="true" />
           RSVP via WhatsApp
         </button>
+        <button
+          type="button"
+          onClick={sendEmail}
+          className="inline-flex items-center justify-center gap-2.5 rounded-[46px] border border-[var(--line)] bg-transparent px-6 py-3 font-smallcaps text-[0.76rem] uppercase tracking-[0.14em] text-gold transition-colors duration-300 hover:border-gold hover:text-goldsoft"
+        >
+          <Mail className="h-[17px] w-[17px]" strokeWidth={1.5} aria-hidden="true" />
+          Prefer email instead
+        </button>
       </div>
       <p className="mt-4 text-[0.78rem] text-creamdim opacity-70">
-        Tapping the button opens WhatsApp with your message pre-filled — just hit send.
+        Tapping a button opens the message pre-filled — just hit send.
       </p>
     </div>
   );
