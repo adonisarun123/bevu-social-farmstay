@@ -1,23 +1,31 @@
-# Griha Pravesh — House Warming Invitation
+# Bevu Social Farmstay — Griha Pravesh Invitation
 
-A single-page Next.js invitation for the Griha Pravesh ceremony at SF 3 on 20th June, with a WhatsApp RSVP.
+The default site: an elegant dusk-and-gold house warming invitation for 20th June at SF 3, built with Next.js 14, Tailwind CSS, and Framer Motion. Design ported from the reference HTML (Fraunces / Marcellus / Outfit typography, dark dusk-blue theme, gold accents, film-grain texture).
 
 ## Run
 
 ```bash
-cd invite
 npm install
 npm run dev
 ```
 
 Open http://localhost:3000
 
-## Before Sharing
+## Sections
 
-1. RSVPs go to WhatsApp +91 97173 34639 (set in `components/RSVPForm.jsx`).
-2. The Google Maps link is already wired to the location you shared.
-3. The page is set to `noindex` — it won't appear in search engines.
+Hero (house photo, slow zoom, tree emblem) → Invitation copy + date card → The Day's Rhythm timeline (Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM, Relax & Explore) → Experience chips → Quote + "With Love, Ankit & Family" → Gift note → Interactive RSVP → Google Maps CTA → Footer logo.
 
-## Design
+## RSVP
 
-Palette and motifs follow the reference artwork: parchment cream background, deep forest green, antique gold, terracotta; script font (Great Vibes) for flourishes, Cormorant Garamond for headings, EB Garamond for body. Your house photo is featured in a gold-ringed frame.
+WhatsApp-only: name, accept/decline toggle, guest stepper, optional note → opens WhatsApp to **+91 97173 34639** with the message pre-filled (`components/RSVPForm.jsx`).
+
+## Assets
+
+- `public/images/hero.jpg` — house photo (extracted from reference)
+- `public/images/emblem.svg` — neem tree badge (hero)
+- `public/images/footer-logo.svg` — full wordmark logo (footer)
+- `app/icon.svg` / `app/apple-icon.png` — favicons
+
+## Also in This Repo
+
+`farmstay-website/` — the full Bevu Social Farmstay marketing site (8 pages, SEO/AEO-ready), kept for later. It is not deployed; the invite at the repo root is the live site.

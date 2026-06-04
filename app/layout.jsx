@@ -1,14 +1,15 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Griha Pravesh | House Warming Ceremony — Ankit & Family",
+  title: "Bevu Social Farmstay — Griha Pravesh Invitation",
   description:
-    "With the blessings of God and the love of our family and friends, we invite you to our Griha Pravesh house warming ceremony at SF 3, Bevu Social Farmstay, on 20th June. Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM.",
+    "We're warming our new home — and we'd love you there. Griha Pravesh at SF 3, Bevu Social Farmstay, 20th June. Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM.",
+  themeColor: "#161e2e",
   openGraph: {
-    title: "Griha Pravesh — House Warming Ceremony",
+    title: "Bevu Social Farmstay — Griha Pravesh Invitation",
     description:
-      "Join Ankit & Family for the Griha Pravesh at SF 3, Bevu Social Farmstay, on 20th June. Your presence and blessings will make the occasion special.",
-    images: ["/images/house.jpeg"],
+      "Join Ankit & Family for the Griha Pravesh house warming at SF 3, Bevu Social Farmstay, on 20th June.",
+    images: ["/images/hero.jpg"],
   },
   robots: { index: false, follow: false },
 };
@@ -20,7 +21,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Marcellus&family=Outfit:wght@300;400;500;600&display=swap"
           rel="stylesheet"
         />
       </head>

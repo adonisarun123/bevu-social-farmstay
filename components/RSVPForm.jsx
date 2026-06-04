@@ -1,120 +1,150 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { Check, X, Minus, Plus, MessageCircle } from "lucide-react";
 
-// RSVP via WhatsApp — composes a pre-filled message to the hosts.
+// RSVP via WhatsApp — composes a pre-filled message to Ankit.
 const HOST_WHATSAPP = "919717334639";
 
-const inputClass =
-  "w-full rounded-2xl border border-gold/40 bg-cream px-5 py-3.5 font-body text-base text-ink placeholder:text-ink/35 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25 transition";
-
 export default function RSVPForm() {
-  const [form, setForm] = useState({
-    name: "",
-    attending: "Joyfully Accept",
-    guests: "1",
-    note: "",
-  });
+  const [name, setName] = useState("");
+  const [attending, setAttending] = useState("yes");
+  const [guests, setGuests] = useState(2);
+  const [note, setNote] = useState("");
 
-  function update(field) {
-    return (e) => setForm({ ...form, [field]: e.target.value });
+  function buildMessage() {
+    let m = `🏡 RSVP — Bevu Social Farmstay Griha Pravesh (20th June)\n\n`;
+    m += `Name: ${name.trim() || "A guest"}\n`;
+    if (attending === "yes") {
+      m += `Attending: Yes, joyfully! 🙏\nGuests: ${guests}\n`;
+    } else {
+      m += `Attending: Regretfully unable to make it 💐\n`;
+    }
+    if (note.trim()) m += `Note: ${note.trim()}\n`;
+    m += `\nWith warm wishes 🌸`;
+    return m;
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const lines = [
-      `Hi Ankit! RSVP for the Griha Pravesh on 20th June 🏡`,
-      ``,
-      `Name: ${form.name}`,
-      `Response: ${form.attending}`,
-      `Number of guests: ${form.guests}`,
-    ];
-    if (form.note.trim()) lines.push(`Message: ${form.note.trim()}`);
-    const url = `https://wa.me/${HOST_WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`;
+  function sendWhatsApp() {
+    const url = `https://wa.me/${HOST_WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
+  const toggleBase =
+    "flex flex-1 cursor-pointer flex-col items-center gap-1.5 rounded-lg border px-2 py-3.5 text-[0.95rem] transition-all duration-300";
+
   return (
-    <form onSubmit={handleSubmit} className="mx-auto grid max-w-xl gap-5 text-left">
-      <div>
-        <label htmlFor="name" className="mb-1.5 block font-display text-lg font-semibold text-forest">
+    <div className="mx-auto max-w-[520px] text-center">
+      {/* Name */}
+      <div className="field mb-5 text-left">
+        <label
+          htmlFor="rName"
+          className="mb-2 block font-smallcaps text-[0.7rem] uppercase tracking-[0.18em] text-gold"
+        >
           Your Name
         </label>
         <input
-          id="name"
+          id="rName"
           type="text"
-          required
-          placeholder="Full name"
-          value={form.name}
-          onChange={update("name")}
-          className={inputClass}
+          placeholder="e.g. Sharma Family"
+          autoComplete="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
 
-      <fieldset>
-        <legend className="mb-2 font-display text-lg font-semibold text-forest">
-          Will you be joining us?
-        </legend>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {["Joyfully Accept", "Regretfully Decline"].map((option) => (
-            <label
-              key={option}
-              className={`flex cursor-pointer items-center justify-center rounded-2xl border px-5 py-3.5 text-center font-body transition ${
-                form.attending === option
-                  ? "border-forest bg-forest text-cream shadow"
-                  : "border-gold/40 bg-cream text-ink hover:border-gold"
-              }`}
-            >
-              <input
-                type="radio"
-                name="attending"
-                value={option}
-                checked={form.attending === option}
-                onChange={update("attending")}
-                className="sr-only"
-              />
-              {option}
-            </label>
-          ))}
+      {/* Attending toggle */}
+      <div className="mb-5 text-left">
+        <p className="mb-2 font-smallcaps text-[0.7rem] uppercase tracking-[0.18em] text-gold">
+          Can You Make It?
+        </p>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setAttending("yes")}
+            aria-pressed={attending === "yes"}
+            className={`${toggleBase} ${
+              attending === "yes"
+                ? "border-gold bg-gold/10 text-cream"
+                : "border-[var(--line)] bg-cream/[0.04] text-creamdim"
+            }`}
+          >
+            <Check className={`h-[22px] w-[22px] ${attending === "yes" ? "text-gold" : "text-creamdim"}`} strokeWidth={1.5} aria-hidden="true" />
+            Joyfully Accept
+          </button>
+          <button
+            type="button"
+            onClick={() => setAttending("no")}
+            aria-pressed={attending === "no"}
+            className={`${toggleBase} ${
+              attending === "no"
+                ? "border-terra bg-terra/10 text-cream"
+                : "border-[var(--line)] bg-cream/[0.04] text-creamdim"
+            }`}
+          >
+            <X className={`h-[22px] w-[22px] ${attending === "no" ? "text-terra" : "text-creamdim"}`} strokeWidth={1.5} aria-hidden="true" />
+            Regretfully Decline
+          </button>
         </div>
-      </fieldset>
-
-      <div>
-        <label htmlFor="guests" className="mb-1.5 block font-display text-lg font-semibold text-forest">
-          Number of Guests
-        </label>
-        <select id="guests" value={form.guests} onChange={update("guests")} className={inputClass}>
-          {["1", "2", "3", "4", "5", "6+"].map((n) => (
-            <option key={n} value={n}>{n}</option>
-          ))}
-        </select>
       </div>
 
-      <div>
-        <label htmlFor="note" className="mb-1.5 block font-display text-lg font-semibold text-forest">
-          A Note for the Family <span className="font-body text-sm font-normal text-ink/50">(optional)</span>
+      {/* Guests stepper */}
+      <div
+        className={`mb-5 overflow-hidden text-left transition-all duration-300 ${
+          attending === "no" ? "pointer-events-none max-h-0 opacity-0" : "max-h-32 opacity-100"
+        }`}
+      >
+        <p className="mb-2 font-smallcaps text-[0.7rem] uppercase tracking-[0.18em] text-gold">
+          Number of Guests (incl. you)
+        </p>
+        <div className="flex w-fit items-center overflow-hidden rounded-lg border border-[var(--line)]">
+          <button
+            type="button"
+            onClick={() => setGuests(Math.max(1, guests - 1))}
+            aria-label="Fewer guests"
+            className="grid h-12 w-[50px] place-items-center bg-cream/[0.04] text-xl text-gold transition-colors hover:bg-gold/15"
+          >
+            <Minus className="h-5 w-5" aria-hidden="true" />
+          </button>
+          <span className="min-w-[60px] text-center font-serif text-2xl text-cream">{guests}</span>
+          <button
+            type="button"
+            onClick={() => setGuests(Math.min(20, guests + 1))}
+            aria-label="More guests"
+            className="grid h-12 w-[50px] place-items-center bg-cream/[0.04] text-xl text-gold transition-colors hover:bg-gold/15"
+          >
+            <Plus className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      {/* Note */}
+      <div className="field mb-5 text-left">
+        <label
+          htmlFor="rMsg"
+          className="mb-2 block font-smallcaps text-[0.7rem] uppercase tracking-[0.18em] text-gold"
+        >
+          A Note for Ankit <span className="normal-case tracking-normal opacity-60">(optional)</span>
         </label>
         <textarea
-          id="note"
+          id="rMsg"
           rows={3}
-          placeholder="Your wishes and blessings…"
-          value={form.note}
-          onChange={update("note")}
-          className={inputClass}
+          placeholder="Looking forward to it! See you on the 20th."
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          className="min-h-[74px] resize-y"
         />
       </div>
 
-      <button
-        type="submit"
-        className="mt-2 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-forest px-6 py-4 font-display text-base font-semibold tracking-wide text-cream shadow-lg transition-all hover:-translate-y-0.5 hover:bg-deepgreen hover:shadow-xl sm:px-9 sm:text-lg"
-      >
-        <MessageCircle className="h-5 w-5" aria-hidden="true" />
-        Send RSVP on WhatsApp
-      </button>
-      <p className="text-center text-sm italic text-ink/55">
-        Your RSVP opens WhatsApp with a pre-filled message to the family.
+      <div className="mt-7 flex flex-col gap-3">
+        <button type="button" onClick={sendWhatsApp} className="btn-gold">
+          <MessageCircle className="h-5 w-5" aria-hidden="true" />
+          RSVP via WhatsApp
+        </button>
+      </div>
+      <p className="mt-4 text-[0.78rem] text-creamdim opacity-70">
+        Tapping the button opens WhatsApp with your message pre-filled — just hit send.
       </p>
-    </form>
+    </div>
   );
 }
