@@ -44,6 +44,20 @@ export default function InvitePage() {
       <main className="mx-auto max-w-3xl px-3 py-6 sm:px-6 sm:py-12">
         <div className="invite-frame rounded-3xl bg-cream/80 px-4 py-10 sm:rounded-[2.5rem] sm:px-10 sm:py-16">
 
+          {/* Brand logo */}
+          <FadeIn>
+            <div className="mb-6 flex justify-center">
+              <Image
+                src="/images/logo.svg"
+                alt="Bevu Social Farmstay — Stay. Connect. Sustain."
+                width={200}
+                height={230}
+                priority
+                className="h-44 w-auto object-contain sm:h-56"
+              />
+            </div>
+          </FadeIn>
+
           {/* Hanging tag */}
           <FadeIn>
             <div className="mx-auto mb-8 w-fit -rotate-3 rounded-xl border border-gold/40 bg-parchment px-6 py-4 text-center shadow-sm">

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" font-family="Georgia, 'Times New Roman', serif">
+  <!-- Bevu Social Farmstay logo (vector recreation) -->
+  <!-- circular frame -->
+  <path d="M 322 84 A 152 152 0 0 1 344 232" fill="none" stroke="#4A5D33" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- sun -->
+  <circle cx="276" cy="128" r="30" fill="#EADFC4"/>
+
+  <!-- birds -->
+  <path d="M298 86 q5 -5 10 0 q5 -5 10 0 M316 98 q4 -4 8 0 q4 -4 8 0" fill="none" stroke="#5C7A36" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- palm tree -->
+  <path d="M309 214 C 311 196 312 182 310 170" stroke="#4F6B30" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <g fill="#5C7A36">
+    <path d="M310 170 q-18 -10 -30 -2 q14 -8 30 4 Z"/>
+    <path d="M310 170 q18 -10 30 -2 q-14 -8 -30 4 Z"/>
+    <path d="M310 170 q-12 -16 -26 -16 q16 2 27 12 Z"/>
+    <path d="M310 170 q12 -16 26 -16 q-16 2 -27 12 Z"/>
+    <path d="M310 170 q0 -20 -8 -28 q10 10 11 24 Z"/>
+  </g>
+
+  <!-- house -->
+  <g>
+    <rect x="178" y="238" width="44" height="8" fill="#B0552B"/>
+    <rect x="184" y="230" width="32" height="8" fill="#C06236"/>
+    <rect x="128" y="178" width="150" height="54" fill="#F4ECDA" stroke="#C8A87A" stroke-width="1.5"/>
+    <g fill="#B0552B">
+      <rect x="134" y="186" width="6" height="46"/>
+      <rect x="262" y="186" width="6" height="46"/>
+    </g>
+    <rect x="128" y="218" width="150" height="4" fill="#C8A87A"/>
+    <rect x="188" y="190" width="26" height="42" fill="#3E5A2E"/>
+    <line x1="201" y1="190" x2="201" y2="232" stroke="#2E4421" stroke-width="1.5"/>
+    <rect x="150" y="192" width="20" height="22" fill="#4F6B30"/>
+    <rect x="232" y="192" width="20" height="22" fill="#4F6B30"/>
+    <path d="M218 178 L248 148 L278 178 Z" fill="#F4ECDA" stroke="#C8A87A" stroke-width="1.5"/>
+    <rect x="241" y="158" width="14" height="11" fill="#4F6B30"/>
+    <path d="M118 178 L200 142 L290 178 Z" fill="#B0552B"/>
+    <path d="M118 178 L290 178 L286 170 L122 170 Z" fill="#9C4A24"/>
+    <path d="M140 170 L204 146 M165 170 L210 152 M255 170 L216 150" stroke="#9C4A24" stroke-width="1.2" fill="none"/>
+  </g>
+
+  <!-- foliage right of house -->
+  <g fill="#5C7A36">
+    <path d="M286 232 q4 -26 22 -32 q-10 14 -10 32 Z"/>
+    <path d="M296 232 q14 -18 28 -16 q-16 6 -20 16 Z"/>
+  </g>
+
+  <!-- neem tree trunk & branches -->
+  <path d="M96 252 C 100 220 92 190 80 160 M96 252 C 100 224 112 200 130 182 M96 252 C 92 234 84 226 70 222"
+        fill="none" stroke="#3F4A26" stroke-width="8" stroke-linecap="round"/>
+  <path d="M80 160 C 76 146 66 136 56 130 M80 160 C 86 144 94 136 104 130 M130 182 C 140 170 152 162 164 158 M130 182 C 134 168 134 154 130 142 M104 130 C 112 118 124 110 136 106 M56 130 C 48 118 40 112 32 108"
+        fill="none" stroke="#3F4A26" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- canopy: layered organic leaf masses with scalloped edges -->
+  <g fill="#54712F">
+    <path d="M30 120
+             q-8 -14 4 -22 q-4 -12 10 -16 q0 -14 16 -14 q4 -12 18 -10 q6 -12 20 -8 q8 -10 20 -4 q10 -8 20 0 q12 -6 20 4 q12 -2 16 8 q12 2 12 14 q10 6 4 16 q6 10 -4 16 q2 12 -10 14 q-2 10 -14 10 q-6 10 -18 6 q-8 8 -18 2 q-10 6 -18 -2 q-12 4 -18 -6 q-12 0 -14 -10 q-12 -2 -10 -12 q-10 -4 -6 -14 Z"
+          transform="translate(8 6) scale(1.02)"/>
+  </g>
+  <g fill="#6B8A40">
+    <path d="M52 104 q-6 -10 4 -16 q-2 -10 10 -12 q2 -10 14 -8 q6 -8 16 -4 q8 -6 16 0 q10 -4 16 4 q10 0 12 10 q8 4 4 12 q4 8 -4 12 q0 10 -10 10 q-4 8 -14 6 q-6 6 -14 2 q-8 4 -14 -2 q-10 2 -14 -6 q-10 0 -10 -8 q-8 -4 -8 -10 Z"
+          transform="translate(18 4)"/>
+    <path d="M140 86 q-4 -8 4 -12 q0 -8 10 -8 q4 -8 12 -4 q6 -4 12 0 q8 -2 10 6 q6 4 2 10 q2 8 -6 10 q-2 6 -10 4 q-6 4 -12 0 q-8 2 -10 -4 q-8 0 -8 -6 Z"/>
+  </g>
+  <g fill="#83A053">
+    <ellipse cx="74" cy="84" rx="16" ry="9" transform="rotate(-14 74 84)"/>
+    <ellipse cx="108" cy="68" rx="18" ry="10" transform="rotate(-6 108 68)"/>
+    <ellipse cx="146" cy="62" rx="16" ry="9" transform="rotate(6 146 62)"/>
+    <ellipse cx="180" cy="70" rx="14" ry="8" transform="rotate(14 180 70)"/>
+    <ellipse cx="92" cy="104" rx="14" ry="8" transform="rotate(8 92 104)"/>
+    <ellipse cx="130" cy="94" rx="15" ry="8" transform="rotate(-8 130 94)"/>
+    <ellipse cx="56" cy="108" rx="12" ry="7" transform="rotate(-20 56 108)"/>
+    <ellipse cx="166" cy="92" rx="12" ry="7" transform="rotate(12 166 92)"/>
+  </g>
+  <!-- leaflet detail strokes -->
+  <g stroke="#3F4A26" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M62 86 q10 -6 22 -6 M96 70 q12 -4 24 -2 M136 62 q12 -2 22 2 M86 104 q10 -4 20 -2 M124 92 q10 -2 20 2"/>
+  </g>
+
+  <!-- ground swoosh -->
+  <path d="M30 258 Q 200 240 370 258 Q 200 250 30 262 Z" fill="#4A5D33"/>
+  <!-- small leaf sprig left -->
+  <g fill="#79954A">
+    <ellipse cx="46" cy="296" rx="12" ry="5" transform="rotate(-30 46 296)"/>
+    <ellipse cx="58" cy="306" rx="12" ry="5" transform="rotate(-10 58 306)"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="200" y="332" text-anchor="middle" font-size="62" font-weight="bold" fill="#3F4A26">BEVU</text>
+  <text x="200" y="368" text-anchor="middle" font-size="27" font-weight="600" fill="#3F4A26">SOCIAL FARMSTAY</text>
+
+  <!-- divider with leaves -->
+  <line x1="105" y1="388" x2="178" y2="388" stroke="#C8A87A" stroke-width="1.5"/>
+  <line x1="222" y1="388" x2="295" y2="388" stroke="#C8A87A" stroke-width="1.5"/>
+  <g fill="#B0552B">
+    <ellipse cx="193" cy="384" rx="4" ry="7" transform="rotate(-25 193 384)"/>
+    <ellipse cx="207" cy="384" rx="4" ry="7" transform="rotate(25 207 384)"/>
+    <ellipse cx="200" cy="380" rx="4" ry="8"/>
+  </g>
+
+  <!-- tagline -->
+  <text x="200" y="416" text-anchor="middle" font-size="15" fill="#6B6B5E" font-family="Verdana, Geneva, sans-serif">S T A Y .&#160;&#160;C O N N E C T .&#160;&#160;S U S T A I N .</text>
+  <circle cx="200" cy="436" r="4" fill="#B0552B"/>
+</svg>
