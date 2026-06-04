@@ -224,14 +224,32 @@ export default function InvitePage() {
 
       {/* ===== FOOTER ===== */}
       <footer className="pb-[50px] pt-[34px] text-center text-[0.8rem] tracking-[0.14em] text-creamdim">
-        <FadeIn className="mx-auto mb-4 max-w-[330px]">
-          <Image
-            src="/images/footer-logo.svg"
-            alt="Bevu Social Farmstay"
-            width={640}
-            height={206}
-            className="block h-auto w-full"
-          />
+        <FadeIn>
+          <div className="mx-auto mb-5 flex w-fit items-center gap-5 sm:gap-6">
+            <Image
+              src="/images/emblem.svg"
+              alt=""
+              width={96}
+              height={96}
+              className="h-20 w-20 flex-none sm:h-24 sm:w-24"
+            />
+            <div className="text-left">
+              <div className="font-smallcaps text-[0.6rem] uppercase tracking-[0.34em] text-goldsoft sm:text-[0.66rem]">
+                A Sustainable Stay
+              </div>
+              <div className="font-serif text-[2.6rem] leading-[1.05] text-cream sm:text-[3rem]">
+                Bevu
+              </div>
+              <div className="mt-1 flex items-center gap-2.5">
+                <span className="h-px w-6 bg-gold/70 sm:w-9" aria-hidden="true" />
+                <span className="h-1.5 w-1.5 rotate-45 bg-gold" aria-hidden="true" />
+                <span className="h-px w-6 bg-gold/70 sm:w-9" aria-hidden="true" />
+              </div>
+              <div className="mt-1 font-smallcaps text-[0.7rem] uppercase tracking-[0.3em] text-gold sm:text-[0.78rem]">
+                Social Farmstay
+              </div>
+            </div>
+          </div>
         </FadeIn>
         <div>
           Griha Pravesh &bull; 20<sup>th</sup> June 2026 &bull; SF 3
