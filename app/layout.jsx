@@ -1,13 +1,13 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Griha Pravesh | House Warming Ceremony — Priyanka & Family",
+  title: "Griha Pravesh | House Warming Ceremony — Ankit & Family",
   description:
-    "With the blessings of God and the love of our family and friends, we invite you to our Griha Pravesh house warming ceremony at SF 3 on 20th June. Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM.",
+    "With the blessings of God and the love of our family and friends, we invite you to our Griha Pravesh house warming ceremony at SF 3, Bevu Social Farmstay, on 20th June. Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM.",
   openGraph: {
     title: "Griha Pravesh — House Warming Ceremony",
     description:
-      "Join Priyanka & Family for the Griha Pravesh at SF 3 on 20th June. Your presence and blessings will make the occasion special.",
+      "Join Ankit & Family for the Griha Pravesh at SF 3, Bevu Social Farmstay, on 20th June. Your presence and blessings will make the occasion special.",
     images: ["/images/house.jpeg"],
   },
   robots: { index: false, follow: false },

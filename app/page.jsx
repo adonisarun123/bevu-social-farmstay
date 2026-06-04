@@ -83,6 +83,9 @@ export default function InvitePage() {
                   AT SF 3
                 </p>
               </div>
+              <p className="mt-4 font-script text-3xl text-terracotta sm:text-4xl">
+                Bevu Social Farmstay
+              </p>
             </div>
           </FadeIn>
 
@@ -208,7 +211,7 @@ export default function InvitePage() {
               </div>
               <p className="mt-5 font-script text-3xl text-gold sm:text-4xl">With Love,</p>
               <p className="mt-2 font-display text-2xl font-bold tracking-wide text-forest sm:text-3xl">
-                Priyanka &amp; Family
+                Ankit &amp; Family
               </p>
               <Om className="mt-4 block text-2xl text-gold/70" />
             </div>

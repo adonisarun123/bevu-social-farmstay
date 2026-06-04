@@ -4,18 +4,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Palette drawn from the reference invite artwork
-        parchment: "#F6F1E4",
-        cream: "#FBF8EF",
-        forest: "#2E5234",
-        deepgreen: "#1F3D2B",
-        sage: "#8FA876",
-        leaf: "#A8BC8F",
+        // Warm mud / earth palette inspired by the handcrafted brick house
+        parchment: "#F3ECDF",
+        cream: "#FAF5EA",
+        forest: "#6B4226", // deep mud brown (primary)
+        deepgreen: "#54331D", // darker mud for hovers
+        sage: "#A98B6B",
+        leaf: "#C9B28F", // warm sand accent
         gold: "#B98A3E",
         softgold: "#D8B570",
-        terracotta: "#A5673F",
-        rust: "#8C4A2F",
-        ink: "#3D3327",
+        terracotta: "#9C5B33", // brick terracotta
+        rust: "#7E452A",
+        ink: "#3E2F22",
       },
       fontFamily: {
         script: ["'Great Vibes'", "cursive"],
@@ -24,7 +24,7 @@ module.exports = {
       },
       backgroundImage: {
         "paper-texture":
-          "radial-gradient(ellipse at top left, rgba(168,188,143,0.12), transparent 50%), radial-gradient(ellipse at bottom right, rgba(185,138,62,0.10), transparent 50%)",
+          "radial-gradient(ellipse at top left, rgba(156,91,51,0.10), transparent 50%), radial-gradient(ellipse at bottom right, rgba(185,138,62,0.12), transparent 50%)",
       },
     },
   },

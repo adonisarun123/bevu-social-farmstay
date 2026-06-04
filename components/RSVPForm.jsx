@@ -24,7 +24,7 @@ export default function RSVPForm() {
   function handleSubmit(e) {
     e.preventDefault();
     const lines = [
-      `Hi Priyanka! RSVP for the Griha Pravesh on 20th June 🏡`,
+      `Hi Ankit! RSVP for the Griha Pravesh on 20th June 🏡`,
       ``,
       `Name: ${form.name}`,
       `Response: ${form.attending}`,
