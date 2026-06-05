@@ -61,7 +61,15 @@ export default function MusicPlayer() {
       cleanup();
     };
 
-    const events = ["pointerdown", "touchstart", "keydown", "scroll", "click"];
+    const events = [
+      "pointerdown",
+      "touchstart",
+      "touchmove",
+      "wheel",
+      "scroll",
+      "keydown",
+      "click",
+    ];
     const cleanup = () =>
       events.forEach((e) => window.removeEventListener(e, onFirstInteract));
     events.forEach((e) =>
