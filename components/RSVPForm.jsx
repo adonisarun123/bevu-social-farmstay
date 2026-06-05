@@ -1,17 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Check, X, Minus, Plus, MessageCircle, Mail } from "lucide-react";
+import { Check, X, Minus, Plus, MessageCircle, Send, Loader2, PartyPopper } from "lucide-react";
 
-// RSVP via WhatsApp (primary) or email (fallback) — pre-filled message to Ankit.
+// RSVP: primary Send button emails via the /api/rsvp SMTP endpoint;
+// WhatsApp remains as a secondary option.
 const HOST_WHATSAPP = "919717334639";
-const HOST_EMAIL = "ankit.r@gmail.com";
 
 export default function RSVPForm() {
   const [name, setName] = useState("");
   const [attending, setAttending] = useState("yes");
   const [guests, setGuests] = useState(2);
   const [note, setNote] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const [errorMsg, setErrorMsg] = useState("");
 
   function buildMessage() {
     let m = `🏡 RSVP — Bevu Social Farmstay Griha Pravesh (20th June)\n\n`;
@@ -31,10 +33,31 @@ export default function RSVPForm() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  function sendEmail() {
-    const subj = encodeURIComponent("RSVP — Bevu Social Farmstay Griha Pravesh");
-    const body = encodeURIComponent(buildMessage());
-    window.location.href = `mailto:${HOST_EMAIL}?subject=${subj}&body=${body}`;
+  async function sendRSVP() {
+    if (!name.trim()) {
+      setErrorMsg("Please enter your name first.");
+      setStatus("error");
+      return;
+    }
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), attending, guests, note: note.trim() }),
+      });
+      if (res.ok) {
+        setStatus("sent");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setErrorMsg(data.error || "Could not send right now. Please try WhatsApp.");
+        setStatus("error");
+      }
+    } catch {
+      setErrorMsg("Network issue — please try WhatsApp instead.");
+      setStatus("error");
+    }
   }
 
   const toggleBase =
@@ -143,23 +166,49 @@ export default function RSVPForm() {
         />
       </div>
 
-      <div className="mt-7 flex flex-col gap-3">
-        <button type="button" onClick={sendWhatsApp} className="btn-gold">
-          <MessageCircle className="h-5 w-5" aria-hidden="true" />
-          RSVP via WhatsApp
-        </button>
-        <button
-          type="button"
-          onClick={sendEmail}
-          className="inline-flex items-center justify-center gap-2.5 rounded-[46px] border border-[var(--line)] bg-transparent px-6 py-3 font-smallcaps text-[0.76rem] uppercase tracking-[0.14em] text-gold transition-colors duration-300 hover:border-gold hover:text-goldsoft"
-        >
-          <Mail className="h-[17px] w-[17px]" strokeWidth={1.5} aria-hidden="true" />
-          Prefer email instead
-        </button>
-      </div>
-      <p className="mt-4 text-[0.78rem] text-creamdim opacity-70">
-        Tapping a button opens the message pre-filled — just hit send.
-      </p>
+      {status === "sent" ? (
+        <div className="mt-7 rounded-lg border border-gold/40 bg-gold/[0.08] px-6 py-7" role="status">
+          <PartyPopper className="mx-auto h-8 w-8 text-gold" strokeWidth={1.4} aria-hidden="true" />
+          <p className="mt-3 font-serif text-xl text-cream">Thank you, {name.trim()}!</p>
+          <p className="mt-1 text-[0.92rem] text-creamdim">
+            Your RSVP has been sent. We can&rsquo;t wait to celebrate with you.
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="mt-7 flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={sendRSVP}
+              disabled={status === "sending"}
+              className="btn-gold disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {status === "sending" ? (
+                <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+              ) : (
+                <Send className="h-5 w-5" strokeWidth={1.6} aria-hidden="true" />
+              )}
+              {status === "sending" ? "Sending…" : "Send RSVP"}
+            </button>
+            <button
+              type="button"
+              onClick={sendWhatsApp}
+              className="inline-flex items-center justify-center gap-2.5 rounded-[46px] border border-[var(--line)] bg-transparent px-6 py-3 font-smallcaps text-[0.76rem] uppercase tracking-[0.14em] text-gold transition-colors duration-300 hover:border-gold hover:text-goldsoft"
+            >
+              <MessageCircle className="h-[17px] w-[17px]" strokeWidth={1.5} aria-hidden="true" />
+              RSVP via WhatsApp instead
+            </button>
+          </div>
+          {status === "error" && (
+            <p className="mt-4 text-[0.85rem] text-terra" role="alert">
+              {errorMsg}
+            </p>
+          )}
+          <p className="mt-4 text-[0.78rem] text-creamdim opacity-70">
+            Send delivers your RSVP straight to the family.
+          </p>
+        </>
+      )}
     </div>
   );
 }
