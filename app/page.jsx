@@ -5,6 +5,7 @@ import Timeline from "@/components/Timeline";
 import RSVPForm from "@/components/RSVPForm";
 import MusicPlayer from "@/components/MusicPlayer";
 import GoldenParticles from "@/components/GoldenParticles";
+import BackToTop from "@/components/BackToTop";
 import {
   Leaf,
   Sparkles,
@@ -28,6 +29,7 @@ export default function InvitePage() {
   return (
     <>
       <MusicPlayer />
+      <BackToTop />
 
       {/* ===== HERO ===== */}
       <header className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden px-[22px] pb-16 text-center">
