@@ -4,6 +4,7 @@ import Ornament from "@/components/Ornament";
 import Timeline from "@/components/Timeline";
 import RSVPForm from "@/components/RSVPForm";
 import MusicPlayer from "@/components/MusicPlayer";
+import GoldenParticles from "@/components/GoldenParticles";
 import {
   Leaf,
   Sparkles,
@@ -41,6 +42,7 @@ export default function InvitePage() {
           />
         </div>
         <div className="hero-veil absolute inset-0" aria-hidden="true" />
+        <GoldenParticles />
 
         <div className="relative z-[2] max-w-[640px]">
           <div className="hl d1 mx-auto mb-[22px] w-[78px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)] sm:w-24">
