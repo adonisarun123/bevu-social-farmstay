@@ -3,6 +3,7 @@ import FadeIn from "@/components/FadeIn";
 import Ornament from "@/components/Ornament";
 import Timeline from "@/components/Timeline";
 import RSVPForm from "@/components/RSVPForm";
+import MusicPlayer from "@/components/MusicPlayer";
 import {
   Leaf,
   Sparkles,
@@ -25,6 +26,8 @@ const chips = [
 export default function InvitePage() {
   return (
     <>
+      <MusicPlayer />
+
       {/* ===== HERO ===== */}
       <header className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden px-[22px] pb-16 text-center">
         <div className="hero-img absolute inset-0">
