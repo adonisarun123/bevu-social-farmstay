@@ -72,7 +72,8 @@ export default function InvitePage() {
       </header>
 
       {/* ===== INVITATION ===== */}
-      <section className="wrap py-[62px]">
+      <section className="py-[62px]">
+        <div className="wrap">
         <FadeIn>
           <Ornament>
             <Leaf className="h-full w-full" strokeWidth={1.1} aria-hidden="true" />
@@ -109,6 +110,7 @@ export default function InvitePage() {
             <div className="text-[0.74rem] uppercase tracking-[0.3em] text-creamdim">Saturday &bull; 2026</div>
           </div>
         </FadeIn>
+        </div>
       </section>
 
       {/* ===== SCHEDULE ===== */}
@@ -122,7 +124,8 @@ export default function InvitePage() {
       </section>
 
       {/* ===== EXPERIENCE ===== */}
-      <section className="wrap py-[62px]">
+      <section className="py-[62px]">
+        <div className="wrap">
         <FadeIn>
           <Ornament>
             <Sparkles className="h-full w-full" strokeWidth={1.1} aria-hidden="true" />
@@ -147,10 +150,12 @@ export default function InvitePage() {
             </FadeIn>
           ))}
         </div>
+        </div>
       </section>
 
       {/* ===== QUOTE & SIGNOFF ===== */}
-      <section className="wrap py-[70px] text-center">
+      <section className="py-[70px] text-center">
+        <div className="wrap">
         <FadeIn>
           <p className="mx-auto max-w-[580px] font-serif text-[clamp(1.3rem,4.4vw,1.85rem)] font-light italic leading-[1.5] text-goldsoft">
             &ldquo;A house becomes a home when it is filled with the blessings,
@@ -164,6 +169,7 @@ export default function InvitePage() {
             <div className="mt-1.5 font-serif text-[2.3rem] text-cream">Ankit &amp; Family</div>
           </div>
         </FadeIn>
+        </div>
       </section>
 
       {/* ===== GIFT NOTE ===== */}
@@ -208,7 +214,8 @@ export default function InvitePage() {
       </section>
 
       {/* ===== MAP CTA ===== */}
-      <section className="wrap pb-[30px] pt-[72px] text-center">
+      <section className="pb-[30px] pt-[72px] text-center">
+        <div className="wrap">
         <FadeIn>
           <p className="label">Find Your Way</p>
         </FadeIn>
@@ -223,6 +230,7 @@ export default function InvitePage() {
             Open in Google Maps
           </a>
         </FadeIn>
+        </div>
       </section>
 
       {/* ===== FOOTER ===== */}
