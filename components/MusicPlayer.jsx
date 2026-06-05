@@ -16,23 +16,52 @@ export default function MusicPlayer() {
 
     audio.volume = 0.55;
 
-    // 1) Attempt straight autoplay.
-    const tryPlay = () =>
-      audio
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => false);
+    // 1) Try un-muted autoplay (works if the browser trusts this site).
+    // 2) If blocked, start MUTED autoplay (always allowed in Chrome), then
+    //    unmute on the guest's first interaction anywhere on the page.
+    // 3) If even muted autoplay is blocked (iOS Safari), start un-muted on
+    //    first interaction.
+    let startedMuted = false;
 
-    tryPlay();
+    const unmutedAttempt = audio
+      .play()
+      .then(() => {
+        setPlaying(true);
+        return true;
+      })
+      .catch(() => {
+        audio.muted = true;
+        return audio
+          .play()
+          .then(() => {
+            startedMuted = true;
+            return false;
+          })
+          .catch(() => {
+            audio.muted = false;
+            return false;
+          });
+      });
 
-    // 2) Fallback: start on first user interaction (unless they muted already).
     const onFirstInteract = () => {
-      if (!userPaused.current && audio.paused) {
-        tryPlay();
-      }
+      if (userPaused.current) return cleanup();
+      unmutedAttempt.then((alreadyAudible) => {
+        if (alreadyAudible) return;
+        if (startedMuted) {
+          // music is already running silently — just unmute, no restart
+          audio.muted = false;
+          setPlaying(true);
+        } else if (audio.paused) {
+          audio
+            .play()
+            .then(() => setPlaying(true))
+            .catch(() => {});
+        }
+      });
       cleanup();
     };
-    const events = ["pointerdown", "touchstart", "keydown", "scroll"];
+
+    const events = ["pointerdown", "touchstart", "keydown", "scroll", "click"];
     const cleanup = () =>
       events.forEach((e) => window.removeEventListener(e, onFirstInteract));
     events.forEach((e) =>
@@ -45,8 +74,10 @@ export default function MusicPlayer() {
   function toggle() {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.paused) {
+    if (audio.paused || audio.muted) {
+      // resume (or unmute, if it auto-started silently)
       userPaused.current = false;
+      audio.muted = false;
       audio.play().then(() => setPlaying(true)).catch(() => {});
     } else {
       userPaused.current = true;
