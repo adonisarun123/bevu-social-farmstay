@@ -6,12 +6,12 @@ const GA_ID = "G-4YHPZ2VZFY";
 export const metadata = {
   title: "Bevu Social Farmstay — Griha Pravesh Invitation",
   description:
-    "We're warming our new home — and we'd love you there. Griha Pravesh at SF 3, Bevu Social Farmstay, 20th June. Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM.",
+    "We're warming our new home — and we'd love you there. Griha Pravesh at SF 3, Plot No 79, Bevu Social Farmstay, 20th June. Pooja 8 AM, Sunderkand Path 10 AM, Lunch 12:30 PM.",
   themeColor: "#161e2e",
   openGraph: {
     title: "Bevu Social Farmstay — Griha Pravesh Invitation",
     description:
-      "Join Ankit & Family for the Griha Pravesh house warming at SF 3, Bevu Social Farmstay, on 20th June.",
+      "Join Ankit, Priyanka & Family for the Griha Pravesh house warming at SF 3, Plot No 79, Bevu Social Farmstay, on 20th June.",
     images: ["/images/hero.jpg"],
   },
   robots: { index: false, follow: false },

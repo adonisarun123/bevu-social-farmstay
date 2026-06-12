@@ -92,7 +92,7 @@ export default function InvitePage() {
             With the blessings of God and the love of our family and friends, we
             are delighted to invite you and your family to our{" "}
             <strong className="font-medium text-goldsoft">Griha Pravesh</strong> at{" "}
-            <strong className="font-medium text-goldsoft">SF&nbsp;3</strong>.
+            <strong className="font-medium text-goldsoft">SF&nbsp;3, Plot&nbsp;No&nbsp;79</strong>.
           </p>
         </FadeIn>
 
@@ -170,7 +170,7 @@ export default function InvitePage() {
         <FadeIn>
           <div className="mt-[42px]">
             <div className="text-[0.74rem] uppercase tracking-[0.3em] text-creamdim">With Love</div>
-            <div className="mt-1.5 font-serif text-[2.3rem] text-cream">Ankit &amp; Family</div>
+            <div className="mt-1.5 font-serif text-[2.3rem] text-cream">Ankit, Priyanka &amp; Family</div>
           </div>
         </FadeIn>
         </div>
@@ -225,7 +225,7 @@ export default function InvitePage() {
         </FadeIn>
         <FadeIn>
           <p className="mb-5 mt-3 font-serif text-[1.05rem] italic text-creamdim">
-            Bevu Social Farmstay &bull; SF 3
+            Bevu Social Farmstay &bull; SF 3 &bull; Plot No 79
           </p>
         </FadeIn>
         <FadeIn>
@@ -267,7 +267,7 @@ export default function InvitePage() {
           </div>
         </FadeIn>
         <div>
-          Griha Pravesh &bull; 20<sup>th</sup> June 2026 &bull; SF 3
+          Griha Pravesh &bull; 20<sup>th</sup> June 2026 &bull; SF 3, Plot No 79
         </div>
       </footer>
     </>
