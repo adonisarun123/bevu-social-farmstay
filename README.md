@@ -47,7 +47,11 @@ All in `data/site.js` unless noted:
 
 ## Theme
 
-Brick `#A9553A` · Clay `#C8804F` · Cream `#F7F1E6` · Sand `#EADCC6` · Ink `#1E1A16` · Forest `#2E4A3A` · Moss `#6F7D4E` · Brass `#C99A4B` — drawn from the house's brick, laterite soil and evening light. Fonts: Fraunces (display) + Outfit (body) via Google Fonts.
+Brick/earth `#7A6140` (from the logo) · Terracotta `#A9553A` · Leaf `#4F6A3D` · Clay `#C8804F` · Cream `#F7F1E6` · Sand `#EADCC6` · Ink `#1E1A16` · Forest `#2E4A3A` · Moss `#6F7D4E` · Brass `#C99A4B` — drawn from the house's brick, laterite soil and evening light. Fonts: Fraunces (display) + Outfit (body) via Google Fonts.
+
+## Logo
+
+`public/images/logo.png` (dark text), `logo-light.png` (cream text, for dark backgrounds), `logo-mark.png` (arches + leaf only). Favicons: `app/icon.png`, `app/apple-icon.png`. Used by `components/Logo.jsx`.
 
 ## Deploy
 

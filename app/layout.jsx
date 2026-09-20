@@ -29,7 +29,7 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport = { themeColor: "#A9553A", width: "device-width", initialScale: 1 };
+export const viewport = { themeColor: "#7A6140", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }) {
   return (

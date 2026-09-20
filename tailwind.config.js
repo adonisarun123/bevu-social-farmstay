@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brick: { DEFAULT: "#A9553A", dark: "#7E3A26", light: "#C97A5B" },
+        brick: { DEFAULT: "#7A6140", dark: "#5A4630", light: "#9C825E" }, // logo brown
+        terracotta: "#A9553A",
         clay: "#C8804F",
         cream: "#F7F1E6",
         sand: "#EADCC6",
@@ -12,7 +13,7 @@ module.exports = {
         ink: "#1E1A16",
         bark: "#3A2F27",
         forest: "#2E4A3A",
-        moss: "#6F7D4E",
+        moss: "#4F6A3D", // logo leaf green
         brass: { DEFAULT: "#C99A4B", light: "#E3C283" },
         stone: "#8A847B",
       },

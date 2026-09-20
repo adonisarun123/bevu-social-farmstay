@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="brick-rule" />
       <div className="wrap grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
-          <Logo tone="light" />
+          <Logo tone="light" height={72} />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-cream/60">
             A handcrafted brick home among granite boulders and neem trees — four rooms, a private pool, an open lawn, and food from the farm. Pet-friendly. Near Berigai, Hosur — an hour and a bit from Bangalore.
           </p>
