@@ -1,27 +1,37 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./app/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
+  content: ["./app/**/*.{js,jsx}", "./components/**/*.{js,jsx}", "./data/**/*.js"],
   theme: {
     extend: {
       colors: {
-        dusk: "#161e2e",
-        dusk2: "#1f2a3e",
-        night: "#0e141f",
-        terra: "#c0673c",
-        terradeep: "#9a4e2c",
-        gold: "#e7b35e",
-        goldsoft: "#f1cf93",
-        cream: "#f6ecdc",
-        creamdim: "#d8cbb6",
-        sage: "#8a9466",
+        brick: { DEFAULT: "#A9553A", dark: "#7E3A26", light: "#C97A5B" },
+        clay: "#C8804F",
+        cream: "#F7F1E6",
+        sand: "#EADCC6",
+        parchment: "#FBF8F2",
+        ink: "#1E1A16",
+        bark: "#3A2F27",
+        forest: "#2E4A3A",
+        moss: "#6F7D4E",
+        brass: { DEFAULT: "#C99A4B", light: "#E3C283" },
+        stone: "#8A847B",
       },
       fontFamily: {
-        serif: ["'Fraunces'", "Georgia", "serif"],
-        smallcaps: ["'Marcellus'", "Georgia", "serif"],
-        sans: ["'Outfit'", "system-ui", "sans-serif"],
+        display: ["Fraunces", "Georgia", "serif"],
+        body: ["Outfit", "system-ui", "sans-serif"],
       },
-      borderColor: {
-        line: "rgba(231,179,94,.32)",
+      maxWidth: { wrap: "80rem" },
+      boxShadow: {
+        soft: "0 10px 40px -12px rgba(30,26,22,0.18)",
+        card: "0 1px 2px rgba(30,26,22,0.06), 0 12px 32px -14px rgba(30,26,22,0.22)",
+      },
+      keyframes: {
+        kenburns: { "0%": { transform: "scale(1.05)" }, "100%": { transform: "scale(1.15)" } },
+        marquee: { "0%": { transform: "translateX(0)" }, "100%": { transform: "translateX(-50%)" } },
+      },
+      animation: {
+        kenburns: "kenburns 18s ease-out forwards",
+        marquee: "marquee 40s linear infinite",
       },
     },
   },
