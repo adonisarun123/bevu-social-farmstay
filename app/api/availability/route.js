@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { checkAvailability, validateStay } from "@/lib/bookings";
+import { checkAvailability, validateStay, stayWarning } from "@/lib/bookings";
 import { getRates, estimateAmount } from "@/lib/rates";
 import { hasDb, nightsBetween } from "@/lib/db";
 
@@ -13,7 +13,8 @@ export async function GET(req) {
   const roomSlugs = (p.get("rooms") || "").split(",").filter(Boolean);
   const checkIn = p.get("check_in"), checkOut = p.get("check_out");
   const adults = Number(p.get("adults") || 1);
-  const err = validateStay({ kind, roomSlugs, checkIn, checkOut, adults });
+  const children = Number(p.get("children") || 0);
+  const err = validateStay({ kind, roomSlugs, checkIn, checkOut, adults, children });
   if (err) return NextResponse.json({ ok: false, error: err }, { status: 400 });
   const avail = await checkAvailability({ kind, roomSlugs, checkIn, checkOut });
   const rates = await getRates();
@@ -22,6 +23,7 @@ export async function GET(req) {
     ok: avail.ok,
     nights: nightsBetween(checkIn, checkOut),
     amount,
+    warning: stayWarning({ kind, adults, children }),
     pending: avail.pending.length,
     conflicts: avail.conflicts.map((c) => (c.type === "block" ? { type: "block", room: c.room_slug } : { type: "booking", rooms: c.kind === "house" ? "all" : c.room_slugs })),
   });
