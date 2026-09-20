@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { sql, toDateStr, nightsBetween, fmtDate } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import { checkAvailability, newRef, validateStay } from "@/lib/bookings";
+import { checkAvailability, newRef, validateStay, stayWarning, HOUSE_SLEEPS } from "@/lib/bookings";
 import { getRates, estimateAmount } from "@/lib/rates";
 import { sendMail } from "@/lib/mail";
 import { notifyAdmins } from "@/lib/notify";
@@ -23,8 +23,9 @@ export async function requestBookingAction(prev, formData) {
   const notes = String(formData.get("notes") || "").trim().slice(0, 2000);
   const phone = String(formData.get("phone") || "").trim();
 
-  const err = validateStay({ kind, roomSlugs, checkIn, checkOut, adults });
+  const err = validateStay({ kind, roomSlugs, checkIn, checkOut, adults, children });
   if (err) return { error: err };
+  const largeGroup = Boolean(stayWarning({ kind, adults, children }));
   if (!phone) return { error: "We need a phone number to confirm on WhatsApp." };
 
   const avail = await checkAvailability({ kind, roomSlugs, checkIn, checkOut });
@@ -40,14 +41,17 @@ export async function requestBookingAction(prev, formData) {
     RETURNING id`;
   const id = rows[0].id;
   await sql`INSERT INTO booking_events (booking_id, actor_id, action) VALUES (${id}, ${user.id}, 'requested')`;
+  if (largeGroup) await sql`INSERT INTO booking_events (booking_id, actor_id, action, note) VALUES (${id}, ${user.id}, 'note', ${`Large group: ${adults + children} guests requested; bedding is for ${HOUSE_SLEEPS}. Subject to owners' discretion.`})`;
 
   const summary = `${ref} · ${kind === "house" ? "Whole house" : roomSlugs.join(", ")} · ${fmtDate(checkIn)} → ${fmtDate(checkOut)} · ${adults} adults, ${children} children${pets ? `, ${pets} pets` : ""}`;
+  const groupFlag = largeGroup ? `\n⚠️ LARGE GROUP: ${adults + children} guests — bedding is for ${HOUSE_SLEEPS}. Needs your call.` : "";
   await notifyAdmins({
-    subject: `New booking request ${ref} — ${user.name}`,
-    text: `${summary}\nPhone: ${phone}\nEmail: ${user.email}\nNotes: ${notes || "-"}\n\nReview: ${site.url}/admin/bookings/${id}`,
-    whatsapp: `🌿 New booking request ${ref}\n${user.name} · ${phone}\n${summary}${notes ? `\nNotes: ${notes.slice(0, 200)}` : ""}\nReview: ${site.url}/admin/bookings/${id}`,
+    subject: `New booking request ${ref} — ${user.name}${largeGroup ? ` (large group: ${adults + children})` : ""}`,
+    text: `${summary}${groupFlag}\nPhone: ${phone}\nEmail: ${user.email}\nNotes: ${notes || "-"}\n\nReview: ${site.url}/admin/bookings/${id}`,
+    whatsapp: `🌿 New booking request ${ref}\n${user.name} · ${phone}\n${summary}${groupFlag}${notes ? `\nNotes: ${notes.slice(0, 200)}` : ""}\nReview: ${site.url}/admin/bookings/${id}`,
   });
-  await sendMail({ to: user.email, subject: `We've received your request ${ref} — ${site.name}`, text: `Hi ${user.name},\n\nThanks — we've received your booking request:\n${summary}\n\nWe'll confirm availability on WhatsApp shortly and hold the booking on a part advance. You can track it at ${site.url}/account.\n\n${site.name}` });
+  const guestGroupNote = largeGroup ? `\n\nA note on your group size: our current bedding is for ${HOUSE_SLEEPS} guests, so a stay for ${adults + children} is subject to the owners' discretion. We'll discuss options (extra floor mattresses, a split stay) with you on WhatsApp before confirming.` : "";
+  await sendMail({ to: user.email, subject: `We've received your request ${ref} — ${site.name}`, text: `Hi ${user.name},\n\nThanks — we've received your booking request:\n${summary}${guestGroupNote}\n\nWe'll confirm availability on WhatsApp shortly and hold the booking on a part advance. You can track it at ${site.url}/account.\n\n${site.name}` });
 
   revalidatePath("/account");
   revalidatePath("/admin");
