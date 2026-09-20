@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, CalendarCheck } from "lucide-react";
 import { site } from "@/data/site";
 import Reveal from "./Reveal";
 
@@ -17,8 +17,8 @@ export default function CTABand({ title = "Ready for a slow weekend?", text = "S
             <a href={site.whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn bg-cream text-brick hover:bg-white hover:shadow-soft">
               <MessageCircle size={18} /> WhatsApp
             </a>
-            <Link href="/contact" className="btn-light">
-              <Phone size={18} /> Enquire
+            <Link href="/account/book" className="btn-light">
+              <CalendarCheck size={18} /> Book online
             </Link>
           </div>
         </Reveal>

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Check } from "lucide-react";
-import { formatRate, pricing, site } from "@/data/site";
+import { formatRate, site } from "@/data/site";
+import { getPricing } from "@/lib/rates";
 import Reveal from "./Reveal";
 
 function Card({ title, sub, rate, note, points, cta, highlight, delay }) {
@@ -23,14 +25,16 @@ function Card({ title, sub, rate, note, points, cta, highlight, delay }) {
           <li key={p} className="flex gap-3"><Check size={16} className="mt-0.5 shrink-0 text-brass" />{p}</li>
         ))}
       </ul>
-      <a href={site.whatsappHref(cta.msg)} target="_blank" rel="noopener noreferrer" className={`${highlight ? "btn bg-brass text-ink hover:bg-brass-light" : "btn-primary"} mt-8`}>
-        {cta.label}
-      </a>
+      <div className="mt-8 flex flex-col gap-2">
+        <Link href={`/account/book?kind=${cta.kind}`} className={highlight ? "btn bg-brass text-ink hover:bg-brass-light" : "btn-primary"}>Check availability & book</Link>
+        <a href={site.whatsappHref(cta.msg)} target="_blank" rel="noopener noreferrer" className={`text-center text-sm ${highlight ? "text-cream/70 hover:text-cream" : "text-brick"}`}>{cta.label} on WhatsApp</a>
+      </div>
     </Reveal>
   );
 }
 
-export default function PricingCards() {
+export default async function PricingCards() {
+  const pricing = await getPricing();
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <Card
@@ -39,7 +43,7 @@ export default function PricingCards() {
         rate={pricing.perRoom}
         note={pricing.perRoom.note}
         points={["Any of the four ensuite king rooms", "Breakfast for two", "Shared use of pool, lawn and living room", "Extra mattress for a child on request"]}
-        cta={{ label: "Enquire for a room", msg: "Hi Bevu Social Farmstay, I'd like to book a room. Dates: ___ · Guests: ___" }}
+        cta={{ kind: "room", label: "Enquire", msg: "Hi Bevu Social Farmstay, I'd like to book a room. Dates: ___ · Guests: ___" }}
         delay={0}
       />
       <Card
@@ -49,7 +53,7 @@ export default function PricingCards() {
         rate={pricing.wholeHouse}
         note={pricing.wholeHouse.note}
         points={["All 4 rooms — 8 adults, up to 12 with children", "Exclusive pool, lawn, bonfire and dining", "Breakfast for everyone", "Kitchen team on site for lunch and dinner", "Ideal for friends, celebrations and offsites"]}
-        cta={{ label: "Enquire for the whole house", msg: "Hi Bevu Social Farmstay, I'd like to book the whole house. Dates: ___ · Group size: ___" }}
+        cta={{ kind: "house", label: "Enquire", msg: "Hi Bevu Social Farmstay, I'd like to book the whole house. Dates: ___ · Group size: ___" }}
         delay={0.1}
       />
     </div>

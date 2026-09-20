@@ -39,10 +39,10 @@ export default function Hero() {
           An eco-conscious, pet-friendly farmstay with four ensuite rooms, a swimming pool and an open lawn — an hour and a bit from south Bangalore.
         </motion.p>
         <motion.div {...fade(0.55)} className="mt-9 flex flex-col gap-3 sm:flex-row">
-          <a href={site.whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn-primary">
-            <MessageCircle size={18} /> Check availability
+          <Link href="/account/book" className="btn-primary">Check availability & book</Link>
+          <a href={site.whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn-light">
+            <MessageCircle size={18} /> WhatsApp us
           </a>
-          <Link href="/stay" className="btn-light">Explore the rooms</Link>
         </motion.div>
 
         <motion.dl {...fade(0.75)} className="mt-14 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-cream/15 pt-8 sm:grid-cols-4">

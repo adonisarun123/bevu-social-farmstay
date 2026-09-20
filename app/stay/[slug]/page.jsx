@@ -10,7 +10,8 @@ import JsonLd from "@/components/JsonLd";
 import { rooms, getRoom, inclusions, houseRules } from "@/data/rooms";
 import { breadcrumbSchema, roomSchema, webPageSchema } from "@/data/schema";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { site, pricing, formatRate } from "@/data/site";
+import { site, formatRate } from "@/data/site";
+import { getPricing } from "@/lib/rates";
 
 export function generateStaticParams() {
   return rooms.map((r) => ({ slug: r.slug }));
@@ -27,9 +28,12 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function RoomPage({ params }) {
+export const revalidate = 300;
+
+export default async function RoomPage({ params }) {
   const room = getRoom(params.slug);
   if (!room) notFound();
+  const pricing = await getPricing();
   const others = rooms.filter((r) => r.slug !== room.slug);
   const crumbs = [{ name: "Home", path: "/" }, { name: "Stay", path: "/stay" }, { name: `${room.name} Room`, path: `/stay/${room.slug}` }];
   const waMsg = `Hi Bevu Social Farmstay, I'd like to check availability for the ${room.name} room. Dates: ___ · Guests: ___`;
@@ -63,8 +67,8 @@ export default function RoomPage({ params }) {
           </h1>
           <p className="lead mt-5 max-w-2xl !text-cream/80">{room.blurb}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href={site.whatsappHref(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-primary"><MessageCircle size={18} /> Check availability</a>
-            <Link href="/stay#rates" className="btn-light">See rates</Link>
+            <Link href={`/account/book?kind=room&rooms=${room.slug}`} className="btn-primary">Check availability & book</Link>
+            <a href={site.whatsappHref(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-light"><MessageCircle size={18} /> WhatsApp</a>
           </div>
         </div>
       </section>
@@ -88,7 +92,7 @@ export default function RoomPage({ params }) {
                 <div><div className="font-display text-2xl">{formatRate(pricing.perRoom.weekend)}</div><div className="text-[11px] text-cream/50">weekend</div></div>
               </div>
               <p className="mt-3 text-xs text-cream/60">{pricing.perRoom.note}. {pricing.extraGuest}</p>
-              <a href={site.whatsappHref(waMsg)} target="_blank" rel="noopener noreferrer" className="btn mt-5 w-full bg-brass text-ink hover:bg-brass-light">Enquire for {room.name}</a>
+              <Link href={`/account/book?kind=room&rooms=${room.slug}`} className="btn mt-5 w-full bg-brass text-ink hover:bg-brass-light">Book {room.name}</Link>
             </div>
           </Reveal>
 

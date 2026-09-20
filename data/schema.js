@@ -6,6 +6,7 @@ import { rooms } from "./rooms";
 import { experiences } from "./experiences";
 import { amenities } from "./amenities";
 import { gallery } from "./gallery";
+import { meetups } from "./meetups";
 
 const abs = (p) => (p.startsWith("http") ? p : `${site.url}${p}`);
 export const ids = {
@@ -202,4 +203,30 @@ export const placeSchema = {
   address: lodgingBusinessSchema.address,
   geo: lodgingBusinessSchema.geo,
   hasMap: site.location.mapsUrl,
+};
+
+// Meetup formats: each is a Service/Offer the farmstay provides (not a dated Event).
+export function meetupSchema(m) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${site.url}/meetups/${m.slug}#offer`,
+    name: `${m.title} at ${site.name}`,
+    serviceType: "Group stay / meetup hosting",
+    description: `${m.tagline} ${m.intro}`,
+    image: abs(m.cover),
+    url: `${site.url}/meetups/${m.slug}`,
+    provider: { "@id": ids.business },
+    areaServed: { "@type": "City", name: "Bengaluru" },
+    audience: { "@type": "PeopleAudience", audienceType: m.audience },
+    offers: { "@type": "Offer", url: `${site.url}/meetups/${m.slug}`, availability: "https://schema.org/InStock", priceCurrency: "INR", description: m.price },
+  };
+}
+
+export const meetupsListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Meetups and group weekends at Bevu Social Farmstay",
+  numberOfItems: meetups.length,
+  itemListElement: meetups.map((m, i) => ({ "@type": "ListItem", position: i + 1, name: m.title, url: `${site.url}/meetups/${m.slug}`, item: { "@id": `${site.url}/meetups/${m.slug}#offer` } })),
 };

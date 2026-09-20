@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { sql, hasDb } from "@/lib/db";
+import { sendMail, adminEmail } from "@/lib/mail";
 
 export const runtime = "nodejs";
 
 export async function POST(req) {
-  const { SMTP_USER, SMTP_PASS, ENQUIRY_TO } = process.env;
-  if (!SMTP_USER || !SMTP_PASS) {
-    return NextResponse.json({ ok: false, error: "email-not-configured" }, { status: 503 });
-  }
   let body;
   try { body = await req.json(); } catch { return NextResponse.json({ ok: false }, { status: 400 }); }
+  if (body?.website) return NextResponse.json({ ok: true }); // honeypot: pretend success
   const { name = "", phone = "", checkin = "", checkout = "", adults = "", kids = "", type = "", message = "" } = body || {};
   if (!name.trim() || !phone.trim()) return NextResponse.json({ ok: false, error: "missing-fields" }, { status: 400 });
 
@@ -18,17 +16,15 @@ export async function POST(req) {
     `Name: ${name}\nPhone: ${phone}\nCheck-in: ${checkin || "flexible"}\nCheck-out: ${checkout || "flexible"}\n` +
     `Guests: ${adults} adults, ${kids} children\nBooking: ${type === "house" ? "Whole house" : "Room(s)"}\n\n${message}`;
 
-  try {
-    const transporter = nodemailer.createTransport({ service: "gmail", auth: { user: SMTP_USER, pass: SMTP_PASS } });
-    await transporter.sendMail({
-      from: `"Bevu Social Farmstay" <${SMTP_USER}>`,
-      to: ENQUIRY_TO || SMTP_USER,
-      subject: `Enquiry: ${name} · ${checkin || "flexible"} · ${type === "house" ? "whole house" : "room"}`,
-      text,
-    });
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("enquiry mail failed", err);
-    return NextResponse.json({ ok: false, error: "send-failed" }, { status: 500 });
+  let stored = false;
+  if (hasDb()) {
+    try {
+      await sql`INSERT INTO enquiries (name, phone, email, check_in, check_out, adults, children, kind, message)
+        VALUES (${name}, ${phone}, ${body.email || null}, ${checkin || null}, ${checkout || null}, ${Number(adults) || null}, ${Number(kids) || 0}, ${type || null}, ${message || null})`;
+      stored = true;
+    } catch (e) { console.error("enquiry insert failed", e?.message); }
   }
+  const mailed = await sendMail({ to: adminEmail(), subject: `Enquiry: ${name} · ${checkin || "flexible"} · ${type === "house" ? "whole house" : "room"}`, text });
+  if (!stored && !mailed) return NextResponse.json({ ok: false, error: "not-configured" }, { status: 503 });
+  return NextResponse.json({ ok: true });
 }

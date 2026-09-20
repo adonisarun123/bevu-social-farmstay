@@ -17,6 +17,7 @@ import { faqs } from "@/data/faqs";
 import { faqSchema, webPageSchema } from "@/data/schema";
 import { site } from "@/data/site";
 import { posts } from "@/data/posts";
+import { meetups } from "@/data/meetups";
 import PostCard from "@/components/PostCard";
 
 const homeExperiences = homeExperienceSlugs.map((s) => experiences.find((e) => e.slug === s)).filter(Boolean);
@@ -31,6 +32,8 @@ const essentials = [
   { Icon: Wifi, t: "Fast Wi-Fi", d: "Throughout the house" },
   { Icon: PawPrint, t: "Pet-friendly", d: "Dogs welcome, tell us when booking" },
 ];
+
+export const revalidate = 300;
 
 export const metadata = {
   description: "Pet-friendly farmstay near Bangalore, past Hosur: a hand-built brick home with 4 ensuite rooms, private pool, lawn and farm-to-table food. By room or whole house.",
@@ -139,6 +142,25 @@ export default function HomePage() {
                 </Reveal>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Meetups */}
+      <section className="section">
+        <div className="wrap">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading eyebrow="Meetups" title="Bring your people." lead="Cyclists, bikers, naturalists, cooks, stargazers — formats we host for groups who share something. Take the whole house and run your weekend." />
+            <Reveal delay={0.1}><Link href="/meetups" className="btn-ghost shrink-0">All formats <ArrowRight size={16} /></Link></Reveal>
+          </div>
+          <div className="no-scrollbar -mx-5 mt-10 flex gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-6">
+            {meetups.slice(0, 6).map((m, i) => (
+              <Reveal key={m.slug} delay={i * 0.05} className="w-56 shrink-0 sm:w-auto">
+                <Link href={`/meetups/${m.slug}`} className="group block">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-sand"><Image src={m.cover} alt={m.coverAlt} fill sizes="(min-width: 1024px) 16vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-4 font-display text-lg text-cream">{m.short}</div></div>
+                </Link>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

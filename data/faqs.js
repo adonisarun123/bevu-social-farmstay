@@ -35,6 +35,11 @@ export const faqs = [
       "Yes — Bevu is a pet-friendly farmstay and dogs are welcome. Let us know when you book. We ask that dogs stay leashed around the pool and lawn edges, off the beds, and that you bring their food and any medication.",
   },
   {
+    question: "What is the cancellation policy?",
+    answer:
+      "Full refund of the advance more than 14 days before check-in; half (or carry it forward) between 7 and 14 days; non-refundable inside 7 days. Whole-house bookings use 30 and 14 days. Full details on the Booking & Cancellation Policy page.",
+  },
+  {
     question: "How do I book?",
     answer:
       "Send us your dates and group size on WhatsApp or through the enquiry form. We confirm availability, share rates and the pin, and hold the booking on a part advance.",

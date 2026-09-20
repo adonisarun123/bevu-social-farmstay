@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import JsonLd from "@/components/JsonLd";
+import Providers from "@/components/Providers";
 
 export const metadata = {
   metadataBase: new URL(site.url),
@@ -55,10 +56,12 @@ export default function RootLayout({ children }) {
             </Script>
           </>
         )}
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppFloat />
+        <Providers>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <WhatsAppFloat />
+        </Providers>
       </body>
     </html>
   );
