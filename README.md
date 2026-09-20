@@ -29,6 +29,7 @@ All in `data/site.js` unless noted:
 | Route | Content |
 |---|---|
 | `/` | Hero, intro, essentials strip, rooms, pool & lawn, experiences, who it's for, rates, location, FAQ, CTA |
+| `/stay/[slug]` | One page per room (neem, tamarind, jamun, amla): hero, facts, story, gallery, rate, other rooms, HotelRoom JSON-LD |
 | `/stay` | 4 rooms, in-room list, rates (room-wise / whole house), inclusions, house notes |
 | `/amenities` | Pool, lawn, living & dining, farm kitchen |
 | `/experiences` | 12 experiences |
@@ -52,6 +53,17 @@ Brick/earth `#7A6140` (from the logo) · Terracotta `#A9553A` · Leaf `#4F6A3D` 
 ## Logo
 
 `public/images/logo.png` (dark text), `logo-light.png` (cream text, for dark backgrounds), `logo-mark.png` (arches + leaf only). Favicons: `app/icon.png`, `app/apple-icon.png`. Used by `components/Logo.jsx`.
+
+## SEO / AEO checklist (built in)
+
+- One `<h1>` per page, titles ≤ 60 chars (`title.template` adds " · Bevu Social Farmstay"), descriptions ≤ 160, canonical + OG/Twitter on every route, `lang="en-IN"`.
+- Visible breadcrumbs on every inner page (`components/Breadcrumbs.jsx`) mirrored by `BreadcrumbList` JSON-LD.
+- Site-wide JSON-LD `@graph` in `app/layout.jsx`: `Organization` (logo, contactPoint, sameAs) → `LodgingBusiness`+`BedAndBreakfast` (address, geo, rooms, amenities, `makesOffer` once rates are set, petsAllowed) → `WebSite`.
+- Per-page JSON-LD (`data/schema.js`): `WebPage`/`AboutPage`/`ContactPage`/`CollectionPage`/`ItemPage`, `FAQPage` (home + contact), `ItemList` (rooms, experiences, facilities), `ImageGallery`, `Place`, `HotelRoom` per room, `Blog` + `BlogPosting` per post, `speakable` on home and posts.
+- `/sitemap.xml` (all 19 URLs), `/robots.txt` (AI crawlers explicitly allowed), `/llms.txt` (AEO brief generated from the data files), `/manifest.webmanifest`.
+- Security/perf headers in `next.config.mjs` (HSTS, nosniff, frame, referrer, permissions; immutable cache on `/images`).
+- Search Console: paste the HTML-tag token into `site.verification.google` in `data/site.js`.
+- Audit after edits: `npm run build` then check `.next/server/app/**/*.html` for title/description length and JSON-LD validity (a 20-line Python script does it; see chat history) — or run the URLs through Google's Rich Results Test once live.
 
 ## Deploy
 

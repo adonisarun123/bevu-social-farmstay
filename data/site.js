@@ -22,6 +22,7 @@ export const site = {
   email: "hello@bevusocialfarmstay.com", // TODO: confirm
   hosts: "Ankit, Priyanka & family",
   gaId: "G-4YHPZ2VZFY",
+  verification: { google: "" }, // TODO: Search Console HTML-tag token (content value only)
   social: {
     instagram: "https://www.instagram.com/bevusocialfarmstay/",
     facebook: "",
@@ -34,6 +35,7 @@ export const site = {
     lat: 12.7754752,
     lng: 77.9884156,
     mapsUrl: "https://maps.app.goo.gl/k3zPnMTPRaQUdeFZ9",
+    postalCode: "635105", // TODO: confirm PIN (Berigai)
     // Approximate — confirm against your own drives. Used on the Location page.
     distances: [
       { from: "Electronic City, Bangalore", km: "~50 km", time: "1 h 15 min" },

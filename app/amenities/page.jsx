@@ -5,19 +5,22 @@ import Reveal from "@/components/Reveal";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
 import { amenities } from "@/data/amenities";
-import { breadcrumbSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema, amenitiesListSchema } from "@/data/schema";
 
 export const metadata = {
-  title: "Pool, Lawn & Living Spaces",
-  description: "A private swimming pool, an open lawn with bonfire pit, a double-height brick living room and a farm kitchen — everything on the property at Bevu Social Farmstay near Bangalore.",
+  title: "Private Pool, Lawn & Living Spaces",
+  description: "Private swimming pool, open lawn with bonfire pit, a double-height brick living room and a farm kitchen — everything on the property at Bevu, near Hosur.",
   alternates: { canonical: "/amenities" },
 };
 
 export default function AmenitiesPage() {
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Pool & Lawn", path: "/amenities" }];
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Pool & Lawn", path: "/amenities" }])} />
-      <PageHero eyebrow="On the property" title="A pool, a lawn, a fire, a long table." lead="Everything here is built for a group to spend a whole day outside and not run out of things to do — or places to do nothing." />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "WebPage", image: "/images/hero.jpg" })} />
+      <JsonLd data={amenitiesListSchema} />
+      <PageHero crumbs={crumbs} eyebrow="On the property" title="A pool, a lawn, a fire, a long table." lead="Everything here is built for a group to spend a whole day outside and not run out of things to do — or places to do nothing." />
 
       {amenities.map((a, i) => {
         const flip = i % 2 === 1;

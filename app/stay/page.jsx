@@ -7,20 +7,23 @@ import PricingCards from "@/components/PricingCards";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
 import { rooms, inclusions, houseRules } from "@/data/rooms";
-import { breadcrumbSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema, roomsListSchema } from "@/data/schema";
 import { site } from "@/data/site";
 
 export const metadata = {
-  title: "Rooms & Rates — Four Ensuite Rooms, Room-wise or Whole House",
-  description: "Four air-conditioned ensuite king rooms at Bevu Social Farmstay near Bangalore. Book a room, or take the whole house with exclusive pool and lawn. Breakfast included.",
+  title: "Rooms & Rates — 4 Ensuite Rooms",
+  description: "Four air-conditioned ensuite king rooms near Bangalore. Book a room, or take the whole house with exclusive pool and lawn. Breakfast included, pets welcome.",
   alternates: { canonical: "/stay" },
 };
 
 export default function StayPage() {
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Stay", path: "/stay" }];
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Stay", path: "/stay" }])} />
-      <PageHero eyebrow="Stay" title="Four rooms. One house. Yours by the room, or all at once." lead="Every room is an ensuite king with air-conditioning and hot water. What changes is the view — and how much of the house you'd like to yourself." />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "CollectionPage", image: "/images/hero.jpg" })} />
+      <JsonLd data={roomsListSchema} />
+      <PageHero crumbs={crumbs} eyebrow="Stay" title="Four rooms. One house. Yours by the room, or all at once." lead="Every room is an ensuite king with air-conditioning and hot water. What changes is the view — and how much of the house you'd like to yourself." />
 
       <section className="section">
         <div className="wrap">
@@ -40,7 +43,7 @@ export default function StayPage() {
         </div>
       </section>
 
-      <section className="border-y border-ink/10 bg-sand/50">
+      <section id="rates" className="scroll-mt-20 border-y border-ink/10 bg-sand/50">
         <div className="wrap section">
           <SectionHeading eyebrow="Rates" title="Two ways to book." lead={`Check-in ${site.checkIn}, check-out ${site.checkOut}. Rates are shared on WhatsApp once we confirm dates; weekends and long weekends are priced higher.`} />
           <div className="mt-12"><PricingCards /></div>

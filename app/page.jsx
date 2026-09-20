@@ -14,7 +14,7 @@ import { rooms } from "@/data/rooms";
 import { amenities } from "@/data/amenities";
 import { experiences, homeExperienceSlugs, idealFor } from "@/data/experiences";
 import { faqs } from "@/data/faqs";
-import { faqSchema } from "@/data/schema";
+import { faqSchema, webPageSchema } from "@/data/schema";
 import { site } from "@/data/site";
 import { posts } from "@/data/posts";
 import PostCard from "@/components/PostCard";
@@ -32,9 +32,15 @@ const essentials = [
   { Icon: PawPrint, t: "Pet-friendly", d: "Dogs welcome, tell us when booking" },
 ];
 
+export const metadata = {
+  description: "Pet-friendly farmstay near Bangalore, past Hosur: a hand-built brick home with 4 ensuite rooms, private pool, lawn and farm-to-table food. By room or whole house.",
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={webPageSchema({ path: "/", title: `${site.name} — Pet-Friendly Farmstay with Pool near Bangalore`, description: site.description, speakable: ["#intro-summary", "#faq h3"] })} />
       <JsonLd data={faqSchema} />
       <Hero />
 
@@ -45,7 +51,7 @@ export default function HomePage() {
             <SectionHeading eyebrow="The farmstay" title="Built by hand, from what the land gave us." />
           </div>
           <Reveal delay={0.1} className="lg:col-span-7">
-            <p className="lead">
+            <p id="intro-summary" className="lead">
               Bevu means <em>neem</em> in Kannada — the tree that shades the house. The home is built of handcrafted brick and stone, set among the granite boulders it was designed around, and opens onto a lawn and a swimming pool that catch the last of the evening light.
             </p>
             <p className="mt-5 leading-relaxed text-bark/80">
@@ -183,9 +189,10 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="section">
+      <section id="faq" className="section">
         <div className="wrap grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4"><SectionHeading eyebrow="Good to know" title="Questions we get asked most." /></div>
+          <div className="lg:col-span-4"><SectionHeading eyebrow="Good to know" title="Questions we get asked most." />
+            <p className="mt-4 text-sm text-stone"><Link href="/contact#faq" className="text-brick">All questions →</Link></p></div>
           <Reveal delay={0.1} className="lg:col-span-8"><FAQ items={faqs.slice(0, 6)} /></Reveal>
         </div>
       </section>

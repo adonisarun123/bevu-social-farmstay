@@ -1,4 +1,5 @@
 // Journal posts. Each `body` is a list of blocks: { h: "heading" } | { p: "paragraph" } | { ul: ["item", ...] } | { quote: "..." }
+// `metaTitle` (≤38 chars) is the <title>; `title` is the H1.
 // Add a post by appending an object here — no other file needs changing. Newest first.
 // TODO: swap Unsplash cover images for your own photos.
 
@@ -7,6 +8,7 @@ export const categories = ["Getting here", "The house", "Guests", "Around Bevu",
 export const posts = [
   {
     slug: "driving-to-bevu-from-bangalore",
+    metaTitle: "Driving to Bevu from Bangalore",
     title: "Driving to Bevu from Bangalore: the road, the stops, the last turn",
     excerpt: "Ninety minutes on a good day, two hours on a Friday. Here's how to make the drive part of the weekend rather than the price of it.",
     category: "Getting here",
@@ -28,6 +30,7 @@ export const posts = [
   },
   {
     slug: "why-we-built-with-earth-by-hand",
+    metaTitle: "Why We Built by Hand, from Earth",
     title: "Why we built this house by hand, from the soil under it",
     excerpt: "It would have been faster to pour concrete. Here is why we didn't, and what a house made of handcrafted brick and stone actually feels like to sleep in.",
     category: "The house",
@@ -50,6 +53,7 @@ export const posts = [
   },
   {
     slug: "bringing-your-dog-to-bevu",
+    metaTitle: "Bringing Your Dog to Bevu",
     title: "Bringing your dog to Bevu: what to know before you pack the car",
     excerpt: "We are pet-friendly and mean it. A few practical notes so the weekend is as good for the dog as it is for you.",
     category: "Guests",
@@ -69,6 +73,7 @@ export const posts = [
   },
   {
     slug: "a-weekend-at-bevu-loose-itinerary",
+    metaTitle: "A Weekend at Bevu, Loosely",
     title: "A weekend at Bevu, loosely: an itinerary you are free to ignore",
     excerpt: "Nothing here is scheduled. But if you like knowing what a good weekend looks like before you arrive, this is roughly how they go.",
     category: "Guests",
@@ -89,6 +94,7 @@ export const posts = [
   },
   {
     slug: "yoga-day-first-gathering",
+    metaTitle: "Yoga Day: Our First Gathering",
     title: "Yoga Day at Bevu: our first gathering, before the first guest",
     excerpt: "We opened the gates for the first time on International Yoga Day, with a session on the lawn before the house was even finished. It set the tone.",
     category: "Wellness",
@@ -106,6 +112,7 @@ export const posts = [
   },
   {
     slug: "what-is-around-berigai-and-shoolagiri",
+    metaTitle: "What's Around Berigai & Shoolagiri",
     title: "What's around: the countryside between Hosur and the hills",
     excerpt: "Most guests never leave the property, and that is fine. For the ones who do, here's what the boulder country around Berigai and Shoolagiri has to offer.",
     category: "Around Bevu",
