@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import PostCard from "@/components/PostCard";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
 import { posts, getPost, formatDate } from "@/data/posts";
-import { breadcrumbSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema } from "@/data/schema";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { site } from "@/data/site";
 
 export function generateStaticParams() {
@@ -18,8 +18,8 @@ export function generateMetadata({ params }) {
   const post = getPost(params.slug);
   if (!post) return {};
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: post.metaTitle || post.title,
+    description: post.excerpt.slice(0, 160),
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: { type: "article", title: post.title, description: post.excerpt, images: [{ url: post.cover }], publishedTime: post.date },
   };
@@ -37,6 +37,7 @@ export default function PostPage({ params }) {
   const post = getPost(params.slug);
   if (!post) notFound();
   const related = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Journal", path: "/blog" }, { name: post.metaTitle || post.title, path: `/blog/${post.slug}` }];
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -45,18 +46,22 @@ export default function PostPage({ params }) {
     image: post.cover.startsWith("http") ? post.cover : `${site.url}${post.cover}`,
     datePublished: post.date,
     dateModified: post.date,
-    author: { "@type": "Organization", name: site.name },
-    publisher: { "@id": `${site.url}/#business` },
+    author: { "@id": `${site.url}/#organization` },
+    publisher: { "@id": `${site.url}/#organization` },
+    inLanguage: "en-IN",
+    wordCount: post.body.reduce((n, b) => n + ((b.p || b.h || b.quote || (b.ul || []).join(" ")).split(/\s+/).length), 0),
+    keywords: [post.category, "Bevu Social Farmstay", "farmstay near Bangalore"],
     mainEntityOfPage: `${site.url}/blog/${post.slug}`,
   };
 
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Journal", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }])} />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: `/blog/${post.slug}`, title: post.title, description: post.excerpt, type: "ItemPage", image: post.cover, speakable: ["article h1", "article .lead"] })} />
       <JsonLd data={articleSchema} />
       <article className="pt-[76px]">
         <div className="wrap pt-14 md:pt-20">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-brick"><ArrowLeft size={16} /> Journal</Link>
+          <Breadcrumbs items={crumbs} />
           <Reveal className="mt-8 max-w-3xl">
             <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.2em] text-brick">
               <span>{post.category}</span><span className="text-stone">·</span><span className="text-stone">{formatDate(post.date)}</span><span className="text-stone">·</span><span className="text-stone">{post.readMins} min read</span>

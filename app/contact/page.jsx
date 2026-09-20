@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import EnquiryForm from "@/components/EnquiryForm";
 import FAQ from "@/components/FAQ";
 import JsonLd from "@/components/JsonLd";
-import { breadcrumbSchema, faqSchema } from "@/data/schema";
+import { breadcrumbSchema, faqSchema, webPageSchema } from "@/data/schema";
 import { site } from "@/data/site";
 import { faqs } from "@/data/faqs";
 
@@ -16,6 +16,7 @@ export const metadata = {
 };
 
 export default function ContactPage() {
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }];
   const channels = [
     { Icon: MessageCircle, t: "WhatsApp", d: "Fastest — usually within the hour", href: site.whatsappHref(), v: site.phoneDisplay, ext: true },
     { Icon: Phone, t: "Call", d: "9 AM – 8 PM", href: site.phoneHref, v: site.phoneDisplay },
@@ -24,9 +25,10 @@ export default function ContactPage() {
   ];
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }])} />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "ContactPage", image: "/images/hero.jpg" })} />
       <JsonLd data={faqSchema} />
-      <PageHero eyebrow="Contact" title="Send us your dates." lead="We confirm availability, share rates and the pin, and hold the booking on a part advance. By prior booking only." />
+      <PageHero crumbs={crumbs} eyebrow="Contact" title="Send us your dates." lead="We confirm availability, share rates and the pin, and hold the booking on a part advance. By prior booking only." />
 
       <section className="section">
         <div className="wrap grid gap-12 lg:grid-cols-12">
@@ -51,7 +53,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="border-t border-ink/10 bg-parchment">
+      <section id="faq" className="scroll-mt-20 border-t border-ink/10 bg-parchment">
         <div className="wrap section grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4"><SectionHeading eyebrow="FAQ" title="Before you ask." /></div>
           <Reveal delay={0.1} className="lg:col-span-8"><FAQ items={faqs} /></Reveal>

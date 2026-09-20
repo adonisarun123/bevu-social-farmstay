@@ -4,19 +4,22 @@ import ExperienceCard from "@/components/ExperienceCard";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
 import { experiences } from "@/data/experiences";
-import { breadcrumbSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema, experiencesListSchema } from "@/data/schema";
 
 export const metadata = {
-  title: "Experiences — Pool Days, Bonfires, Farm Walks & Slow Weekends",
-  description: "What a weekend at Bevu Social Farmstay looks like: pool days, bonfire evenings, farm and boulder walks, farm-to-table meals, stargazing, lawn games and small team offsites.",
+  title: "Experiences — Pool, Bonfire, Farm Walks",
+  description: "A weekend at Bevu: pool days, bonfire evenings, farm and boulder walks, farm-to-table meals, stargazing, lawn games, sunrise yoga and small team offsites.",
   alternates: { canonical: "/experiences" },
 };
 
 export default function ExperiencesPage() {
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Experiences", path: "/experiences" }];
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Experiences", path: "/experiences" }])} />
-      <PageHero eyebrow="Experiences" title="Nothing is scheduled. Everything is available." lead="We don't run activities on a timetable. We keep the pool clean, the lawn mown, the firewood dry and the kitchen warm — the rest tends to happen on its own." />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "CollectionPage", image: "/images/hero.jpg" })} />
+      <JsonLd data={experiencesListSchema} />
+      <PageHero crumbs={crumbs} eyebrow="Experiences" title="Nothing is scheduled. Everything is available." lead="We don't run activities on a timetable. We keep the pool clean, the lawn mown, the firewood dry and the kitchen warm — the rest tends to happen on its own." />
       <section className="section">
         <div className="wrap">
           <SectionHeading eyebrow="A weekend here" title="Pick any of these. Or none." />

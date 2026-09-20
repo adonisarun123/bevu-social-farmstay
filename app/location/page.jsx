@@ -4,12 +4,12 @@ import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
-import { breadcrumbSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema, placeSchema } from "@/data/schema";
 import { site } from "@/data/site";
 
 export const metadata = {
-  title: "Location & Directions — Near Hosur, 1 h from Electronic City",
-  description: "Bevu Social Farmstay is in Krishnagiri district, Tamil Nadu — about 50 km from Electronic City via NH44 and Hosur. Drive times, directions and travel tips.",
+  title: "Location — Near Hosur, 1 h from Bangalore",
+  description: "Bevu Social Farmstay is near Berigai, past Hosur in Krishnagiri district — about 50 km from Electronic City via NH44. Drive times, directions and travel tips.",
   alternates: { canonical: "/location" },
 };
 
@@ -21,12 +21,15 @@ const tips = [
 ];
 
 export default function LocationPage() {
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Location", path: "/location" }];
   const { lat, lng } = site.location;
   const embed = `https://www.google.com/maps?q=${lat},${lng}&z=13&output=embed`;
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Location", path: "/location" }])} />
-      <PageHero eyebrow="Location" title="Over the state line, under an hour and a half." lead={`${site.location.area}. Bangalore's south side to our gate, without ever leaving a proper road until the last few kilometres.`} />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "WebPage", image: "/images/hero.jpg" })} />
+      <JsonLd data={placeSchema} />
+      <PageHero crumbs={crumbs} eyebrow="Location" title="Over the state line, under an hour and a half." lead={`${site.location.area}. Bangalore's south side to our gate, without ever leaving a proper road until the last few kilometres.`} />
 
       <section className="section">
         <div className="wrap grid gap-12 lg:grid-cols-12">

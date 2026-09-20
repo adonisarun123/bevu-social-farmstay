@@ -5,12 +5,12 @@ import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
-import { breadcrumbSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema } from "@/data/schema";
 import { site } from "@/data/site";
 
 export const metadata = {
-  title: "About — The Story of a Brick House Among Boulders",
-  description: "Why Bevu Social Farmstay was built by hand from brick and stone around the boulders it sits on, what 'social farmstay' means to us, and how we try to tread lightly on the land.",
+  title: "About — A Brick House Among Boulders",
+  description: "Why Bevu was built by hand from brick and stone around its boulders, what 'social farmstay' means to us, and how we tread lightly on the land.",
   alternates: { canonical: "/about" },
 };
 
@@ -24,10 +24,12 @@ const pillars = [
 ];
 
 export default function AboutPage() {
+  const crumbs = [{ name: "Home", path: "/" }, { name: "About", path: "/about" }];
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])} />
-      <PageHero eyebrow="About" title="A house we built to fill with people." image="/images/house-build.jpg" alt="The brick house under construction, boulders in the foreground" position="center 45%" />
+      <JsonLd data={breadcrumbSchema(crumbs)} />
+      <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "AboutPage", image: "/images/house-build.jpg" })} />
+      <PageHero crumbs={crumbs} eyebrow="About" title="A house we built to fill with people." image="/images/house-build.jpg" alt="The brick house under construction, boulders in the foreground" position="center 45%" />
 
       <section className="section">
         <div className="wrap grid gap-12 lg:grid-cols-12">
