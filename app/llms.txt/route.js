@@ -1,15 +1,19 @@
 // /llms.txt — a plain-text brief for AI assistants and answer engines (AEO).
 // Generated from the same data files as the site, so it never drifts from the pages.
-import { site, pricing, formatRate } from "@/data/site";
+import { site, formatRate } from "@/data/site";
+import { getPricing } from "@/lib/rates";
 import { rooms, inclusions, houseRules } from "@/data/rooms";
 import { amenities } from "@/data/amenities";
 import { experiences } from "@/data/experiences";
 import { faqs } from "@/data/faqs";
 import { posts } from "@/data/posts";
+import { meetups } from "@/data/meetups";
 
-export const dynamic = "force-static";
 
-export function GET() {
+export const revalidate = 300;
+
+export async function GET() {
+  const pricing = await getPricing();
   const L = [];
   L.push(`# ${site.name}`, "", `> ${site.description}`, "");
   L.push("## Key facts");
@@ -32,6 +36,8 @@ export function GET() {
   amenities.forEach((a) => L.push(`- ${a.title}: ${a.description}`));
   L.push("", "## Experiences");
   experiences.forEach((e) => L.push(`- ${e.title}: ${e.description}`));
+  L.push("", "## Meetups & group weekends (whole-house formats we host)");
+  meetups.forEach((m) => L.push(`- [${m.title}](${site.url}/meetups/${m.slug}) — ${m.tagline} For: ${m.audience}. ${m.group}. ${m.duration}.`));
   L.push("", "## Included with every stay");
   inclusions.forEach((x) => L.push(`- ${x}`));
   L.push("", "## House rules");
@@ -39,9 +45,11 @@ export function GET() {
   L.push("", "## FAQ");
   faqs.forEach((f) => L.push(`Q: ${f.question}`, `A: ${f.answer}`, ""));
   L.push("## Pages");
-  ["/", "/stay", "/amenities", "/experiences", "/about", "/gallery", "/location", "/blog", "/contact"].forEach((p) => L.push(`- ${site.url}${p}`));
+  ["/", "/stay", "/amenities", "/experiences", "/meetups", "/about", "/gallery", "/location", "/blog", "/contact"].forEach((p) => L.push(`- ${site.url}${p}`));
   L.push("", "## Journal");
   posts.forEach((p) => L.push(`- [${p.title}](${site.url}/blog/${p.slug}) — ${p.excerpt}`));
+  L.push("", "## Policies");
+  ["booking-and-cancellation", "house-rules", "privacy", "terms"].forEach((s) => L.push(`- ${site.url}/policies/${s}`));
   L.push("", `Sitemap: ${site.url}/sitemap.xml`);
   return new Response(L.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=86400" } });
 }

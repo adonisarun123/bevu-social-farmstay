@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from "lucide-react";
 import { navLinks, site } from "@/data/site";
+import { policies } from "@/data/policies";
 import Logo from "./Logo";
 
 export default function Footer() {
@@ -52,6 +53,7 @@ export default function Footer() {
       <div className="border-t border-cream/10">
         <div className="wrap flex flex-col gap-2 py-6 text-xs text-cream/40 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span>
+          <span className="flex flex-wrap gap-x-4 gap-y-1">{policies.map((p) => <Link key={p.slug} href={`/policies/${p.slug}`} className="hover:text-brass">{p.title.replace(" Policy", "").replace("Booking & ", "")}</Link>)}</span>
           <span>Bevu · ಬೇವು · neem — the tree we are named for.</span>
         </div>
       </div>

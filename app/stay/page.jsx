@@ -10,6 +10,8 @@ import { rooms, inclusions, houseRules } from "@/data/rooms";
 import { breadcrumbSchema, webPageSchema, roomsListSchema } from "@/data/schema";
 import { site } from "@/data/site";
 
+export const revalidate = 300;
+
 export const metadata = {
   title: "Rooms & Rates — 4 Ensuite Rooms",
   description: "Four air-conditioned ensuite king rooms near Bangalore. Book a room, or take the whole house with exclusive pool and lawn. Breakfast included, pets welcome.",

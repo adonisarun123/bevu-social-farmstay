@@ -3,13 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Menu, X, MessageCircle, UserRound } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { navLinks, site } from "@/data/site";
 import Logo from "./Logo";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const user = session?.user;
+  const accountHref = user ? (user.role === "admin" ? "/admin" : "/account") : "/login";
+  const accountLabel = user ? (user.role === "admin" ? "Admin" : "My stays") : "Sign in";
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const transparentAtTop = pathname === "/"; // home has a full-bleed dark hero
@@ -46,7 +51,7 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`relative text-[13.5px] font-medium tracking-wide transition-colors ${
+                className={`relative whitespace-nowrap text-[13.5px] font-medium tracking-wide transition-colors ${l.compact ? "hidden xl:inline-block" : ""} ${
                   solid ? "text-ink/80 hover:text-brick" : "text-cream/85 hover:text-cream"
                 } ${active ? (solid ? "text-brick" : "text-cream") : ""}`}
               >
@@ -55,9 +60,10 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <a href={site.whatsappHref()} target="_blank" rel="noopener noreferrer" className={solid ? "btn-primary !py-2.5" : "btn-light !py-2.5"}>
-            <MessageCircle size={16} /> Enquire
-          </a>
+          <Link href={accountHref} className={`inline-flex items-center gap-1.5 whitespace-nowrap text-[13.5px] font-medium ${solid ? "text-ink/80 hover:text-brick" : "text-cream/85 hover:text-cream"}`}><UserRound size={15} /> {accountLabel}</Link>
+          <Link href={user ? "/account/book" : "/login?next=/account/book"} className={`whitespace-nowrap ${solid ? "btn-primary !py-2.5" : "btn-light !py-2.5"}`}>
+            Book a stay
+          </Link>
         </nav>
 
         <button
@@ -92,6 +98,8 @@ export default function Navbar() {
                 </motion.div>
               ))}
               <div className="mt-8 flex flex-col gap-3">
+                <Link href={user ? "/account/book" : "/login?next=/account/book"} className="btn-primary">Book a stay online</Link>
+                <Link href={accountHref} className="btn-ghost"><UserRound size={16} /> {accountLabel}</Link>
                 <a href={site.whatsappHref()} target="_blank" rel="noopener noreferrer" className="btn-whatsapp">
                   <MessageCircle size={18} /> WhatsApp us
                 </a>
