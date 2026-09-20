@@ -6,5 +6,6 @@ out/
 .DS_Store
 npm-debug.log*
 WhatsApp Image*.jpeg
-invite/
-website/
+_to_delete/
+archive/farmstay-website-draft/node_modules/
+archive/farmstay-website-draft/.next/

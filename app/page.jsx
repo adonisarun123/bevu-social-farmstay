@@ -1,275 +1,196 @@
 import Image from "next/image";
-import FadeIn from "@/components/FadeIn";
-import Ornament from "@/components/Ornament";
-import Timeline from "@/components/Timeline";
-import RSVPForm from "@/components/RSVPForm";
-import MusicPlayer from "@/components/MusicPlayer";
-import GoldenParticles from "@/components/GoldenParticles";
-import BackToTop from "@/components/BackToTop";
-import {
-  Leaf,
-  Sparkles,
-  Waves,
-  Sprout,
-  Home,
-  Smile,
-  MapPin,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Waves, Trees, UtensilsCrossed, Flame, Wifi, PawPrint } from "lucide-react";
+import Hero from "@/components/Hero";
+import SectionHeading from "@/components/SectionHeading";
+import Reveal from "@/components/Reveal";
+import RoomCard from "@/components/RoomCard";
+import ExperienceCard from "@/components/ExperienceCard";
+import PricingCards from "@/components/PricingCards";
+import FAQ from "@/components/FAQ";
+import CTABand from "@/components/CTABand";
+import JsonLd from "@/components/JsonLd";
+import { rooms } from "@/data/rooms";
+import { amenities } from "@/data/amenities";
+import { experiences, homeExperienceSlugs, idealFor } from "@/data/experiences";
+import { faqs } from "@/data/faqs";
+import { faqSchema } from "@/data/schema";
+import { site } from "@/data/site";
+import { posts } from "@/data/posts";
+import PostCard from "@/components/PostCard";
 
-const MAPS_LINK = "https://maps.app.goo.gl/k3zPnMTPRaQUdeFZ9";
+const homeExperiences = homeExperienceSlugs.map((s) => experiences.find((e) => e.slug === s)).filter(Boolean);
+const pool = amenities.find((a) => a.slug === "pool");
+const lawn = amenities.find((a) => a.slug === "lawn");
 
-const chips = [
-  { icon: Waves, label: "Swimming" },
-  { icon: Sprout, label: "Explore the Site" },
-  { icon: Home, label: "Farmhouse Preview" },
-  { icon: Smile, label: "Good Company" },
+const essentials = [
+  { Icon: Waves, t: "Private pool", d: "Freshwater, floodlit, sunrise to sunset" },
+  { Icon: Trees, t: "Open lawn", d: "Bonfire pit, outdoor dining, lawn games" },
+  { Icon: UtensilsCrossed, t: "Farm kitchen", d: "Breakfast included, meals on request" },
+  { Icon: Flame, t: "Bonfire nights", d: "On request, weather permitting" },
+  { Icon: Wifi, t: "Fast Wi-Fi", d: "Throughout the house" },
+  { Icon: PawPrint, t: "Pet-friendly", d: "Dogs welcome, tell us when booking" },
 ];
 
-export default function InvitePage() {
+export default function HomePage() {
   return (
     <>
-      <MusicPlayer />
-      <BackToTop />
+      <JsonLd data={faqSchema} />
+      <Hero />
 
-      {/* ===== HERO ===== */}
-      <header className="relative flex min-h-[100svh] flex-col items-center justify-end overflow-hidden px-[22px] pb-16 text-center">
-        <div className="hero-img absolute inset-0">
-          <Image
-            src="/images/hero.jpg"
-            alt="Bevu Social Farmstay — handcrafted brick home glowing at dusk among rocks and trees"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[center_38%]"
-          />
-        </div>
-        <div className="hero-veil absolute inset-0" aria-hidden="true" />
-        <GoldenParticles />
-
-        <div className="relative z-[2] max-w-[640px]">
-          <div className="hl d1 mx-auto mb-[22px] w-[78px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)] sm:w-24">
-            <Image
-              src="/images/emblem.svg"
-              alt="Bevu Social Farmstay neem tree emblem"
-              width={96}
-              height={96}
-              priority
-              className="block h-auto w-full"
-            />
+      {/* Intro */}
+      <section id="intro" className="section">
+        <div className="wrap grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-5">
+            <SectionHeading eyebrow="The farmstay" title="Built by hand, from what the land gave us." />
           </div>
-          <div className="hl d2 font-smallcaps text-[0.72rem] uppercase tracking-[0.42em] text-goldsoft">
-            A Sustainable Stay
-          </div>
-          <h1 className="hl d3 mt-4 font-serif text-[clamp(2.7rem,9vw,4.8rem)] font-normal leading-[0.98] tracking-[-0.01em] text-cream [text-shadow:0_4px_40px_rgba(0,0,0,0.5)]">
-            Bevu <em className="italic text-goldsoft">Social</em>
-            <br />
-            Farmstay
-          </h1>
-          <p className="hl d4 mt-3.5 font-serif text-[clamp(1.05rem,3.4vw,1.45rem)] font-light italic text-creamdim">
-            We&rsquo;re warming our new home &mdash; and we&rsquo;d love you there.
-          </p>
-          <p className="hl d5 mt-1.5 text-[0.86rem] uppercase tracking-[0.18em] text-gold">
-            Griha Pravesh &bull; 20<sup>th</sup> June
-          </p>
-        </div>
-        <div className="scroll-cue absolute bottom-6 left-1/2 z-[3] h-[46px] w-px -translate-x-1/2 bg-gradient-to-b from-gold to-transparent" />
-      </header>
-
-      {/* ===== INVITATION ===== */}
-      <section className="py-[62px]">
-        <div className="wrap">
-        <FadeIn>
-          <Ornament>
-            <Leaf className="h-full w-full" strokeWidth={1.1} aria-hidden="true" />
-          </Ornament>
-        </FadeIn>
-
-        <FadeIn>
-          <p className="label mt-6">With Gratitude, We Invite You</p>
-        </FadeIn>
-        <FadeIn>
-          <p className="mx-auto mt-4 max-w-[600px] text-center font-serif text-[clamp(1.15rem,3vw,1.4rem)] font-light leading-[1.8] text-cream">
-            With the blessings of God and the love of our family and friends, we
-            are delighted to invite you and your family to our{" "}
-            <strong className="font-medium text-goldsoft">Griha Pravesh</strong> at{" "}
-            <strong className="font-medium text-goldsoft">SF&nbsp;3, Plot&nbsp;No&nbsp;79</strong>.
-          </p>
-        </FadeIn>
-
-        <FadeIn>
-          <div className="mt-7 text-center font-serif text-[clamp(1.9rem,6vw,2.7rem)] italic leading-[1.1] text-terra">
-            House Warming Ceremony
-          </div>
-        </FadeIn>
-        <FadeIn>
-          <div className="mt-1.5 text-center text-[0.78rem] uppercase tracking-[0.22em] text-creamdim">
-            Bevu Social Farmstay
-          </div>
-        </FadeIn>
-
-        <FadeIn>
-          <div className="mx-auto mt-[38px] max-w-[300px] rounded border border-[var(--line)] bg-gradient-to-b from-gold/[0.06] to-transparent px-[30px] py-[26px] text-center">
-            <div className="font-smallcaps text-[0.8rem] uppercase tracking-[0.34em] text-gold">June</div>
-            <div className="my-1 font-serif text-[3.6rem] leading-none text-cream sm:text-[4.4rem]">20</div>
-            <div className="text-[0.74rem] uppercase tracking-[0.3em] text-creamdim">Saturday &bull; 2026</div>
-          </div>
-        </FadeIn>
+          <Reveal delay={0.1} className="lg:col-span-7">
+            <p className="lead">
+              Bevu means <em>neem</em> in Kannada — the tree that shades the house. The home is built of handcrafted brick and stone, set among the granite boulders it was designed around, and opens onto a lawn and a swimming pool that catch the last of the evening light.
+            </p>
+            <p className="mt-5 leading-relaxed text-bark/80">
+              We call it a <strong>social</strong> farmstay because it works best when it is full: four ensuite rooms, one long table, a fire pit, and enough sky for everyone. Come as a couple and share the house, or take all four rooms and make it yours.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/about" className="btn-ghost">Our story <ArrowRight size={16} /></Link>
+              <Link href="/gallery" className="inline-flex items-center gap-2 px-2 py-3 text-sm font-medium text-brick">See the photos →</Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ===== SCHEDULE ===== */}
-      <section className="bg-dusk2 py-[62px]">
-        <div className="wrap">
-          <FadeIn>
-            <p className="label">The Day&rsquo;s Rhythm</p>
-          </FadeIn>
-          <Timeline />
-        </div>
-      </section>
-
-      {/* ===== EXPERIENCE ===== */}
-      <section className="py-[62px]">
-        <div className="wrap">
-        <FadeIn>
-          <Ornament>
-            <Sparkles className="h-full w-full" strokeWidth={1.1} aria-hidden="true" />
-          </Ornament>
-        </FadeIn>
-        <FadeIn>
-          <p className="mx-auto mt-6 max-w-[600px] text-center font-serif text-[clamp(1.15rem,3vw,1.4rem)] font-light leading-[1.8] text-cream">
-            We would love to host you, share our happiness, and show you our small
-            dream property &mdash;{" "}
-            <strong className="font-medium text-goldsoft">
-              built with lots of love and gratitude.
-            </strong>
-          </p>
-        </FadeIn>
-        <div className="mt-[30px] flex flex-wrap justify-center gap-3.5">
-          {chips.map((chip, i) => (
-            <FadeIn key={chip.label} delay={i * 0.08}>
-              <div className="flex items-center gap-[9px] rounded-[40px] border border-[var(--line)] bg-gold/[0.04] px-5 py-2.5 text-[0.92rem] text-cream">
-                <chip.icon className="h-[17px] w-[17px] text-gold" strokeWidth={1.4} aria-hidden="true" />
-                {chip.label}
-              </div>
-            </FadeIn>
+      {/* Essentials strip */}
+      <section className="border-y border-ink/10 bg-parchment">
+        <div className="wrap grid grid-cols-2 gap-x-6 gap-y-8 py-12 sm:grid-cols-3 lg:grid-cols-6">
+          {essentials.map(({ Icon, t, d }, i) => (
+            <Reveal key={t} delay={i * 0.05} className="flex gap-3">
+              <Icon size={22} className="mt-0.5 shrink-0 text-brick" strokeWidth={1.6} />
+              <div><div className="font-medium">{t}</div><div className="mt-0.5 text-xs text-stone">{d}</div></div>
+            </Reveal>
           ))}
         </div>
-        </div>
       </section>
 
-      {/* ===== QUOTE & SIGNOFF ===== */}
-      <section className="py-[70px] text-center">
+      {/* Rooms */}
+      <section className="section">
         <div className="wrap">
-        <FadeIn>
-          <p className="mx-auto max-w-[580px] font-serif text-[clamp(1.3rem,4.4vw,1.85rem)] font-light italic leading-[1.5] text-goldsoft">
-            &ldquo;A house becomes a home when it is filled with the blessings,
-            laughter, and love of family and friends.&rdquo;
-            <span className="mt-5 block text-[1.4rem] not-italic text-terra">&#10084;</span>
-          </p>
-        </FadeIn>
-        <FadeIn>
-          <div className="mt-[42px]">
-            <div className="text-[0.74rem] uppercase tracking-[0.3em] text-creamdim">With Love</div>
-            <div className="mt-1.5 font-serif text-[2.3rem] text-cream">Ankit, Priyanka &amp; Family</div>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading eyebrow="Stay" title="Four rooms, named for the trees outside." lead="Each is an ensuite king room with air-conditioning, hot water and a view of something green. Take one, or take them all." />
+            <Reveal delay={0.1}><Link href="/stay" className="btn-ghost shrink-0">All rooms & rates <ArrowRight size={16} /></Link></Reveal>
           </div>
-        </FadeIn>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {rooms.map((r, i) => <RoomCard key={r.slug} room={r} index={i} compact />)}
+          </div>
         </div>
       </section>
 
-      {/* ===== GIFT NOTE ===== */}
-      <section className="border-y border-[var(--line)] bg-dusk2 py-[62px]">
-        <FadeIn className="wrap">
-          <div className="mx-auto max-w-[600px] text-center">
-            <h3 className="mb-3.5 font-serif text-[1.6rem] font-normal text-terra">
-              A Gentle Note &#128157;
-            </h3>
-            <p className="mb-3.5 text-creamdim">
-              Your presence and blessings are the{" "}
-              <strong className="text-cream">greatest gift</strong> for us.
-              We&rsquo;re truly excited to celebrate this special occasion with our
-              loved ones.
-            </p>
-            <p className="mb-3.5 text-creamdim">
-              If you&rsquo;re still planning to bring something, please feel free to
-              ask us for a small list of items we may need &mdash; it helps us choose
-              something useful within your budget and avoid duplicate gifts.
-            </p>
-            <p className="text-creamdim">
-              Most importantly, we look forward to celebrating this day with you and
-              your family. &#10084;
-            </p>
+      {/* Pool & Lawn feature */}
+      <section className="grain relative overflow-hidden bg-ink text-cream">
+        <div className="wrap section">
+          <SectionHeading tone="light" eyebrow="Pool & lawn" title="The part of the weekend nobody wants to leave." />
+          <div className="mt-14 grid gap-6 lg:grid-cols-2">
+            {[pool, lawn].map((a, i) => (
+              <Reveal key={a.slug} delay={i * 0.1} className="group relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/10]">
+                <Image src={a.image} alt={a.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-7 md:p-9">
+                  <span className="text-[11px] uppercase tracking-[0.22em] text-brass-light">{a.kicker}</span>
+                  <h3 className="mt-2 font-display text-3xl">{a.title}</h3>
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-cream/80">{a.description}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-        </FadeIn>
+          <Reveal delay={0.2} className="mt-10">
+            <Link href="/amenities" className="btn-light">Everything on the property <ArrowRight size={16} /></Link>
+          </Reveal>
+        </div>
       </section>
 
-      {/* ===== RSVP ===== */}
-      <section className="border-b border-[var(--line)] bg-dusk2 py-[62px]">
-        <FadeIn className="wrap">
-          <p className="label">Kindly Respond</p>
-          <h3 className="mt-1.5 text-center font-serif text-[clamp(1.7rem,5vw,2.2rem)] font-normal text-terra">
-            Will You Join Us?
-          </h3>
-          <p className="mb-[30px] mt-2 text-center font-serif text-[clamp(1.1rem,3.2vw,1.4rem)] font-light italic text-cream">
-            A quick word helps us plan the pooja seating &amp; lunch. It takes ten
-            seconds.
-          </p>
-          <RSVPForm />
-        </FadeIn>
-      </section>
-
-      {/* ===== MAP CTA ===== */}
-      <section className="pb-[30px] pt-[72px] text-center">
+      {/* Experiences */}
+      <section className="section">
         <div className="wrap">
-        <FadeIn>
-          <p className="label">Find Your Way</p>
-        </FadeIn>
-        <FadeIn>
-          <p className="mb-5 mt-3 font-serif text-[1.05rem] italic text-creamdim">
-            Bevu Social Farmstay &bull; SF 3 &bull; Plot No 79
-          </p>
-        </FadeIn>
-        <FadeIn>
-          <a className="btn-gold" href={MAPS_LINK} target="_blank" rel="noopener noreferrer">
-            <MapPin className="h-[19px] w-[19px]" strokeWidth={1.6} aria-hidden="true" />
-            Open in Google Maps
-          </a>
-        </FadeIn>
+          <SectionHeading align="center" eyebrow="Experiences" title="Days that fill themselves." lead="No itinerary. Just a pool, a lawn, a farm, a fire, and the kind of quiet that makes people talk." />
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {homeExperiences.map((e, i) => <ExperienceCard key={e.slug} item={e} index={i} />)}
+          </div>
+          <Reveal className="mt-10 text-center"><Link href="/experiences" className="btn-ghost">All experiences <ArrowRight size={16} /></Link></Reveal>
         </div>
       </section>
 
-      {/* ===== FOOTER ===== */}
-      <footer className="pb-[50px] pt-[34px] text-center text-[0.8rem] tracking-[0.14em] text-creamdim">
-        <FadeIn>
-          <div className="mx-auto mb-5 flex w-fit items-center gap-5 sm:gap-6">
-            <Image
-              src="/images/emblem.svg"
-              alt=""
-              width={96}
-              height={96}
-              className="h-20 w-20 flex-none sm:h-24 sm:w-24"
-            />
-            <div className="text-left">
-              <div className="font-smallcaps text-[0.6rem] uppercase tracking-[0.34em] text-goldsoft sm:text-[0.66rem]">
-                A Sustainable Stay
-              </div>
-              <div className="font-serif text-[2.6rem] leading-[1.05] text-cream sm:text-[3rem]">
-                Bevu
-              </div>
-              <div className="mt-1 flex items-center gap-2.5">
-                <span className="h-px w-6 bg-gold/70 sm:w-9" aria-hidden="true" />
-                <span className="h-1.5 w-1.5 rotate-45 bg-gold" aria-hidden="true" />
-                <span className="h-px w-6 bg-gold/70 sm:w-9" aria-hidden="true" />
-              </div>
-              <div className="mt-1 font-smallcaps text-[0.7rem] uppercase tracking-[0.3em] text-gold sm:text-[0.78rem]">
-                Social Farmstay
-              </div>
+      {/* Ideal for */}
+      <section className="border-y border-ink/10 bg-sand/50">
+        <div className="wrap section">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-4">
+              <SectionHeading eyebrow="Who it's for" title="Made for groups who actually want to be together." />
+            </div>
+            <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:col-span-8">
+              {idealFor.map((x, i) => (
+                <Reveal key={x.title} delay={i * 0.06} className="border-l-2 border-brick pl-5">
+                  <h3 className="font-display text-2xl">{x.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-bark/75">{x.text}</p>
+                </Reveal>
+              ))}
             </div>
           </div>
-        </FadeIn>
-        <div>
-          Griha Pravesh &bull; 20<sup>th</sup> June 2026 &bull; SF 3, Plot No 79
         </div>
-      </footer>
+      </section>
+
+      {/* Pricing */}
+      <section className="section">
+        <div className="wrap">
+          <SectionHeading eyebrow="Rates" title="Room-wise, or the whole house." lead="Breakfast is always included. Lunch and dinner are cooked on site on request." />
+          <div className="mt-12"><PricingCards /></div>
+        </div>
+      </section>
+
+      {/* Location teaser */}
+      <section className="border-t border-ink/10 bg-parchment">
+        <div className="wrap section grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-5">
+            <SectionHeading eyebrow="Getting here" title="Close enough for a Friday-evening drive." lead={`${site.location.area}. Take NH44 past Electronic City towards Hosur; the last stretch is village road, boulders and tamarind trees.`} />
+            <Reveal delay={0.1} className="mt-8 flex flex-wrap gap-3">
+              <a href={site.location.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">Open in Google Maps</a>
+              <Link href="/location" className="btn-ghost">Directions & tips</Link>
+            </Reveal>
+          </div>
+          <Reveal delay={0.15} className="lg:col-span-7">
+            <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-ink/10 ring-1 ring-ink/10">
+              {site.location.distances.map((d) => (
+                <div key={d.from} className="bg-cream p-6">
+                  <dt className="text-xs uppercase tracking-[0.18em] text-stone">{d.from}</dt>
+                  <dd className="mt-2 font-display text-2xl">{d.time}</dd>
+                  <dd className="text-xs text-stone">{d.km}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Journal */}
+      <section className="section border-t border-ink/10">
+        <div className="wrap">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading eyebrow="Journal" title="Notes from the farm." lead="How to get here, why the house is built the way it is, and what to pack for the dog." />
+            <Reveal delay={0.1}><Link href="/blog" className="btn-ghost shrink-0">All posts <ArrowRight size={16} /></Link></Reveal>
+          </div>
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.slice(0, 3).map((p, i) => <PostCard key={p.slug} post={p} index={i} />)}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="section">
+        <div className="wrap grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4"><SectionHeading eyebrow="Good to know" title="Questions we get asked most." /></div>
+          <Reveal delay={0.1} className="lg:col-span-8"><FAQ items={faqs.slice(0, 6)} /></Reveal>
+        </div>
+      </section>
+
+      <CTABand />
     </>
   );
 }
