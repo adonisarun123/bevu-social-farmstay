@@ -5,7 +5,7 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { sql } from "@/lib/db";
 import { signIn, requireUser } from "@/lib/auth";
-import { sendMail } from "@/lib/mail";
+import { sendMail, adminEmails } from "@/lib/mail";
 import { site } from "@/data/site";
 
 const clean = (v) => String(v || "").trim();
@@ -23,9 +23,9 @@ export async function registerAction(prev, formData) {
   const existing = await sql`SELECT 1 FROM users WHERE email = ${email}`;
   if (existing.length) return { error: "An account with this email already exists. Sign in instead." };
   const hash = await bcrypt.hash(password, 11);
-  // First user, or the configured ADMIN_EMAIL, becomes admin.
+  // First user, or any address listed in ADMIN_EMAIL (comma-separated), becomes admin.
   const count = await sql`SELECT count(*)::int AS n FROM users`;
-  const isAdmin = count[0].n === 0 || (process.env.ADMIN_EMAIL && email === process.env.ADMIN_EMAIL.toLowerCase());
+  const isAdmin = count[0].n === 0 || adminEmails().includes(email);
   await sql`INSERT INTO users (email, password_hash, name, phone, role) VALUES (${email}, ${hash}, ${name}, ${phone || null}, ${isAdmin ? "admin" : "guest"})`;
   try {
     await signIn("credentials", { email, password, redirect: false });
