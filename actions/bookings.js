@@ -6,7 +6,8 @@ import { sql, toDateStr, nightsBetween, fmtDate } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { checkAvailability, newRef, validateStay } from "@/lib/bookings";
 import { getRates, estimateAmount } from "@/lib/rates";
-import { sendMail, adminEmail } from "@/lib/mail";
+import { sendMail } from "@/lib/mail";
+import { notifyAdmins } from "@/lib/notify";
 import { site } from "@/data/site";
 
 
@@ -41,7 +42,11 @@ export async function requestBookingAction(prev, formData) {
   await sql`INSERT INTO booking_events (booking_id, actor_id, action) VALUES (${id}, ${user.id}, 'requested')`;
 
   const summary = `${ref} · ${kind === "house" ? "Whole house" : roomSlugs.join(", ")} · ${fmtDate(checkIn)} → ${fmtDate(checkOut)} · ${adults} adults, ${children} children${pets ? `, ${pets} pets` : ""}`;
-  await sendMail({ to: adminEmail(), subject: `New booking request ${ref} — ${user.name}`, text: `${summary}\nPhone: ${phone}\nEmail: ${user.email}\nNotes: ${notes || "-"}\n\nReview: ${site.url}/admin/bookings/${id}` });
+  await notifyAdmins({
+    subject: `New booking request ${ref} — ${user.name}`,
+    text: `${summary}\nPhone: ${phone}\nEmail: ${user.email}\nNotes: ${notes || "-"}\n\nReview: ${site.url}/admin/bookings/${id}`,
+    whatsapp: `🌿 New booking request ${ref}\n${user.name} · ${phone}\n${summary}${notes ? `\nNotes: ${notes.slice(0, 200)}` : ""}\nReview: ${site.url}/admin/bookings/${id}`,
+  });
   await sendMail({ to: user.email, subject: `We've received your request ${ref} — ${site.name}`, text: `Hi ${user.name},\n\nThanks — we've received your booking request:\n${summary}\n\nWe'll confirm availability on WhatsApp shortly and hold the booking on a part advance. You can track it at ${site.url}/account.\n\n${site.name}` });
 
   revalidatePath("/account");
@@ -57,7 +62,7 @@ export async function cancelMyBookingAction(formData) {
   if (!b || !["requested", "confirmed"].includes(b.status)) return;
   await sql`UPDATE bookings SET status = 'cancelled', updated_at = now() WHERE id = ${id}::uuid`;
   await sql`INSERT INTO booking_events (booking_id, actor_id, action, note) VALUES (${id}::uuid, ${user.id}, 'cancelled', 'Cancelled by guest')`;
-  await sendMail({ to: adminEmail(), subject: `Booking ${b.ref} cancelled by guest`, text: `${user.name} cancelled ${b.ref} (check-in ${fmtDate(b.check_in)}).` });
+  await notifyAdmins({ subject: `Booking ${b.ref} cancelled by guest`, text: `${user.name} cancelled ${b.ref} (check-in ${fmtDate(b.check_in)}).` });
   revalidatePath("/account");
   revalidatePath(`/account/bookings/${id}`);
   revalidatePath("/admin");

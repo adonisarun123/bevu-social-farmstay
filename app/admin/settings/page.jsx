@@ -7,7 +7,7 @@ import SubmitButton from "@/components/SubmitButton";
 export default async function SettingsPage() {
   const t = await sql`SELECT value FROM settings WHERE key = 'calendar_token'`;
   const feed = `${site.url}/api/calendar?token=${t[0]?.value || ""}`;
-  const env = ["DATABASE_URL", "AUTH_SECRET", "ADMIN_EMAIL", "SMTP_USER", "SMTP_PASS", "ENQUIRY_TO"].map((k) => [k, Boolean(process.env[k])]);
+  const env = ["DATABASE_URL", "AUTH_SECRET", "ADMIN_EMAIL", "SMTP_USER", "SMTP_PASS", "ENQUIRY_TO", "WA_PHONE_NUMBER_ID", "WA_TOKEN", "WA_ADMIN_NUMBERS", "WA_TEMPLATE_NAME"].map((k) => [k, Boolean(process.env[k])]);
   return (
     <>
       <PageTitle eyebrow="Settings" title="Integrations & health" />
@@ -23,7 +23,7 @@ export default async function SettingsPage() {
           <ul className="mt-3 divide-y divide-ink/5 text-sm">
             {env.map(([k, ok]) => <li key={k} className="flex items-center justify-between py-2"><code className="text-xs">{k}</code><span className={ok ? "text-forest" : "text-brick-dark"}>{ok ? "set" : "missing"}</span></li>)}
           </ul>
-          <p className="mt-3 text-xs text-stone">Without SMTP_USER/SMTP_PASS no emails go out (requests, confirmations, password resets); everything else still works. Reset links are printed to the server log instead.</p>
+          <p className="mt-3 text-xs text-stone">Without SMTP_USER/SMTP_PASS no emails go out (requests, confirmations, password resets); everything else still works. Reset links are printed to the server log instead. New bookings, cancellations and enquiries go to every ADMIN_EMAIL by email and, when the WA_* variables are set, to every WA_ADMIN_NUMBERS on WhatsApp (Meta Cloud API; WA_TEMPLATE_NAME is needed for reliable delivery outside a 24-hour chat window).</p>
         </Card>
       </div>
     </>

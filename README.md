@@ -72,8 +72,9 @@ Guests create an account, see live availability, request a stay; admins confirm/
 - **Admin:** `/admin` dashboard · `/admin/bookings` (month calendar + filterable list) · `/admin/bookings/[id]` (confirm / decline / complete / cancel, amount, advance, notes, clash check) · `/admin/bookings/new` (manual booking, clash override) · `/admin/availability` (block whole property or a room) · `/admin/rates` (default + seasonal, weekday/weekend) · `/admin/guests` (+ CSV export) · `/admin/enquiries` · `/admin/settings` (calendar feed link, env health).
 - **Rules:** a request never blocks dates; only *confirmed* bookings and *blocks* do. Confirming re-checks for clashes. Whole-house bookings block every room; a room booking blocks the whole house. Weekend = Friday and Saturday nights. Amount is estimated from rates at request time; admin can override.
 - **Public site reads the DB:** rates on `/`, `/stay`, room pages and `/llms.txt` (5-minute cache, refreshed on save); the contact form writes to `enquiries` and emails you.
-- **Email:** best-effort via SMTP env vars — new request → admin; request received / confirmed / declined → guest. Without SMTP everything still works, just no mail.
-- **Env:** `DATABASE_URL`, `AUTH_SECRET`, `AUTH_URL` (local only), `ADMIN_EMAIL`, plus the SMTP vars. See `.env.example`. Set them all in Vercel → Environment Variables before deploying.
+- **Admin alerts (`lib/notify.js`):** every new booking (guest request *and* manual admin entry), guest cancellation and contact-form enquiry goes to **all `ADMIN_EMAIL` addresses by email** and, when `WA_PHONE_NUMBER_ID`/`WA_TOKEN`/`WA_ADMIN_NUMBERS` are set, to **every listed number on WhatsApp** via the Meta WhatsApp Cloud API. Set `WA_TEMPLATE_NAME` to an approved one-variable template for reliable delivery (free-form text only works within a 24-hour window after the admin last messaged the business number). Both channels are best-effort and never block the booking.
+- **Guest email:** request received / confirmed / declined / updated → guest. Without SMTP everything still works, just no mail.
+- **Env:** `DATABASE_URL`, `AUTH_SECRET`, `AUTH_URL` (local only), `ADMIN_EMAIL`, the SMTP vars and optionally the `WA_*` WhatsApp vars. See `.env.example`. Set them all in Vercel → Environment Variables before deploying.
 
 ### Testing the backend locally (no Neon needed)
 

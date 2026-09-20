@@ -7,6 +7,7 @@ import { requireAdmin } from "@/lib/auth";
 import { checkAvailability, newRef, validateStay } from "@/lib/bookings";
 import { getRates, estimateAmount } from "@/lib/rates";
 import { sendMail } from "@/lib/mail";
+import { notifyAdmins } from "@/lib/notify";
 import { site } from "@/data/site";
 
 const s = (fd, k) => String(fd.get(k) ?? "").trim();
@@ -81,6 +82,12 @@ export async function createManualBookingAction(prev, formData) {
     VALUES (${ref}, ${u[0]?.id || null}, ${guestName}, ${guestEmail || null}, ${guestPhone || null}, ${kind}, ${roomSlugs}, ${checkIn}, ${checkOut}, ${adults}, ${children}, ${pets}, ${status}, 'manual', ${notes || null}, ${amount})
     RETURNING id`;
   await sql`INSERT INTO booking_events (booking_id, actor_id, action, note) VALUES (${rows[0].id}, ${admin.id}, ${status}, 'Added manually')`;
+  const summary = `${ref} · ${kind === "house" ? "Whole house" : roomSlugs.join(", ")} · ${fmtDate(checkIn)} → ${fmtDate(checkOut)} · ${adults} adults, ${children} children${pets ? `, ${pets} pets` : ""} · ${status}`;
+  await notifyAdmins({
+    subject: `Booking ${ref} added by ${admin.name} — ${guestName}`,
+    text: `${summary}\nGuest: ${guestName} · ${guestPhone || "-"} · ${guestEmail || "-"}\n\n${site.url}/admin/bookings/${rows[0].id}`,
+    whatsapp: `🌿 Booking ${ref} added by ${admin.name}\n${guestName} · ${guestPhone || "-"}\n${summary}\n${site.url}/admin/bookings/${rows[0].id}`,
+  });
   bumpBookingPaths(rows[0].id);
   redirect(`/admin/bookings/${rows[0].id}`);
 }

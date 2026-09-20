@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql, hasDb } from "@/lib/db";
-import { sendMail, adminEmail } from "@/lib/mail";
+import { notifyAdmins } from "@/lib/notify";
 
 export const runtime = "nodejs";
 
@@ -24,7 +24,7 @@ export async function POST(req) {
       stored = true;
     } catch (e) { console.error("enquiry insert failed", e?.message); }
   }
-  const mailed = await sendMail({ to: adminEmail(), subject: `Enquiry: ${name} · ${checkin || "flexible"} · ${type === "house" ? "whole house" : "room"}`, text });
+  const [mailed] = await notifyAdmins({ subject: `Enquiry: ${name} · ${checkin || "flexible"} · ${type === "house" ? "whole house" : "room"}`, text });
   if (!stored && !mailed) return NextResponse.json({ ok: false, error: "not-configured" }, { status: 503 });
   return NextResponse.json({ ok: true });
 }
