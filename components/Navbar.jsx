@@ -37,7 +37,7 @@ export default function Navbar() {
       }`}
     >
       <div className="wrap flex h-[76px] items-center justify-between">
-        <Logo tone={tone} />
+        <Logo tone={tone} height={52} />
 
         <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="Primary">
           {navLinks.map((l) => {
