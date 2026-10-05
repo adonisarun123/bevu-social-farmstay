@@ -3,9 +3,9 @@
 // Everything marked TODO must be filled in before go-live.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// TODO: replace with the real number (digits only, with country code) — used for
-// tel: links, WhatsApp deep links and the floating WhatsApp button.
-const PHONE_DIGITS = "919999999999";
+// Digits only, with country code — used for tel: links, WhatsApp deep links and
+// the floating WhatsApp button.
+const PHONE_DIGITS = "917795207779";
 
 export const site = {
   name: "Bevu Social Farmstay",
@@ -15,7 +15,7 @@ export const site = {
     "Bevu Social Farmstay is an eco-conscious, pet-friendly luxury farmstay near Berigai, Hosur — a hand-built brick home with four ensuite rooms, a private swimming pool, open lawns and farm-to-table food, an hour and a bit from Bangalore.",
   url: "https://www.bevusocialfarmstay.com", // TODO: confirm production domain
   phoneDigits: PHONE_DIGITS,
-  phoneDisplay: "+91 99999 99999", // TODO
+  phoneDisplay: "+91 77952 07779",
   phoneHref: `tel:+${PHONE_DIGITS}`,
   whatsappHref: (text = "Hi Bevu Social Farmstay, I'd like to plan a stay.") =>
     `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent(text)}`,
@@ -29,13 +29,15 @@ export const site = {
     youtube: "",
   },
   location: {
-    label: "SF 3, Plot 79, Divine Groves",
-    area: "Near Berigai & Shoolagiri, Hosur — Krishnagiri district, Tamil Nadu",
+    label: "Plot 59, SF3 (Divine Groves), Shoolagiri Road",
+    area: "Seekanapalli Village, Post Berigai, Hosur, Tamil Nadu 635105",
+    street: "Plot 59, SF3 (Divine Groves), Shoolagiri Road, Seekanapalli Village, Post Berigai",
+    city: "Hosur",
     short: "Krishnagiri district, Tamil Nadu — near Bangalore",
     lat: 12.7754752,
     lng: 77.9884156,
     mapsUrl: "https://maps.app.goo.gl/k3zPnMTPRaQUdeFZ9",
-    postalCode: "635105", // TODO: confirm PIN (Berigai)
+    postalCode: "635105",
     // Approximate — confirm against your own drives. Used on the Location page.
     distances: [
       { from: "Electronic City, Bangalore", km: "~50 km", time: "1 h 15 min" },

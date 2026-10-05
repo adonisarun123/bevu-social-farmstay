@@ -56,8 +56,8 @@ export const lodgingBusinessSchema = {
   paymentAccepted: "UPI, bank transfer, cash",
   address: {
     "@type": "PostalAddress",
-    streetAddress: site.location.label,
-    addressLocality: "Berigai, Shoolagiri",
+    streetAddress: site.location.street,
+    addressLocality: site.location.city,
     addressRegion: "Tamil Nadu",
     postalCode: site.location.postalCode,
     addressCountry: "IN",
