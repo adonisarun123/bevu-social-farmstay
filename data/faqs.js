@@ -2,7 +2,7 @@ export const faqs = [
   {
     question: "Where is Bevu Social Farmstay?",
     answer:
-      "Near Berigai, Shoolagiri taluk, Krishnagiri district, Tamil Nadu — past Hosur, about 50 km from Electronic City, Bangalore. The exact pin and directions are shared on booking; the drive from south Bangalore takes roughly 1 to 1.5 hours depending on traffic.",
+      "Plot 59, SF3 (Divine Groves), Shoolagiri Road, Seekanapalli Village, Post Berigai, Hosur, Tamil Nadu 635105 — past Hosur, about 50 km from Electronic City, Bangalore. The Google Maps pin and directions are on our Location page; the drive from south Bangalore takes roughly 1 to 1.5 hours depending on traffic.",
   },
   {
     question: "How many rooms are there and how many people can stay?",

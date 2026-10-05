@@ -14,7 +14,7 @@ export const metadata = {
 };
 
 const tips = [
-  { Icon: Navigation, t: "Use the pin, not the name", d: "Village roads confuse map search. Open the Google Maps pin we share on booking and follow it to the gate." },
+  { Icon: Navigation, t: "Use the pin, not the name", d: "Village roads confuse map search. Use the Google Maps pin on this page and follow it to the gate." },
   { Icon: Clock, t: "Leave before 4 PM on Fridays", d: "The Electronic City–Hosur stretch of NH44 slows badly on Friday evenings. Saturday morning is a breeze." },
   { Icon: Car, t: "Any car works", d: "The last 2–3 km are village road — fine for a hatchback, just take it slow after rain." },
   { Icon: MapPin, t: "Stock up in Hosur", d: "The last proper shops, ATMs and fuel are in Hosur. We keep essentials, but bring anything specific." },
