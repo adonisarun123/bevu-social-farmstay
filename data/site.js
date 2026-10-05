@@ -19,7 +19,7 @@ export const site = {
   phoneHref: `tel:+${PHONE_DIGITS}`,
   whatsappHref: (text = "Hi Bevu Social Farmstay, I'd like to plan a stay.") =>
     `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent(text)}`,
-  email: "hello@bevusocialfarmstay.com", // TODO: confirm
+  email: "bevusocialfarmstay@gmail.com",
   hosts: "Ankit, Priyanka & family",
   gaId: "G-4YHPZ2VZFY",
   verification: { google: "" }, // TODO: Search Console HTML-tag token (content value only)
