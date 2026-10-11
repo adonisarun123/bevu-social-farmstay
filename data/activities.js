@@ -1,11 +1,11 @@
-// Activities & Workshops at Bevu. Each has its own page at /activities/<slug>.
-// Add one by appending an object — nav, sitemap, schema, llms.txt and the index page pick it up.
+// Workshops & guided activities at Bevu. Listed on /experiences; each has its own page at /experiences/<slug>.
+// Add one by appending an object — sitemap, schema, llms.txt and the experiences page pick it up.
 //
 // TODO before go-live (owner to confirm):
 //  - Durations, group sizes and age limits below are sensible defaults, not confirmed facts.
 //  - Pricing is "on request" everywhere — add real per-person prices to `price` when fixed.
 //  - Facilitator details: only Deepali (pottery) is named. Add surnames/bios/photos if they agree.
-//  - Café Tamarind: confirm where it is relative to the farm, and whether Kerala/Tamarind workshops run there or in the Bevu kitchen.
+//  - Tamarind Food Workshop: confirm whether it runs at Café Tamarind or in the Bevu kitchen.
 //  - Trail S1: confirm length, terrain and start point.
 //  - Horse riding and astronomy: confirm who supplies helmets / telescope.
 //  - Cover images are Unsplash placeholders — replace with your own photos.
@@ -324,11 +324,11 @@ export const activities = [
     group: "4–12 people",
     who: "Home cooks and food lovers of every level",
     when: "Late morning or early evening",
-    venue: "Café Tamarind",
+    venue: "Café Tamarind, within the estate (run by Sanctity Ferme)",
     cover: u("1589301760014-d929f3979dbc"),
     coverAlt: "South Indian dishes served on a fresh banana leaf",
     intro:
-      "Held at Café Tamarind, this workshop teaches the everyday cooking of Kerala — dishes built on coconut in all its forms, curry leaves, mustard seed and slow tempering. You'll cook a small spread together and finish by eating it the traditional way, on a banana leaf.",
+      "Café Tamarind is the café inside the 100-acre farm estate that Bevu is part of, run by the estate's farm-plot managers, Sanctity Ferme. This workshop, held in its kitchen, teaches the everyday cooking of Kerala — dishes built on coconut in all its forms, curry leaves, mustard seed and slow tempering. You'll cook a small spread together and finish by eating it the traditional way, on a banana leaf.",
     steps: [
       "The Kerala pantry: fresh coconut, coconut milk and oil, curry leaves, and why it all works together",
       "Cook a set of dishes such as avial, a cabbage or bean thoran, and olan",
@@ -340,6 +340,7 @@ export const activities = [
     bring: ["An appetite", "Closed footwear for the kitchen"],
     faq: [
       { q: "Is the menu vegetarian?", a: "Yes, by default. Non-vegetarian Kerala dishes can be arranged for private groups on request." },
+      { q: "Where is Café Tamarind?", a: "Inside the same 100-acre farm estate as Bevu, operated by Sanctity Ferme, the company that manages the farm plots. We'll give you directions when you book." },
       { q: "Do I need to know how to cook?", a: "No. You'll work in pairs and the chef demonstrates every step." },
     ],
   },

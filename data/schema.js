@@ -174,9 +174,12 @@ export function roomSchema(room) {
 export const experiencesListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: "Experiences at Bevu Social Farmstay",
-  numberOfItems: experiences.length,
-  itemListElement: experiences.map((e, i) => ({ "@type": "ListItem", position: i + 1, name: e.title, description: e.description, image: e.image })),
+  name: "Experiences, workshops and activities at Bevu Social Farmstay",
+  numberOfItems: activities.length + experiences.filter((e) => !e.href).length,
+  itemListElement: [
+    ...activities.map((a) => ({ "@type": "ListItem", name: a.title, url: `${site.url}/experiences/${a.slug}`, item: { "@id": `${site.url}/experiences/${a.slug}#offer` } })),
+    ...experiences.filter((e) => !e.href).map((e) => ({ "@type": "ListItem", name: e.title, description: e.description, image: e.image })),
+  ].map((x, i) => ({ ...x, position: i + 1 })),
 };
 
 export const amenitiesListSchema = {
@@ -237,23 +240,16 @@ export function activitySchema(a) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${site.url}/activities/${a.slug}#offer`,
+    "@id": `${site.url}/experiences/${a.slug}#offer`,
     name: `${a.title} at ${site.name}`,
     serviceType: a.category === "Outdoors" || a.category === "Night Sky" ? "Guided activity" : "Hands-on workshop",
     description: `${a.tagline} ${a.intro}`,
     image: abs(a.cover),
-    url: `${site.url}/activities/${a.slug}`,
+    url: `${site.url}/experiences/${a.slug}`,
     provider: { "@id": ids.business },
     areaServed: { "@type": "City", name: "Bengaluru" },
     audience: { "@type": "PeopleAudience", audienceType: a.who },
-    offers: { "@type": "Offer", url: `${site.url}/activities/${a.slug}`, availability: "https://schema.org/InStock", priceCurrency: "INR", description: a.price || "Priced per person; on request" },
+    offers: { "@type": "Offer", url: `${site.url}/experiences/${a.slug}`, availability: "https://schema.org/InStock", priceCurrency: "INR", description: a.price || "Priced per person; on request" },
   };
 }
 
-export const activitiesListSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Activities and workshops at Bevu Social Farmstay",
-  numberOfItems: activities.length,
-  itemListElement: activities.map((a, i) => ({ "@type": "ListItem", position: i + 1, name: a.title, url: `${site.url}/activities/${a.slug}`, item: { "@id": `${site.url}/activities/${a.slug}#offer` } })),
-};

@@ -22,7 +22,7 @@ export function generateMetadata({ params }) {
   return {
     title: a.title,
     description: `${a.tagline} ${a.duration}. At Bevu Social Farmstay near Hosur, Tamil Nadu.`.slice(0, 160),
-    alternates: { canonical: `/activities/${a.slug}` },
+    alternates: { canonical: `/experiences/${a.slug}` },
     openGraph: { title: `${a.title} · ${site.name}`, description: a.tagline, images: [{ url: a.cover }] },
   };
 }
@@ -30,7 +30,7 @@ export function generateMetadata({ params }) {
 export default function ActivityPage({ params }) {
   const a = getActivity(params.slug);
   if (!a) notFound();
-  const crumbs = [{ name: "Home", path: "/" }, { name: "Activities & Workshops", path: "/activities" }, { name: a.title, path: `/activities/${a.slug}` }];
+  const crumbs = [{ name: "Home", path: "/" }, { name: "Experiences", path: "/experiences" }, { name: a.title, path: `/experiences/${a.slug}` }];
   const sameCat = activities.filter((x) => x.slug !== a.slug && x.category === a.category);
   const others = [...sameCat, ...activities.filter((x) => x.slug !== a.slug && x.category !== a.category)].slice(0, 3);
   const wa = site.whatsappHref(`Hi Bevu Social Farmstay, I'd like to book the ${a.title}. Group size: ___ · Dates: ___`);
@@ -47,7 +47,7 @@ export default function ActivityPage({ params }) {
   return (
     <>
       <JsonLd data={breadcrumbSchema(crumbs)} />
-      <JsonLd data={webPageSchema({ path: `/activities/${a.slug}`, title: a.title, description: a.tagline, type: "ItemPage", image: a.cover, speakable: ["#activity-intro"], extra: { mainEntity: { "@id": `${site.url}/activities/${a.slug}#offer` } } })} />
+      <JsonLd data={webPageSchema({ path: `/experiences/${a.slug}`, title: a.title, description: a.tagline, type: "ItemPage", image: a.cover, speakable: ["#activity-intro"], extra: { mainEntity: { "@id": `${site.url}/experiences/${a.slug}#offer` } } })} />
       <JsonLd data={activitySchema(a)} />
       <JsonLd data={faqSchema} />
 
@@ -78,7 +78,7 @@ export default function ActivityPage({ params }) {
               <div className="text-[11px] uppercase tracking-[0.2em] text-brass">Pricing</div>
               <p className="mt-2 text-sm text-cream/80">{a.price || "Priced per person. Message us for current rates and available dates; private sessions for groups on request."}</p>
               <a href={wa} target="_blank" rel="noopener noreferrer" className="btn mt-5 w-full bg-brass text-ink hover:bg-brass-light">Ask on WhatsApp</a>
-              <Link href="/activities" className="mt-3 block text-center text-xs text-cream/60 hover:text-cream">All activities & workshops →</Link>
+              <Link href="/experiences#workshops" className="mt-3 block text-center text-xs text-cream/60 hover:text-cream">All experiences & workshops →</Link>
             </div>
           </Reveal>
           <div className="lg:col-span-8">
@@ -132,7 +132,7 @@ export default function ActivityPage({ params }) {
           <SectionHeading eyebrow="Pair it with" title="Make a day of it." />
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {others.map((o) => (
-              <Link key={o.slug} href={`/activities/${o.slug}`} className="group card flex flex-col">
+              <Link key={o.slug} href={`/experiences/${o.slug}`} className="group card flex flex-col">
                 <div className="relative aspect-[4/3] overflow-hidden"><Image src={o.cover} alt={o.coverAlt} fill sizes="(min-width: 640px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" /></div>
                 <div className="p-5"><div className="font-display text-xl group-hover:text-brick">{o.title}</div><div className="mt-1 text-xs text-stone">{o.category} · {o.duration}</div></div>
               </Link>

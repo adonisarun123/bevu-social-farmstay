@@ -64,7 +64,6 @@ export const navLinks = [
   { href: "/stay", label: "Stay" },
   { href: "/amenities", label: "Pool & Lawn" },
   { href: "/experiences", label: "Experiences" },
-  { href: "/activities", label: "Workshops" },
   { href: "/meetups", label: "Meetups" },
   { href: "/about", label: "About" },
   { href: "/gallery", label: "Gallery", compact: true },
