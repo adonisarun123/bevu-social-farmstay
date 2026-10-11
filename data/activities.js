@@ -5,7 +5,6 @@
 //  - Durations, group sizes and age limits below are sensible defaults, not confirmed facts.
 //  - Pricing is "on request" everywhere — add real per-person prices to `price` when fixed.
 //  - Facilitator details: only Deepali (pottery) is named. Add surnames/bios/photos if they agree.
-//  - Tamarind Food Workshop: confirm whether it runs at Café Tamarind or in the Bevu kitchen.
 //  - Trail S1: confirm length, terrain and start point.
 //  - Horse riding and astronomy: confirm who supplies helmets / telescope.
 //  - Cover images are Unsplash placeholders — replace with your own photos.
@@ -24,10 +23,11 @@ export const activities = [
     group: "4–12 people",
     who: "Home cooks, families with older kids, food-curious groups",
     when: "Late morning, so lunch is what you cook",
+    venue: "The Bevu farm kitchen",
     cover: u("1771229389277-a0a7546913f9"),
     coverAlt: "Ripe tamarind pod hanging from a tamarind tree",
     intro:
-      "Krishnagiri district is tamarind country — the old trees line the roads around Bevu, and the pods end up in almost every kitchen here. This workshop starts with the fruit itself: cracking pods, deseeding, soaking and straining pulp, and tasting how sweet, sour and aged tamarind differ. Then we cook — traditional dishes first, then a few that take tamarind somewhere new.",
+      "Krishnagiri district is tamarind country — the old trees line the roads around Bevu, and the pods end up in almost every kitchen here. This workshop, held in the Bevu farm kitchen, starts with the fruit itself: cracking pods, deseeding, soaking and straining pulp, and tasting how sweet, sour and aged tamarind differ. Then we cook — traditional dishes first, then a few that take tamarind somewhere new.",
     steps: [
       "Meet the fruit: fresh pods, aged block tamarind, and how to make clean pulp at home",
       "Cook the classics: puli kuzhambu, puliyodarai (tamarind rice) and a pepper rasam",
