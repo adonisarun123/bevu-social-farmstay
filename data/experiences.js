@@ -33,6 +33,7 @@ export const experiences = [
     description: "Far from city lights, the night sky returns. Lie back on the lawn and rediscover what darkness is supposed to look like.",
     image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=70",
     alt: "Star-filled night sky over open countryside",
+    href: "/experiences/astronomy-stargazing", // covered by the bookable session; hidden from the free-flow grid
   },
   {
     slug: "bird-watching",
@@ -61,6 +62,7 @@ export const experiences = [
     description: "The lawn faces east. Roll out a mat, or simply sit with a coffee and watch the boulders change colour.",
     image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=70",
     alt: "Person practising yoga outdoors at sunrise",
+    href: "/experiences/yoga-wellness-session", // covered by the bookable session; hidden from the free-flow grid
   },
   {
     slug: "childrens-farm-learning",
