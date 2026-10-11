@@ -7,6 +7,7 @@ import { experiences } from "./experiences";
 import { amenities } from "./amenities";
 import { gallery } from "./gallery";
 import { meetups } from "./meetups";
+import { activities } from "./activities";
 
 const abs = (p) => (p.startsWith("http") ? p : `${site.url}${p}`);
 export const ids = {
@@ -229,4 +230,30 @@ export const meetupsListSchema = {
   name: "Meetups and group weekends at Bevu Social Farmstay",
   numberOfItems: meetups.length,
   itemListElement: meetups.map((m, i) => ({ "@type": "ListItem", position: i + 1, name: m.title, url: `${site.url}/meetups/${m.slug}`, item: { "@id": `${site.url}/meetups/${m.slug}#offer` } })),
+};
+
+// ── Activities & workshops ───────────────────────────────────────────────────
+export function activitySchema(a) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${site.url}/activities/${a.slug}#offer`,
+    name: `${a.title} at ${site.name}`,
+    serviceType: a.category === "Outdoors" || a.category === "Night Sky" ? "Guided activity" : "Hands-on workshop",
+    description: `${a.tagline} ${a.intro}`,
+    image: abs(a.cover),
+    url: `${site.url}/activities/${a.slug}`,
+    provider: { "@id": ids.business },
+    areaServed: { "@type": "City", name: "Bengaluru" },
+    audience: { "@type": "PeopleAudience", audienceType: a.who },
+    offers: { "@type": "Offer", url: `${site.url}/activities/${a.slug}`, availability: "https://schema.org/InStock", priceCurrency: "INR", description: a.price || "Priced per person; on request" },
+  };
+}
+
+export const activitiesListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Activities and workshops at Bevu Social Farmstay",
+  numberOfItems: activities.length,
+  itemListElement: activities.map((a, i) => ({ "@type": "ListItem", position: i + 1, name: a.title, url: `${site.url}/activities/${a.slug}`, item: { "@id": `${site.url}/activities/${a.slug}#offer` } })),
 };

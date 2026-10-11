@@ -8,6 +8,7 @@ import { experiences } from "@/data/experiences";
 import { faqs } from "@/data/faqs";
 import { posts } from "@/data/posts";
 import { meetups } from "@/data/meetups";
+import { activities } from "@/data/activities";
 
 
 export const revalidate = 300;
@@ -36,6 +37,8 @@ export async function GET() {
   amenities.forEach((a) => L.push(`- ${a.title}: ${a.description}`));
   L.push("", "## Experiences");
   experiences.forEach((e) => L.push(`- ${e.title}: ${e.description}`));
+  L.push("", "## Activities & workshops (bookable sessions, priced per person)");
+  activities.forEach((a) => L.push(`- [${a.title}](${site.url}/activities/${a.slug}) — ${a.tagline} ${a.duration}; ${a.group}.`));
   L.push("", "## Meetups & group weekends (whole-house formats we host)");
   meetups.forEach((m) => L.push(`- [${m.title}](${site.url}/meetups/${m.slug}) — ${m.tagline} For: ${m.audience}. ${m.group}. ${m.duration}.`));
   L.push("", "## Included with every stay");
@@ -45,7 +48,7 @@ export async function GET() {
   L.push("", "## FAQ");
   faqs.forEach((f) => L.push(`Q: ${f.question}`, `A: ${f.answer}`, ""));
   L.push("## Pages");
-  ["/", "/stay", "/amenities", "/experiences", "/meetups", "/about", "/gallery", "/location", "/blog", "/contact"].forEach((p) => L.push(`- ${site.url}${p}`));
+  ["/", "/stay", "/amenities", "/experiences", "/activities", "/meetups", "/about", "/gallery", "/location", "/blog", "/contact"].forEach((p) => L.push(`- ${site.url}${p}`));
   L.push("", "## Journal");
   posts.forEach((p) => L.push(`- [${p.title}](${site.url}/blog/${p.slug}) — ${p.excerpt}`));
   L.push("", "## Policies");
