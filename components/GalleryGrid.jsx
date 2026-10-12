@@ -55,8 +55,7 @@ export default function GalleryGrid() {
               {/* Thumbnails: lazy-loaded, ImageKit resizes per breakpoint (srcset) and serves WebP/AVIF at q70 — never the multi-MB originals. */}
               <Image src={g.src} alt={g.alt} fill loading="lazy" quality={70} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
             </div>
-            {g.concept && <span className="absolute bottom-2 right-2 rounded bg-ink/60 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-cream/80">concept</span>}
-            {!g.real && !g.concept && <span className="absolute bottom-2 right-2 rounded bg-ink/60 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-cream/80">placeholder</span>}
+            {!g.real && <span className="absolute bottom-2 right-2 rounded bg-ink/60 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-cream/80">placeholder</span>}
           </motion.button>
         ))}
       </div>
