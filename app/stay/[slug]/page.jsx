@@ -44,7 +44,7 @@ export default async function RoomPage({ params }) {
     { Icon: Bath, k: "Bathroom", v: room.bath },
     { Icon: Snowflake, k: "Climate", v: room.ac },
     { Icon: Users, k: "Sleeps", v: room.occupancy },
-    { Icon: Layers, k: "Floor", v: room.floor },
+    { Icon: Layers, k: "Floor", v: `${room.floor} · ${room.building}` },
     { Icon: Eye, k: "View", v: room.view },
     { Icon: Ruler, k: "Size", v: room.size },
   ];
@@ -52,12 +52,12 @@ export default async function RoomPage({ params }) {
   return (
     <>
       <JsonLd data={breadcrumbSchema(crumbs)} />
-      <JsonLd data={webPageSchema({ path: `/stay/${room.slug}`, title: `${room.name} Room — ${room.tag}`, description: room.blurb, type: "ItemPage", image: room.gallery[0], extra: { mainEntity: { "@id": `${site.url}/stay/${room.slug}#room` } } })} />
+      <JsonLd data={webPageSchema({ path: `/stay/${room.slug}`, title: `${room.name} Room — ${room.tag}`, description: room.blurb, type: "ItemPage", image: room.gallery[0].src, extra: { mainEntity: { "@id": `${site.url}/stay/${room.slug}#room` } } })} />
       <JsonLd data={roomSchema(room)} />
 
       {/* Hero */}
       <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-ink pt-[76px] text-cream">
-        <Image src={room.gallery[0]} alt={room.alt} fill priority sizes="100vw" className="object-cover opacity-75" />
+        <Image src={room.gallery[0].src} alt={room.alt} fill priority sizes="100vw" className="object-cover opacity-75" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/20" />
         <div className="wrap relative pb-14 pt-24 md:pb-20">
           <Breadcrumbs items={crumbs} tone="light" />
@@ -126,14 +126,15 @@ export default async function RoomPage({ params }) {
       <section className="border-y border-ink/10 bg-parchment">
         <div className="wrap section">
           <SectionHeading eyebrow="Gallery" title={`${room.name}, in pictures.`} />
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {room.gallery.map((src, i) => (
-              <Reveal key={src} delay={i * 0.07} className={`relative overflow-hidden rounded-2xl bg-sand ${i === 0 ? "aspect-[4/3] md:col-span-2 md:row-span-2 md:aspect-auto" : "aspect-[4/3]"}`}>
-                <Image src={src} alt={`${room.name} room — photo ${i + 1}`} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+          {/* Four shots per room: room, bed, bathroom, detail. Lazy-loaded; ImageKit resizes per breakpoint and serves WebP/AVIF. */}
+          <div className="mt-10 grid gap-4 md:grid-cols-3 md:grid-rows-3">
+            {room.gallery.map((shot, i) => (
+              <Reveal key={shot.src} delay={i * 0.07} className={`group relative overflow-hidden rounded-2xl bg-sand ${i === 0 ? "aspect-[4/5] md:col-span-2 md:row-span-3 md:aspect-auto" : "aspect-[4/3]"}`}>
+                <Image src={shot.src} alt={shot.alt} fill loading="lazy" quality={75} sizes={i === 0 ? "(min-width: 768px) 60vw, 100vw" : "(min-width: 768px) 30vw, 100vw"} className="object-cover transition duration-700 group-hover:scale-[1.03]" />
+                <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-brick backdrop-blur">{shot.kind}</span>
               </Reveal>
             ))}
           </div>
-          <p className="mt-4 text-xs text-stone">Placeholder photography — real room photos coming soon.</p>
         </div>
       </section>
 

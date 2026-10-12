@@ -159,7 +159,7 @@ export function roomSchema(room) {
     name: `${room.name} Room`,
     alternateName: `${room.kannada} room`,
     description: `${room.blurb} ${room.story[0]}`,
-    image: room.gallery.map(abs),
+    image: room.gallery.map((g) => abs(g.src)),
     url: `${site.url}/stay/${room.slug}`,
     bed: { "@type": "BedDetails", typeOfBed: "King", numberOfBeds: 1 },
     occupancy: { "@type": "QuantitativeValue", minValue: 1, maxValue: 3, unitText: "guests" },

@@ -1,7 +1,10 @@
-// Four similar ensuite double rooms. Names are native trees of the region.
-// TODO: swap Unsplash placeholders for real room photos in /public/images/rooms/.
-// Each room has its own page at /stay/<slug>: `story` paragraphs, `gallery` (3 images), `goodFor`, `floor`, `view`, `size`.
-// Floor/view/size are guesses — correct them.
+// Four ensuite double rooms — two in the main house, two in the guest building by the pool. Names are native trees of the region.
+// Photos live in ImageKit (Media Library /BSF/Main Building Photos and /BSF/Guest Building Photos); see data/gallery.js.
+// Each room has its own page at /stay/<slug>: `story` paragraphs, `gallery` (4 shots: room, bed, bathroom, detail), `goodFor`, `floor`, `view`, `size`.
+// Floor/view/size/building are best guesses from the photos — correct them.
+import { ik } from "./gallery";
+const main = (f) => ik(`Main Building Photos/${f}`);
+const guest = (f) => ik(`Guest Building Photos/${f}`);
 const shared = {
   bed: "King bed",
   bath: "Attached bathroom, hot water",
@@ -17,8 +20,9 @@ export const rooms = [
     kannada: "Bevu",
     tag: "The namesake room",
     blurb: "Named for the tree the farmstay is named for. Morning light through timber-framed windows, and the lawn just beyond the sill.",
-    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=75",
-    alt: "Warm bedroom with white linen and timber-framed windows",
+    image: main("Sunlit Rustic Bedroom Retreat.png"),
+    alt: "Neem room — king bed under a curved brick wall, morning light through timber-framed windows",
+    building: "Main house",
     floor: "Ground floor",
     view: "The neem tree and the front lawn",
     size: "~280 sq ft + bathroom",
@@ -29,9 +33,10 @@ export const rooms = [
       "The bathroom is stone-floored with a rain shower and hot water on demand. The bed is a king with a firm-side mattress; ask for a softer topper if you prefer it.",
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1400&q=75",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1400&q=75",
-      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1400&q=75",
+      { kind: "Room", src: main("Sunlit Rustic Bedroom Retreat.png"), alt: "Neem room — king bed, brick walls and timber-framed windows onto the garden" },
+      { kind: "Bed", src: main("Sunlit Rustic Bedroom Retreat (1).png"), alt: "The king bed in the Neem room, dressed in white linen" },
+      { kind: "Bathroom", src: main("Modern Stone-Clad Bathroom with Vanity.png"), alt: "Neem room ensuite — stone-clad walls and a floating vanity" },
+      { kind: "Detail", src: main("Sunlit Terracotta Bench Nook.png"), alt: "Built-in bench nook by the window in the Neem room" },
     ],
     ...shared,
   },
@@ -41,8 +46,9 @@ export const rooms = [
     kannada: "Hunase",
     tag: "Garden-facing",
     blurb: "Looks out over the boulders and native trees. The quietest room in the house — the one to book for a proper lie-in.",
-    image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=75",
-    alt: "Calm bedroom with earthy tones and a view of greenery",
+    image: guest("Room.png"),
+    alt: "Tamarind room — double bed in white linen with red cushions under a curved brick wall",
+    building: "Guest building",
     floor: "Ground floor",
     view: "Boulders and the tamarind grove",
     size: "~280 sq ft + bathroom",
@@ -53,9 +59,10 @@ export const rooms = [
       "There is a proper desk, and the Wi-Fi is strongest here — if you are stealing a Monday to work from the farm, this is the room.",
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1400&q=75",
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1400&q=75",
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1400&q=75",
+      { kind: "Room", src: guest("Room.png"), alt: "Tamarind room — double bed in white and red, ceiling fan and warm brick walls" },
+      { kind: "Bed", src: guest("room(1).png"), alt: "The bed in the Tamarind room, white linen and red cushions" },
+      { kind: "Bathroom", src: guest("washroom.png"), alt: "Tamarind room ensuite in rose marble with a stone basin" },
+      { kind: "Detail", src: guest("Guest Room.png"), alt: "Tamarind room looking out towards the verandah" },
     ],
     ...shared,
   },
@@ -65,8 +72,9 @@ export const rooms = [
     kannada: "Nerale",
     tag: "Pool-side",
     blurb: "A few steps from the pool deck. Best for families who want the kids in the water and still within earshot.",
-    image: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1200&q=75",
-    alt: "Bright bedroom with natural textures opening onto a deck",
+    image: guest("Room(4).png"),
+    alt: "Jamun room — king bed in blue linen, brick walls and a window seat by the pool side",
+    building: "Guest building",
     floor: "Ground floor",
     view: "The pool deck and lawn",
     size: "~300 sq ft + bathroom",
@@ -77,9 +85,10 @@ export const rooms = [
       "Evenings are the trade-off: it is the liveliest side of the house until the pool lights go off. If you want silence, Tamarind is the room. If you want to be in the middle of things, this is.",
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1400&q=75",
-      "https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1400&q=75",
-      "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1400&q=75",
+      { kind: "Room", src: guest("Room(4).png"), alt: "Jamun room — king bed in blue linen, brick walls and a window seat" },
+      { kind: "Bed", src: guest("Room(9).png"), alt: "The bed in the Jamun room with the window beyond" },
+      { kind: "Bathroom", src: guest("washroom(1).png"), alt: "Jamun room ensuite — grey marble vanity and walk-in shower" },
+      { kind: "Detail", src: guest("Room(8).png"), alt: "Window in the Jamun room looking onto the garden" },
     ],
     ...shared,
   },
@@ -89,8 +98,9 @@ export const rooms = [
     kannada: "Nellikai",
     tag: "Upper floor",
     blurb: "Up the stairs, with the widest view of the countryside. Sunsets from here are the reason people extend by a night.",
-    image: "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=1200&q=75",
-    alt: "Upper-floor bedroom with a wide view over the countryside",
+    image: main("Sunlit Rustic Loft Bedroom.png"),
+    alt: "Amla room — upper-floor loft bedroom with exposed brick and a wall of windows",
+    building: "Main house",
     floor: "Upper floor",
     view: "Open countryside to the east — sunrise side",
     size: "~280 sq ft + bathroom + private balcony",
@@ -101,9 +111,10 @@ export const rooms = [
       "The bathroom has a window of its own and the best water pressure in the house, for what it is worth. Tea on the balcony at six in the morning is the whole point of this room.",
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=1400&q=75",
-      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1400&q=75",
-      "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1400&q=75",
+      { kind: "Room", src: main("Sunlit Rustic Loft Bedroom.png"), alt: "Amla room — the upper-floor loft bedroom with a wall of windows" },
+      { kind: "Bed", src: main("Sunlit Rustic Daybed Retreat.png"), alt: "Daybed beneath the arched windows in the Amla room" },
+      { kind: "Bathroom", src: main("Modern Marble Wet-Room Bathroom.png"), alt: "Amla room ensuite — a marble wet-room with its own window" },
+      { kind: "Detail", src: main("Sunlit Terracotta Mezzanine Corridor.png"), alt: "The mezzanine corridor leading to the Amla room" },
     ],
     ...shared,
   },
