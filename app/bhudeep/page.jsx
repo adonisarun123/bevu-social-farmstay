@@ -13,7 +13,7 @@ import { site } from "@/data/site";
 
 export const metadata = {
   title: "BhuDeep — An Earthen Villa for Two",
-  description: "BhuDeep by Sanctity Ferme Stays: a one-bedroom earthen villa near Shoolagiri, a short drive from Bevu — sunken living pit, peacock bedroom, breakfast included, pets welcome. The stay we suggest when Bevu is full or you're two.",
+  description: "BhuDeep, our one-bedroom earthen villa near Shoolagiri, a short drive from Bevu — sunken living pit, peacock bedroom, breakfast included, pets welcome. The house we suggest for couples, or when Bevu is full.",
   alternates: { canonical: "/bhudeep" },
 };
 
@@ -39,6 +39,9 @@ const lodgingSchema = {
   sameAs: [bhudeep.bookingUrl],
   image: `${site.url}${bhudeep.hero.src}`,
   address: { "@type": "PostalAddress", streetAddress: bhudeep.address.label, addressLocality: "Shoolagiri", addressRegion: "Tamil Nadu", postalCode: "635117", addressCountry: "IN" },
+  parentOrganization: { "@id": `${site.url}/#organization` },
+  telephone: `+${site.phoneDigits}`,
+  email: site.email,
   numberOfRooms: 1,
   checkinTime: "13:00",
   checkoutTime: "11:00",
@@ -75,15 +78,15 @@ export default function BhuDeepPage() {
 
       <PageHero crumbs={crumbs} eyebrow={bhudeep.kicker} title="BhuDeep — an earthen villa for two." lead={bhudeep.tagline} image={bhudeep.hero.src} alt={bhudeep.hero.alt} position={bhudeep.hero.position} />
 
-      {/* Honest framing: a different property, recommended as the alternate */}
+      {/* Framing: our second house, the alternate for couples / when Bevu is full */}
       <section className="border-b border-ink/10 bg-sand/60">
         <div className="wrap flex flex-col gap-4 py-5 md:flex-row md:items-center md:justify-between">
           <p className="flex items-start gap-3 text-sm leading-relaxed text-bark/85 md:max-w-3xl">
             <Info size={18} className="mt-0.5 shrink-0 text-brick" />
-            <span><strong className="font-medium text-ink">BhuDeep is not Bevu.</strong> It's a separate one-bedroom villa by Sanctity Ferme Stays, a little down the road from us. We point guests here when Bevu is taken — or when you're two and four rooms is more house than you need.</span>
+            <span><strong className="font-medium text-ink">Our second house.</strong> BhuDeep is a one-bedroom villa we run a little down the road from Bevu. It's where we send couples — and anyone who finds Bevu already taken for their dates.</span>
           </p>
           <div className="flex shrink-0 gap-3">
-            <a href={site.whatsappHref(WA_TEXT)} target="_blank" rel="noopener noreferrer" className="btn-primary !py-2.5"><MessageCircle size={16} /> Ask us</a>
+            <a href={site.whatsappHref(WA_TEXT)} target="_blank" rel="noopener noreferrer" className="btn-primary !py-2.5"><MessageCircle size={16} /> Book on WhatsApp</a>
             <a href={bhudeep.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost !py-2.5">Booking.com <ArrowUpRight size={16} /></a>
           </div>
         </div>
@@ -109,7 +112,7 @@ export default function BhuDeepPage() {
             <Reveal delay={0.1} className="mt-6 space-y-5 leading-relaxed text-bark/85">
               <p className="lead">BhuDeep — <em>bhu</em>, earth; <em>deep</em>, lamp — is a single circular villa finished in earthen plaster, with a clay-tiled roof that rises to a small tower, and nothing around it but scrub, boulders and birds.</p>
               <p>Inside, the plan is one big curve. A sunken conversation pit sits at the centre, ringed with cushions and a folk-art frieze, and a black spiral stair climbs from it to the roof deck. The bedroom opens off the curve — a crisp white bed under a peacock painted across the wall. The kitchen has a cane swing by the window.</p>
-              <p>It was built in traditional technique for exactly one couple at a time — close to the land, quiet, and small enough that the whole place is yours from the gate in.</p>
+              <p>We built it in traditional technique for exactly one couple at a time — close to the land, quiet, and small enough that the whole place is yours from the gate in. Same team, same breakfast, same countryside as Bevu; a quarter of the house.</p>
             </Reveal>
           </div>
           <div className="grid gap-4 lg:col-span-7 lg:grid-cols-5">
@@ -154,7 +157,7 @@ export default function BhuDeepPage() {
       {/* Bevu or BhuDeep */}
       <section className="section border-b border-ink/10">
         <div className="wrap">
-          <SectionHeading align="center" eyebrow="Which one?" title="Bevu or BhuDeep." lead="Same countryside, same drive from Bangalore, two very different houses. A quick way to decide." />
+          <SectionHeading align="center" eyebrow="Which one?" title="Bevu or BhuDeep." lead="Same team, same countryside, same drive from Bangalore — two very different houses. A quick way to decide." />
           <Reveal delay={0.1} className="mt-12 overflow-hidden rounded-2xl ring-1 ring-ink/10">
             <div className="hidden grid-cols-12 bg-parchment text-[11px] font-medium uppercase tracking-[0.22em] text-stone md:grid">
               <div className="col-span-3 px-6 py-4" />
@@ -197,7 +200,7 @@ export default function BhuDeepPage() {
       {/* Gallery */}
       <section className="section">
         <div className="wrap">
-          <SectionHeading eyebrow="Photos" title="Around the villa." lead="Photographs from the property's listing — click any to open." />
+          <SectionHeading eyebrow="Photos" title="Around the villa." lead="Click any photo to open it." />
           <div className="mt-10"><PhotoGrid items={bhudeepGallery} /></div>
         </div>
       </section>
@@ -206,7 +209,7 @@ export default function BhuDeepPage() {
       <section className="border-t border-ink/10 bg-parchment">
         <div className="wrap section grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <SectionHeading eyebrow="House rules" title="A few things the hosts ask." />
+            <SectionHeading eyebrow="House rules" title="A few things we ask." />
             <dl className="mt-8 grid gap-6 sm:grid-cols-2">
               {bhudeep.houseRules.map((r, i) => (
                 <Reveal key={r.title} delay={i * 0.04}>
@@ -226,7 +229,7 @@ export default function BhuDeepPage() {
                 </Reveal>
               ))}
             </dl>
-            <p className="mt-4 text-xs text-stone">Distances as listed on Booking.com. The exact pin is shared by the hosts on confirmation.</p>
+            <p className="mt-4 text-xs text-stone">Approximate. We share the exact Google Maps pin when we confirm your booking.</p>
           </div>
         </div>
       </section>
@@ -246,11 +249,11 @@ export default function BhuDeepPage() {
             <div className="md:col-span-7">
               <span className="eyebrow !text-brass-light before:!bg-brass-light">Book BhuDeep</span>
               <h2 className="h-section mt-4">Two of you, one round house.</h2>
-              <p className="lead mt-5 max-w-xl !text-cream/80">Book directly on Booking.com, or message us — we'll check dates with the hosts and tell you straight whether Bevu or BhuDeep is the better fit for your weekend.</p>
+              <p className="lead mt-5 max-w-xl !text-cream/80">Send us your dates on WhatsApp — we'll confirm availability, share rates and tell you straight whether Bevu or BhuDeep is the better fit for your weekend. BhuDeep is also on Booking.com if you'd rather book there.</p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row md:col-span-5 md:justify-end">
-              <a href={bhudeep.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn bg-cream text-brick hover:bg-white hover:shadow-soft">Book on Booking.com <ArrowUpRight size={18} /></a>
-              <a href={site.whatsappHref(WA_TEXT)} target="_blank" rel="noopener noreferrer" className="btn-light"><MessageCircle size={18} /> WhatsApp us</a>
+              <a href={site.whatsappHref(WA_TEXT)} target="_blank" rel="noopener noreferrer" className="btn bg-cream text-brick hover:bg-white hover:shadow-soft"><MessageCircle size={18} /> WhatsApp us</a>
+              <a href={bhudeep.bookingUrl} target="_blank" rel="noopener noreferrer" className="btn-light">Booking.com <ArrowUpRight size={18} /></a>
             </div>
           </Reveal>
         </div>

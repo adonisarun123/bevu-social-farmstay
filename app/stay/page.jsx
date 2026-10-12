@@ -90,7 +90,7 @@ export default function StayPage() {
           <Reveal delay={0.1} className="lg:col-span-7">
             <span className="eyebrow">Just two of you? Or are we full?</span>
             <h2 className="h-section mt-4">Try BhuDeep, a little down the road.</h2>
-            <p className="lead mt-5">{bhudeep.tagline} A separate one-bedroom villa by Sanctity Ferme Stays — the stay we suggest for couples, or when Bevu is already taken.</p>
+            <p className="lead mt-5">{bhudeep.tagline} Our second house — the one we suggest for couples, or when Bevu is already taken for your dates.</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/bhudeep" className="btn-primary">See BhuDeep <ArrowUpRight size={16} /></Link>
             </div>
