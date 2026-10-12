@@ -84,7 +84,7 @@ export default function HomePage() {
       <section className="section">
         <div className="wrap">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <SectionHeading eyebrow="Stay" title="Four rooms, named for the trees outside." lead="Each is an ensuite king room with air-conditioning, hot water and a view of something green. Take one, or take them all." />
+            <SectionHeading eyebrow="Stay" title="Four rooms, named for the trees outside." lead="Each is an ensuite king room with hot water and a view of something green. Take one, or take them all." />
             <Reveal delay={0.1}><Link href="/stay" className="btn-ghost shrink-0">All rooms & rates <ArrowRight size={16} /></Link></Reveal>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

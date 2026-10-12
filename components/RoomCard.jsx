@@ -1,6 +1,6 @@
 import Image from "@/components/Image";
 import Link from "next/link";
-import { BedDouble, Bath, Snowflake, Users } from "lucide-react";
+import { BedDouble, Bath, Users } from "lucide-react";
 import { site } from "@/data/site";
 import Reveal from "./Reveal";
 
@@ -8,7 +8,6 @@ export default function RoomCard({ room, index = 0, compact = false }) {
   const specs = [
     { Icon: BedDouble, text: room.bed },
     { Icon: Bath, text: room.bath },
-    { Icon: Snowflake, text: room.ac },
     { Icon: Users, text: room.occupancy },
   ];
   return (

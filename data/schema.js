@@ -81,7 +81,6 @@ export const lodgingBusinessSchema = {
     "Lawn and garden",
     "Bonfire pit",
     "Outdoor dining",
-    "Air conditioning",
     "Free Wi-Fi",
     "Free parking",
     "Breakfast included",
@@ -165,7 +164,7 @@ export function roomSchema(room) {
     occupancy: { "@type": "QuantitativeValue", minValue: 1, maxValue: 3, unitText: "guests" },
     floorLevel: room.floor,
     petsAllowed: true,
-    amenityFeature: ["Air conditioning", "Private bathroom with hot water", "Wi-Fi", "Breakfast included", ...room.extras].map((name) => ({ "@type": "LocationFeatureSpecification", name, value: true })),
+    amenityFeature: ["Private bathroom with hot water", "Wi-Fi", "Breakfast included", ...room.extras].map((name) => ({ "@type": "LocationFeatureSpecification", name, value: true })),
     containedInPlace: { "@id": ids.business },
     ...(offers.length ? { offers: offers.filter((o) => o.category === "Room") } : {}),
   };
