@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, CalendarDays, Ban, IndianRupee, Users, Inbox, LogOut, PlusCircle, Settings } from "lucide-react";
+import { LayoutDashboard, CalendarDays, Ban, IndianRupee, Users, Inbox, LogOut, PlusCircle, Settings, Camera } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
 import SignOutButton from "@/components/SignOutButton";
 import Logo from "@/components/Logo";
@@ -14,6 +14,7 @@ const nav = [
   { href: "/admin/rates", label: "Rates", Icon: IndianRupee },
   { href: "/admin/guests", label: "Guests", Icon: Users },
   { href: "/admin/enquiries", label: "Enquiries", Icon: Inbox },
+  { href: "/admin/media", label: "Media", Icon: Camera },
   { href: "/admin/settings", label: "Settings", Icon: Settings },
 ];
 

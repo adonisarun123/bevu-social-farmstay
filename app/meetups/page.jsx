@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Image";
 import Link from "next/link";
 import { ArrowRight, Users, Clock } from "lucide-react";
 import PageHero from "@/components/PageHero";

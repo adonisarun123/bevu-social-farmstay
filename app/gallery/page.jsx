@@ -5,8 +5,8 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, webPageSchema, gallerySchema } from "@/data/schema";
 
 export const metadata = {
-  title: "Gallery — House, Pool, Lawn & Rooms",
-  description: "Photos of Bevu Social Farmstay near Bangalore: the handcrafted brick house among granite boulders, the private pool, the lawn, the rooms and the food.",
+  title: "Gallery — House, Pool, Rooms & Interiors",
+  description: "Photos of Bevu Social Farmstay near Bangalore: the handcrafted brick house among granite boulders, the private pool, the lawn, the guest rooms, bathrooms and interiors.",
   alternates: { canonical: "/gallery" },
 };
 

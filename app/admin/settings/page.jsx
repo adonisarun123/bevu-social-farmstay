@@ -7,7 +7,7 @@ import SubmitButton from "@/components/SubmitButton";
 export default async function SettingsPage() {
   const t = await sql`SELECT value FROM settings WHERE key = 'calendar_token'`;
   const feed = `${site.url}/api/calendar?token=${t[0]?.value || ""}`;
-  const env = ["DATABASE_URL", "AUTH_SECRET", "ADMIN_EMAIL", "SMTP_USER", "SMTP_PASS", "ENQUIRY_TO", "WA_PHONE_NUMBER_ID", "WA_TOKEN", "WA_ADMIN_NUMBERS", "WA_TEMPLATE_NAME"].map((k) => [k, Boolean(process.env[k])]);
+  const env = ["DATABASE_URL", "AUTH_SECRET", "ADMIN_EMAIL", "SMTP_USER", "SMTP_PASS", "ENQUIRY_TO", "WA_PHONE_NUMBER_ID", "WA_TOKEN", "WA_ADMIN_NUMBERS", "WA_TEMPLATE_NAME", "NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT", "IMAGEKIT_PUBLIC_KEY", "IMAGEKIT_PRIVATE_KEY"].map((k) => [k, Boolean(process.env[k])]);
   return (
     <>
       <PageTitle eyebrow="Settings" title="Integrations & health" />
