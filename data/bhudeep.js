@@ -1,6 +1,6 @@
-// BhuDeep — our second stay: a one-bedroom earthen villa a little down the road from Bevu, for
-// couples or for when the main house is taken. Facts mirror the Booking.com listing (Oct 2026);
-// photos are ours, served from /public/images/bhudeep. Keep this in sync with the listing.
+// BhuDeep — an independently run villa a little down the road from Bevu, which we point guests
+// to when Bevu is taken or when two people want a place of their own. Facts mirror its Booking.com
+// listing (Oct 2026); photos served from /public/images/bhudeep. Review when the listing changes.
 
 const IMG = "/images/bhudeep";
 const p = (id) => `${IMG}/bhudeep-${id}.jpg`;
@@ -8,14 +8,14 @@ const p = (id) => `${IMG}/bhudeep-${id}.jpg`;
 export const bhudeep = {
   slug: "bhudeep",
   name: "BhuDeep",
-  fullName: "BhuDeep by Sanctity Ferme Stays",
-  kicker: "Our second house, a little down the road",
+  fullName: "BhuDeep",
+  kicker: "A sister stay nearby",
   tagline: "A one-bedroom earthen villa for two — round rooms, a sunken living pit and a peacock on the wall.",
   description:
-    "BhuDeep is our one-bedroom earthen villa near Shoolagiri, a short drive from Bevu — built in traditional technique with a circular plan, a sunken conversation pit, a spiral stair to the roof and a bedroom painted with a peacock. Breakfast, free Wi-Fi, free parking and pets welcome. Ours, like Bevu — for couples, or for when the main house is taken.",
+    "BhuDeep is a hand-finished 1BHK earthen villa near Shoolagiri, a short drive from Bevu — built in traditional architecture with a circular plan, a sunken conversation pit, a spiral stair to the roof and a bedroom painted with a peacock. Breakfast, free Wi-Fi, free parking and pets welcome. Ideal for couples and nature lovers.",
   bookingUrl: "https://www.booking.com/hotel/in/bhudeep-by-sanctity-ferme-stays-near-bangalore.en-gb.html",
-  address: { label: "Sanctity Ferme Stays", area: "Shoolagiri (Sūlagiri), Krishnagiri district, Tamil Nadu 635117" },
-  hosts: "Bevu Social Farmstay (listed on Booking.com as BhuDeep by Sanctity Ferme Stays)",
+  address: { label: "Near Shoolagiri", area: "Krishnagiri district, Tamil Nadu 635117" },
+  hosts: "Independently hosted",
   languages: ["English", "Hindi"],
   checkIn: "1:00 PM – 11:30 PM",
   checkOut: "11:00 AM – 11:30 AM",
@@ -43,12 +43,12 @@ export const bhudeep = {
   ],
 
   houseRules: [
-    { title: "Check-in 1:00 PM – 11:30 PM", text: "Tell us your arrival time in advance — the last stretch is village road and the gate is easier to find in daylight." },
+    { title: "Check-in 1:00 PM – 11:30 PM", text: "Let the hosts know your arrival time in advance — the last stretch is village road and the gate is easier to find in daylight." },
     { title: "Check-out by 11:30 AM", text: "Late check-out is subject to the next booking; ask at the time of reserving." },
     { title: "Children welcome", text: "Children of any age can stay. Guests 11 and above are charged as adults. A cot for 0–3 years is free on request; there are no extra beds." },
     { title: "No smoking, no parties", text: "Smoking is not allowed in the villa. Parties and events — including hen and stag dos — are not accommodated." },
     { title: "Pets stay free", text: "Pets are allowed at no extra charge." },
-    { title: "Cancellation", text: "Same terms as Bevu when you book with us directly; Booking.com shows its own terms before you confirm there." },
+    { title: "Cancellation", text: "Varies by rate and dates — the terms are shown on Booking.com before you confirm." },
   ],
 
   nearby: [
@@ -60,12 +60,12 @@ export const bhudeep = {
   ],
 
   faqs: [
-    { question: "Is BhuDeep part of Bevu Social Farmstay?", answer: "Yes — it's our second house, a little down the road from Bevu, run by the same team. It's the one we suggest when Bevu is taken, or when you're two people and four rooms is more house than you need. Book it with us on WhatsApp, or on Booking.com where it's listed as BhuDeep by Sanctity Ferme Stays." },
+    { question: "Is BhuDeep part of Bevu Social Farmstay?", answer: "No — BhuDeep is a separate, independently run villa a little down the road from Bevu. We list it here as the stay we recommend when Bevu is taken, or when you're two people and the whole house is more than you need. Bookings go through Booking.com or directly with its hosts; message us on WhatsApp and we'll point you the right way." },
     { question: "How many people can stay at BhuDeep?", answer: "It's a one-bedroom villa with one double bed — two adults. A cot for an infant (0–3) is available free on request. There are no extra beds, so groups of three or more should look at Bevu's four rooms instead." },
     { question: "Is breakfast included?", answer: "Yes, a buffet breakfast is included. The villa also has a fully equipped kitchen, and there are dhabas on the highway about ten kilometres away." },
     { question: "Can we bring our dog?", answer: "Yes. Pets are allowed at no extra charge." },
     { question: "How far is it from Bangalore?", answer: "BhuDeep is near Shoolagiri on the Hosur side of the Tamil Nadu border — roughly the same drive as Bevu: a little over an hour from Electronic City via NH44, and about 85 km from Kempegowda International Airport." },
-    { question: "Can we use Bevu's pool while staying at BhuDeep?", answer: "BhuDeep doesn't have its own pool. When Bevu isn't booked by another group we can usually arrange pool and lawn time for BhuDeep guests — ask when you book and we'll confirm for your dates." },
+    { question: "Can we visit Bevu's pool while staying at BhuDeep?", answer: "BhuDeep doesn't have a pool. Day access to Bevu's pool and lawn depends on whether Bevu has guests — ask us on WhatsApp before you book and we'll tell you honestly." },
   ],
 
   // Hero + section images. ids are Booking.com photo ids; files live in /public/images/bhudeep.
