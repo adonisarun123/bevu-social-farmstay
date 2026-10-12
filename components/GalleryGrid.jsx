@@ -52,9 +52,11 @@ export default function GalleryGrid() {
             aria-label={`Open photo: ${g.alt}`}
           >
             <div className={`relative w-full ${g.tall ? "aspect-[3/4]" : "aspect-[4/3]"}`}>
-              <Image src={g.src} alt={g.alt} fill sizes="(min-width: 768px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
+              {/* Thumbnails: lazy-loaded, ImageKit resizes per breakpoint (srcset) and serves WebP/AVIF at q70 — never the multi-MB originals. */}
+              <Image src={g.src} alt={g.alt} fill loading="lazy" quality={70} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
             </div>
-            {!g.real && <span className="absolute bottom-2 right-2 rounded bg-ink/60 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-cream/80">placeholder</span>}
+            {g.concept && <span className="absolute bottom-2 right-2 rounded bg-ink/60 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-cream/80">concept</span>}
+            {!g.real && !g.concept && <span className="absolute bottom-2 right-2 rounded bg-ink/60 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-cream/80">placeholder</span>}
           </motion.button>
         ))}
       </div>
@@ -74,7 +76,8 @@ export default function GalleryGrid() {
             <button type="button" className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-cream/20 p-2 text-cream" aria-label="Previous" onClick={(e) => { e.stopPropagation(); setActive((i) => (i - 1 + items.length) % items.length); }}><ChevronLeft /></button>
             <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-cream/20 p-2 text-cream" aria-label="Next" onClick={(e) => { e.stopPropagation(); setActive((i) => (i + 1) % items.length); }}><ChevronRight /></button>
             <motion.div key={items[active].src} initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative h-[80vh] w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-              <Image src={items[active].src} alt={items[active].alt} fill sizes="100vw" className="object-contain" />
+              {/* Lightbox: capped at the viewport width via srcset; ImageKit's c-at_max never upscales past the original. */}
+              <Image src={items[active].src} alt={items[active].alt} fill quality={80} sizes="(min-width: 1280px) 1024px, 100vw" className="object-contain" />
               <p className="absolute inset-x-0 -bottom-8 text-center text-sm text-cream/70">{items[active].alt}</p>
             </motion.div>
           </motion.div>
