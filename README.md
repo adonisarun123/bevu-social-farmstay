@@ -42,7 +42,8 @@ Photos are served from [ImageKit](https://imagekit.io) (CDN, on-the-fly resizing
 |---|---|
 | `/` | Hero, intro, essentials strip, rooms, pool & lawn, experiences, who it's for, rates, location, FAQ, CTA |
 | `/stay/[slug]` | One page per room (neem, tamarind, jamun, amla): hero, facts, story, gallery, rate, other rooms, HotelRoom JSON-LD |
-| `/stay` | 4 rooms, in-room list, rates (room-wise / whole house), inclusions, house notes |
+| `/stay` | 4 rooms, in-room list, rates (room-wise / whole house), inclusions, house notes, cross-link to BhuDeep |
+| `/bhudeep` | BhuDeep — a separate, independently run 1BHK earthen villa nearby (third-party property; linked, not ours), shown as the alternate for couples / when Bevu is full. Facts, copy and 18 photos from its Booking.com listing (`data/bhudeep.js`, `public/images/bhudeep/`); CTAs go to WhatsApp and Booking.com. Not in the nav — reached from `/stay` and the sitemap. |
 | `/amenities` | Pool, lawn, living & dining, farm kitchen |
 | `/experiences` | 12 experiences |
 | `/meetups`, `/meetups/[slug]` | 9 group formats (cyclists, bikers, naturalists, fitness, culinary, astronomy, photographers, writers, wellness) in `data/meetups.js`; each page has schedule, inclusions, FAQ (+FAQPage schema), Service schema |

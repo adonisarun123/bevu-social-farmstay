@@ -1,4 +1,6 @@
-import { Check } from "lucide-react";
+import Image from "@/components/Image";
+import Link from "next/link";
+import { Check, ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,7 @@ import RoomCard from "@/components/RoomCard";
 import PricingCards from "@/components/PricingCards";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
+import { bhudeep } from "@/data/bhudeep";
 import { rooms, inclusions, houseRules } from "@/data/rooms";
 import { breadcrumbSchema, webPageSchema, roomsListSchema } from "@/data/schema";
 import { site } from "@/data/site";
@@ -73,6 +76,25 @@ export default function StayPage() {
               ))}
             </dl>
           </div>
+        </div>
+      </section>
+
+      {/* Sister stay for couples / when the house is taken */}
+      <section className="border-t border-ink/10 bg-parchment">
+        <div className="wrap section grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+          <Reveal className="lg:col-span-5">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-card">
+              <Image src={bhudeep.hero.src} alt={bhudeep.hero.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+            </div>
+          </Reveal>
+          <Reveal delay={0.1} className="lg:col-span-7">
+            <span className="eyebrow">Just two of you? Or are we full?</span>
+            <h2 className="h-section mt-4">Try BhuDeep, a little down the road.</h2>
+            <p className="lead mt-5">{bhudeep.tagline} A separate, independently run one-bedroom villa — the stay we suggest for couples, or when Bevu is already taken.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/bhudeep" className="btn-primary">See BhuDeep <ArrowUpRight size={16} /></Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
