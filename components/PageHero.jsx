@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Image";
 import Breadcrumbs from "./Breadcrumbs";
 
 export default function PageHero({ eyebrow, title, lead, image = "/images/hero.jpg", alt = "Bevu Social Farmstay — the brick house among granite boulders at dusk", position = "center 60%", crumbs }) {

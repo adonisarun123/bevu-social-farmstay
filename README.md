@@ -19,10 +19,22 @@ All in `data/site.js` unless noted:
 3. **Rates** — `pricing.perRoom` / `pricing.wholeHouse` weekday & weekend. `null` shows "On request".
 4. **Drive times** — `location.distances` are approximate; adjust to your own drives.
 5. **Social links** — `social.instagram` etc. (blank = hidden).
-6. **Photos** — only `public/images/hero.jpg` and `house-build.jpg` are real. Rooms (`data/rooms.js`), amenities (`data/amenities.js`), experiences (`data/experiences.js`) and gallery (`data/gallery.js`) use Unsplash placeholders marked with a small "placeholder" tag in the gallery. Drop real photos into `public/images/` and update the `image`/`src` fields.
+6. **Photos** — only `public/images/hero.jpg` and `house-build.jpg` are real. Rooms (`data/rooms.js`), amenities (`data/amenities.js`), experiences (`data/experiences.js`) and gallery (`data/gallery.js`) use Unsplash placeholders marked with a small "placeholder" tag in the gallery. Upload real photos at `/admin/media` (ImageKit — see **Images** below), copy the URL into the `image`/`src` fields and redeploy. Small assets (logos, favicons) can still live in `public/images/`.
 7. **Room copy** — `data/rooms.js`. Rooms are named Neem, Tamarind, Jamun, Amla; tags (garden-facing, pool-side, upper floor) are guesses — correct them.
 8. **Journal covers** — `data/posts.js`; 5 of 6 are Unsplash placeholders.
 9. **Enquiry email (optional)** — set `SMTP_USER`, `SMTP_PASS` (Gmail App Password) and `ENQUIRY_TO` in Vercel env vars. Without them the form falls back to opening WhatsApp with the enquiry pre-filled.
+
+
+## Images (ImageKit)
+
+Photos are served from [ImageKit](https://imagekit.io) (CDN, on-the-fly resizing, WebP/AVIF) via `@imagekit/next`, per https://imagekit.io/docs/integration/nextjs.
+
+- `components/Image.jsx` is the only image component the site uses — a drop-in for `next/image`. ImageKit-hosted URLs (`https://ik.imagekit.io/…`) render through `@imagekit/next`'s `Image` (ImageKit builds the `srcset`); everything else, and *everything* when `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT` is unset, falls back to plain `next/image`. ImageKit-only props (`transformation`, `queryParameters`, `responsive`) pass through.
+- `lib/imagekit.js` — endpoint, enable flags, upload folders.
+- `components/Providers.jsx` wraps the app in `ImageKitProvider` when configured.
+- `/admin/media` (`components/admin/MediaUploader.jsx`) uploads straight from the browser to the Media Library (folders `/bevu/rooms`, `/bevu/gallery`, …) using one-time credentials from `app/api/upload-auth/route.js` (admin session required; `IMAGEKIT_PRIVATE_KEY` never leaves the server). Each upload shows the CDN URL and a `{ src, alt }` snippet to paste into the `data/*.js` files.
+- Env (Vercel + `.env.local`): `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT`, `IMAGEKIT_PUBLIC_KEY`, `IMAGEKIT_PRIVATE_KEY`. Optional `NEXT_PUBLIC_IMAGEKIT_SERVE_LOCAL=true` routes `/public/images/*` through ImageKit too — only after adding a **Web folder** origin (`https://www.bevusocialfarmstay.com`) to the URL endpoint in the ImageKit dashboard, otherwise those images 404.
+- `next.config.mjs` allows `ik.imagekit.io` in `images.remotePatterns` for the fallback path.
 
 ## Pages
 

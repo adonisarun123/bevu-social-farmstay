@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Image";
 import Link from "next/link";
 
 // Official wordmark (public/images/logo.png). `tone="light"` swaps in the cream-text version for dark backgrounds.
