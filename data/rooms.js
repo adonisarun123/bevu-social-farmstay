@@ -8,7 +8,6 @@ const guest = (f) => ik(`Guest Building Photos/${f}`);
 const shared = {
   bed: "King bed",
   bath: "Attached bathroom, hot water",
-  ac: "Air-conditioned",
   occupancy: "2 adults + 1 child",
   extras: ["Fresh linen & towels", "Wardrobe & luggage rack", "Kettle with tea & coffee", "Mosquito-screened windows", "Wi-Fi"],
 };
@@ -55,7 +54,7 @@ export const rooms = [
     goodFor: ["Couples", "Anyone who wants a proper lie-in", "Work-from-farm weeks"],
     story: [
       "Tamarind faces away from the lawn and the pool, towards the granite boulders and the old tamarind trees at the back of the plot. It is the quietest room in the house: no pool noise, no kitchen noise, just the breeze in the trees and the occasional argument between two mynas.",
-      "The window seat is the reason regulars ask for this room by name. It is deep enough to read in, and the afternoon shade from the boulders keeps the room cool without the air-conditioning.",
+      "The window seat is the reason regulars ask for this room by name. It is deep enough to read in, and the afternoon shade from the boulders keeps the room cool through the afternoon.",
       "There is a proper desk, and the Wi-Fi is strongest here — if you are stealing a Monday to work from the farm, this is the room.",
     ],
     gallery: [

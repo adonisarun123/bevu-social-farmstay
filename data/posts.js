@@ -43,7 +43,7 @@ export const posts = [
       { h: "Building around the boulders" },
       { p: "The granite outcrops were the reason we bought the land. Blasting them would have given us a flatter site and a duller one. So the house was drawn around them — the front steps go past one, the lawn flows between two more, and the pool sits where the ground naturally falls away. Nothing was moved that could be left alone." },
       { h: "Walls that breathe" },
-      { p: "The walls are handcrafted brick, laid by masons from the villages around us, on stone plinths. Brick and earth walls are heavy, and that mass is the point: they take the day's heat slowly and give it back slowly, so the rooms stay cool through the afternoon and comfortable at night without the air-conditioning running all day. They also breathe. A brick house in the rains smells like rain, not like paint." },
+      { p: "The walls are handcrafted brick, laid by masons from the villages around us, on stone plinths. Brick and earth walls are heavy, and that mass is the point: they take the day's heat slowly and give it back slowly, so the rooms stay cool through the afternoon and comfortable at night with nothing more than a ceiling fan. They also breathe. A brick house in the rains smells like rain, not like paint." },
       { h: "The tower" },
       { p: "The curved tower on the front is the one thing people photograph first. Its vertical slit is made of glass blocks, and it lights the stairwell from sunrise to sunset without a single bulb. It also pulls warm air up and out — old logic, no moving parts." },
       { h: "What it cost us" },

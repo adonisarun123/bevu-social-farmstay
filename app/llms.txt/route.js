@@ -22,7 +22,7 @@ export async function GET() {
   L.push(`- Location: ${site.location.label}, ${site.location.area} (${site.location.lat}, ${site.location.lng})`);
   L.push(`- Map: ${site.location.mapsUrl}`);
   L.push(`- Distance: ${site.location.distances.map((d) => `${d.from} ${d.km} / ${d.time}`).join("; ")}`);
-  L.push(`- Rooms: ${rooms.length} ensuite king rooms, air-conditioned, hot water; each sleeps ${rooms[0].occupancy}`);
+  L.push(`- Rooms: ${rooms.length} ensuite king rooms, hot water; each sleeps ${rooms[0].occupancy}`);
   L.push(`- Capacity: ${site.capacity.adults} adults, ${site.capacity.withKids}`);
   L.push(`- Booking: per room, or the whole house (exclusive pool and lawn)`);
   L.push(`- Rates: room ${formatRate(pricing.perRoom.weekday)} weekday / ${formatRate(pricing.perRoom.weekend)} weekend; whole house ${formatRate(pricing.wholeHouse.weekday)} / ${formatRate(pricing.wholeHouse.weekend)} (${pricing.wholeHouse.note})`);

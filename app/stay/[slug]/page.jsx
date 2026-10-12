@@ -1,7 +1,7 @@
 import Image from "@/components/Image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BedDouble, Bath, Snowflake, Users, Layers, Eye, Ruler, Check, MessageCircle } from "lucide-react";
+import { BedDouble, Bath, Users, Layers, Eye, Ruler, Check, MessageCircle } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import RoomCard from "@/components/RoomCard";
@@ -22,7 +22,7 @@ export function generateMetadata({ params }) {
   if (!room) return {};
   return {
     title: `${room.name} Room — ${room.tag}`,
-    description: `${room.blurb} ${room.bed}, ensuite, ${room.ac.toLowerCase()}, sleeps ${room.occupancy}. Book at Bevu Social Farmstay near Bangalore.`.replace(/^(.{0,157})\s.*$/s, "$1…").slice(0, 160),
+    description: `${room.blurb} ${room.bed}, ensuite, sleeps ${room.occupancy}. Book at Bevu Social Farmstay near Bangalore.`.replace(/^(.{0,157})\s.*$/s, "$1…").slice(0, 160),
     alternates: { canonical: `/stay/${room.slug}` },
     openGraph: { title: `${room.name} Room · ${site.name}`, description: room.blurb, images: [{ url: room.image }] },
   };
@@ -42,7 +42,6 @@ export default async function RoomPage({ params }) {
   const facts = [
     { Icon: BedDouble, k: "Bed", v: room.bed },
     { Icon: Bath, k: "Bathroom", v: room.bath },
-    { Icon: Snowflake, k: "Climate", v: room.ac },
     { Icon: Users, k: "Sleeps", v: room.occupancy },
     { Icon: Layers, k: "Floor", v: `${room.floor} · ${room.building}` },
     { Icon: Eye, k: "View", v: room.view },

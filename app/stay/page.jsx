@@ -17,7 +17,7 @@ export const revalidate = 300;
 
 export const metadata = {
   title: "Rooms & Rates — 4 Ensuite Rooms",
-  description: "Four air-conditioned ensuite king rooms near Bangalore. Book a room, or take the whole house with exclusive pool and lawn. Breakfast included, pets welcome.",
+  description: "Four ensuite king rooms near Bangalore. Book a room, or take the whole house with exclusive pool and lawn. Breakfast included, pets welcome.",
   alternates: { canonical: "/stay" },
 };
 
@@ -28,7 +28,7 @@ export default function StayPage() {
       <JsonLd data={breadcrumbSchema(crumbs)} />
       <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "CollectionPage", image: "/images/hero.jpg" })} />
       <JsonLd data={roomsListSchema} />
-      <PageHero crumbs={crumbs} eyebrow="Stay" title="Four rooms. One house. Yours by the room, or all at once." lead="Every room is an ensuite king with air-conditioning and hot water. What changes is the view — and how much of the house you'd like to yourself." />
+      <PageHero crumbs={crumbs} eyebrow="Stay" title="Four rooms. One house. Yours by the room, or all at once." lead="Every room is an ensuite king with hot water. What changes is the view — and how much of the house you'd like to yourself." />
 
       <section className="section">
         <div className="wrap">
@@ -40,7 +40,7 @@ export default function StayPage() {
               <h3 className="font-display text-xl">In every room</h3>
             </div>
             <ul className="grid gap-2 text-sm text-bark/80 sm:grid-cols-2 md:col-span-2">
-              {[rooms[0].bed, rooms[0].bath, rooms[0].ac, `Sleeps ${rooms[0].occupancy}`, ...rooms[0].extras].map((x) => (
+              {[rooms[0].bed, rooms[0].bath, `Sleeps ${rooms[0].occupancy}`, ...rooms[0].extras].map((x) => (
                 <li key={x} className="flex gap-2"><Check size={16} className="mt-0.5 shrink-0 text-brick" />{x}</li>
               ))}
             </ul>

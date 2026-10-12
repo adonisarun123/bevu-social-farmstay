@@ -7,7 +7,7 @@ export const faqs = [
   {
     question: "How many rooms are there and how many people can stay?",
     answer:
-      "Four air-conditioned ensuite double rooms, each sleeping 2 adults and a child. The whole house comfortably takes 8 adults, or up to 12 with children using extra mattresses.",
+      "Four ensuite double rooms, each sleeping 2 adults and a child. The whole house comfortably takes 8 adults, or up to 12 with children using extra mattresses.",
   },
   {
     question: "Can we book a single room, or only the whole house?",
