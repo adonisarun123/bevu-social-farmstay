@@ -21,7 +21,7 @@ export const site = {
     `https://wa.me/${PHONE_DIGITS}?text=${encodeURIComponent(text)}`,
   email: "bevusocialfarmstay@gmail.com",
   hosts: "Ankit, Priyanka & family",
-  gaId: "G-4YHPZ2VZFY",
+  gaId: "G-D6WV75F4CD",
   verification: { google: "" }, // TODO: Search Console HTML-tag token (content value only)
   social: {
     instagram: "https://www.instagram.com/bevusocialfarmstay/",
