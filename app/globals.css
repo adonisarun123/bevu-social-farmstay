@@ -35,3 +35,12 @@
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Invoices: print only the invoice document (hides site navbar, footer, admin chrome, WhatsApp button). */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body * { visibility: hidden !important; }
+  .invoice-doc, .invoice-doc * { visibility: visible !important; }
+  .invoice-doc { position: absolute; left: 0; top: 0; width: 100%; }
+  body { background: #fff !important; }
+}

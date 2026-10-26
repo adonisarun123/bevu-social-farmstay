@@ -116,3 +116,12 @@ node scripts/e2e.mjs
 ## Deploy
 
 Vercel: root of this repo, `npm run build`. Set the env vars above, then submit `/sitemap.xml` in Search Console. Google Analytics ID is in `data/site.js` (`gaId`).
+
+
+## Invoices (GST)
+
+- **Where:** Admin → Invoices, or **Create invoice** on a booking (prefills guest, dates, total, advance). Admins and managers can create, issue, cancel and share; only admins edit **Settings → Invoice details** (GSTIN, legal name, address, prefix, bank/UPI, terms).
+- **Rules built in:** numbers `BSF/2026-27/0001` (≤16 chars, sequential per financial year, assigned only on issue, so drafts leave no gaps); issued invoices are frozen (seller details snapshotted) and can only be cancelled with a reason, never edited or deleted; CGST + SGST split per rate slab; rates can be entered GST-inclusive or exclusive; amount in words; round-off to the rupee.
+- **GST defaults (confirm with your CA):** accommodation SAC 996311 at 5% when ≤ ₹7,500 per room-night before tax, else 18%; food SAC 996331 at 5%. Every line's rate is editable.
+- **Sharing:** `/invoice/<token>` is an unguessable, noindex guest page with Print / save as PDF (A4 print CSS); WhatsApp and email (needs SMTP) from the admin invoice page.
+- **Code:** `lib/invoice.js` (pure maths, words, numbering), `lib/invoice-server.js`, `actions/invoices.js`, `components/invoice/*`, `components/admin/InvoiceEditor.jsx`. Tables in `scripts/schema.sql`.

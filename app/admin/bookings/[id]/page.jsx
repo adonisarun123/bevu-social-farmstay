@@ -8,6 +8,8 @@ import { site } from "@/data/site";
 import { StatusBadge, PageTitle, Card, Notice, money, roomsLabel, field, label } from "@/components/ui";
 import SubmitButton from "@/components/SubmitButton";
 import EditStayForm from "@/components/admin/EditStayForm";
+import { createInvoiceAction } from "@/actions/invoices";
+import { rupees } from "@/lib/invoice";
 
 const names = Object.fromEntries(rooms.map((r) => [r.slug, r.name]));
 
@@ -15,9 +17,10 @@ export default async function AdminBookingPage({ params, searchParams }) {
   const rows = await sql`SELECT b.*, u.id AS uid, u.admin_notes AS guest_admin_notes FROM bookings b LEFT JOIN users u ON u.id = b.user_id WHERE b.id = ${params.id}::uuid`;
   const b = rows[0];
   if (!b) notFound();
-  const [events, history] = await Promise.all([
+  const [events, history, invoices] = await Promise.all([
     sql`SELECT e.action, e.note, e.created_at, u.name AS actor FROM booking_events e LEFT JOIN users u ON u.id = e.actor_id WHERE e.booking_id = ${b.id} ORDER BY e.created_at`,
     sql`SELECT id, ref, check_in, check_out, status FROM bookings WHERE id <> ${b.id} AND (user_id = ${b.user_id} OR (guest_phone IS NOT NULL AND guest_phone = ${b.guest_phone})) ORDER BY check_in DESC LIMIT 6`,
+    sql`SELECT id, number, status, total FROM invoices WHERE booking_id = ${b.id} ORDER BY created_at DESC`,
   ]);
   const avail = ["requested", "confirmed"].includes(b.status) ? await checkAvailability({ kind: b.kind, roomSlugs: b.room_slugs, checkIn: b.check_in, checkOut: b.check_out, excludeBookingId: b.id }) : null;
   const wa = b.guest_phone ? `https://wa.me/${b.guest_phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hi ${b.guest_name}, this is ${site.name} about your booking ${b.ref} (${fmtDate(b.check_in)} → ${fmtDate(b.check_out)}).`)}` : null;
@@ -72,6 +75,12 @@ export default async function AdminBookingPage({ params, searchParams }) {
         </div>
 
         <div className="space-y-6">
+          <Card>
+            <h2 className="font-display text-xl">Invoices</h2>
+            {invoices.length > 0 && <ul className="mt-3 space-y-2 text-sm">{invoices.map((i) => <li key={i.id} className="flex items-center justify-between gap-2"><Link href={`/admin/invoices/${i.id}`} className="font-medium hover:text-brick">{i.number || "Draft"}</Link><span className="text-stone">{i.total != null ? rupees(i.total) : ""} · {i.status}</span></li>)}</ul>}
+            <form action={createInvoiceAction} className="mt-4"><input type="hidden" name="booking_id" value={b.id} /><SubmitButton className="btn-dark" pendingText="Creating…">{invoices.some((i) => i.status !== "cancelled") ? "Create another invoice" : "Create invoice"}</SubmitButton></form>
+            <p className="mt-2 text-xs text-stone">Prefilled from this booking's guest, dates, total and advance. You can edit everything before issuing.</p>
+          </Card>
           <Card>
             <h2 className="font-display text-xl">Timeline</h2>
             <ol className="mt-4 space-y-3 text-sm">{events.map((e, i) => <li key={i} className="border-l-2 border-brick/40 pl-3"><div className="font-medium capitalize">{e.action} <span className="font-normal text-stone">· {e.actor || "guest"}</span></div>{e.note && <div className="text-bark/75">{e.note}</div>}<div className="text-xs text-stone">{new Date(e.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</div></li>)}</ol>
