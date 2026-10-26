@@ -3,12 +3,14 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { sql, toDateStr, fmtDate } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, requireStaff } from "@/lib/auth";
 import { checkAvailability, newRef, validateStay } from "@/lib/bookings";
 import { getRates, estimateAmount } from "@/lib/rates";
 import { sendMail } from "@/lib/mail";
 import { notifyAdmins } from "@/lib/notify";
 import { site } from "@/data/site";
+import bcrypt from "bcryptjs";
+import { ROLES, STAFF_ROLES } from "@/lib/roles";
 
 const s = (fd, k) => String(fd.get(k) ?? "").trim();
 const n = (fd, k, d = 0) => { const v = Number(fd.get(k)); return Number.isFinite(v) ? v : d; };
@@ -20,7 +22,7 @@ function bumpBookingPaths(id) {
 
 // ── Bookings ────────────────────────────────────────────────────────────────
 export async function setBookingStatusAction(formData) {
-  const admin = await requireAdmin();
+  const admin = await requireStaff();
   const id = s(formData, "id"), status = s(formData, "status"), note = s(formData, "note");
   if (!["requested", "confirmed", "declined", "cancelled", "completed"].includes(status)) return;
   const rows = await sql`SELECT * FROM bookings WHERE id = ${id}::uuid`;
@@ -45,7 +47,7 @@ export async function setBookingStatusAction(formData) {
 }
 
 export async function updateBookingAction(formData) {
-  const admin = await requireAdmin();
+  const admin = await requireStaff();
   const id = s(formData, "id");
   const amount = formData.get("amount") === "" ? null : n(formData, "amount", null);
   const advance = n(formData, "advance_paid", 0);
@@ -56,7 +58,7 @@ export async function updateBookingAction(formData) {
 }
 
 export async function createManualBookingAction(prev, formData) {
-  const admin = await requireAdmin();
+  const admin = await requireStaff();
   const kind = s(formData, "kind") || "room";
   const roomSlugs = kind === "house" ? [] : formData.getAll("rooms").map(String);
   const checkIn = s(formData, "check_in"), checkOut = s(formData, "check_out");
@@ -94,7 +96,7 @@ export async function createManualBookingAction(prev, formData) {
 
 // ── Blocks ──────────────────────────────────────────────────────────────────
 export async function addBlockAction(prev, formData) {
-  await requireAdmin();
+  await requireStaff();
   const room = s(formData, "room_slug"); const start = s(formData, "start_date"); const end = s(formData, "end_date"); const reason = s(formData, "reason");
   if (!start || !end || end < start) return { error: "Pick a valid date range." };
   await sql`INSERT INTO blocked_dates (room_slug, start_date, end_date, reason) VALUES (${room || null}, ${start}, ${end}, ${reason || null})`;
@@ -102,7 +104,7 @@ export async function addBlockAction(prev, formData) {
   return { ok: "Block added." };
 }
 export async function deleteBlockAction(formData) {
-  await requireAdmin();
+  await requireStaff();
   await sql`DELETE FROM blocked_dates WHERE id = ${s(formData, "id")}::uuid`;
   revalidatePath("/admin/availability"); revalidatePath("/admin/bookings");
 }
@@ -132,20 +134,82 @@ export async function deleteRateAction(formData) {
 
 // ── Guests ──────────────────────────────────────────────────────────────────
 export async function updateGuestAction(formData) {
-  await requireAdmin();
+  const staff = await requireStaff();
   const id = s(formData, "id"); const notes = s(formData, "admin_notes"); const role = s(formData, "role");
   await sql`UPDATE users SET admin_notes = ${notes || null} WHERE id = ${id}::uuid`;
-  if (["guest", "admin"].includes(role)) {
-    const admins = await sql`SELECT count(*)::int AS n FROM users WHERE role = 'admin' AND id <> ${id}::uuid`;
-    if (role === "guest" && admins[0].n === 0) return; // never remove the last admin
-    await sql`UPDATE users SET role = ${role} WHERE id = ${id}::uuid`;
+  // Only admins can change roles; managers can edit notes.
+  if (staff.role === "admin" && ROLES.includes(role)) await setRoleSafely(id, role);
+  revalidatePath(`/admin/guests/${id}`); revalidatePath("/admin/guests"); revalidatePath("/admin/team");
+}
+
+// Never leaves the site without an admin. Returns an error string or null.
+async function setRoleSafely(id, role) {
+  if (role !== "admin") {
+    const others = await sql`SELECT count(*)::int AS n FROM users WHERE role = 'admin' AND id <> ${id}::uuid`;
+    const me = await sql`SELECT role FROM users WHERE id = ${id}::uuid`;
+    if (me[0]?.role === "admin" && others[0].n === 0) return "You can't remove the last admin.";
   }
-  revalidatePath(`/admin/guests/${id}`); revalidatePath("/admin/guests");
+  await sql`UPDATE users SET role = ${role} WHERE id = ${id}::uuid`;
+  return null;
+}
+
+// ── Team (admins + managers) ────────────────────────────────────────────────
+export async function addTeamMemberAction(prev, formData) {
+  const admin = await requireAdmin();
+  const name = s(formData, "name");
+  const email = s(formData, "email").toLowerCase();
+  const role = s(formData, "role");
+  if (!STAFF_ROLES.includes(role)) return { error: "Pick a role." };
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: "Enter a valid email." };
+  const existing = await sql`SELECT id, name, role FROM users WHERE email = ${email}`;
+  const what = role === "admin" ? "admin" : "manager";
+  if (existing[0]) {
+    const u = existing[0];
+    if (u.role === role) return { error: `${u.name} is already a ${what}.` };
+    const err = await setRoleSafely(u.id, role); if (err) return { error: err };
+    await sendMail({ to: email, subject: `You're now a ${what} at ${site.name}`, text: `Hi ${u.name},\n\n${admin.name} has given you ${what} access to the ${site.name} booking panel.\n\nSign in with your existing password: ${site.url}/login\n\n${site.name}` });
+    revalidatePath("/admin/team"); revalidatePath("/admin/guests");
+    return { ok: `${u.name} already had an account — they're now a ${what}. They'll see the admin panel the next time they sign in.` };
+  }
+  if (name.length < 2) return { error: "Enter their name — they don't have an account yet." };
+  // Account with an unusable password; they choose one through a 7-day invite link.
+  const unusable = await bcrypt.hash(crypto.randomUUID() + crypto.randomUUID(), 11);
+  const rows = await sql`INSERT INTO users (email, password_hash, name, role) VALUES (${email}, ${unusable}, ${name}, ${role}) RETURNING id`;
+  const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
+  await sql`INSERT INTO password_resets (token, user_id, expires_at) VALUES (${token}, ${rows[0].id}, now() + interval '7 days')`;
+  const link = `${site.url}/reset-password?token=${token}`;
+  const sent = await sendMail({ to: email, subject: `${admin.name} invited you to manage ${site.name}`, text: `Hi ${name},\n\n${admin.name} has added you as a ${what} on the ${site.name} booking panel.\n\nSet your password here (link valid for 7 days):\n${link}\n\nAfter that, sign in any time at ${site.url}/login\n\n${site.name}` });
+  revalidatePath("/admin/team"); revalidatePath("/admin/guests");
+  return sent
+    ? { ok: `Invite emailed to ${email}. The link is valid for 7 days.` }
+    : { ok: `${name} added, but email isn't set up, so share this link with them yourself (valid 7 days):`, link };
+}
+
+export async function setTeamRoleAction(formData) {
+  await requireAdmin();
+  const id = s(formData, "id"); const role = s(formData, "role");
+  if (!ROLES.includes(role)) return;
+  const err = await setRoleSafely(id, role);
+  if (err) redirect("/admin/team?error=last-admin");
+  revalidatePath("/admin/team"); revalidatePath("/admin/guests");
+}
+
+export async function resendInviteAction(formData) {
+  await requireAdmin();
+  const id = s(formData, "id");
+  const rows = await sql`SELECT id, email, name, role FROM users WHERE id = ${id}::uuid AND role IN ('admin','manager')`;
+  const u = rows[0]; if (!u) return;
+  const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
+  await sql`DELETE FROM password_resets WHERE user_id = ${u.id}`;
+  await sql`INSERT INTO password_resets (token, user_id, expires_at) VALUES (${token}, ${u.id}, now() + interval '7 days')`;
+  const link = `${site.url}/reset-password?token=${token}`;
+  const sent = await sendMail({ to: u.email, subject: `Your ${site.name} panel invite`, text: `Hi ${u.name},\n\nSet your password here (valid for 7 days):\n${link}\n\n${site.name}` });
+  redirect(sent ? "/admin/team?sent=1" : `/admin/team?link=${encodeURIComponent(link)}`);
 }
 
 // ── Enquiries ───────────────────────────────────────────────────────────────
 export async function updateEnquiryAction(formData) {
-  await requireAdmin();
+  await requireStaff();
   const id = s(formData, "id"); const status = s(formData, "status"); const notes = s(formData, "admin_notes");
   if (!["new", "replied", "closed"].includes(status)) return;
   await sql`UPDATE enquiries SET status = ${status}, admin_notes = ${notes || null} WHERE id = ${id}::uuid`;
@@ -154,7 +218,7 @@ export async function updateEnquiryAction(formData) {
 
 // ── Edit a booking's stay (dates, rooms, pax) ───────────────────────────────
 export async function editBookingStayAction(prev, formData) {
-  const admin = await requireAdmin();
+  const admin = await requireStaff();
   const id = s(formData, "id");
   const kind = s(formData, "kind") || "room";
   const roomSlugs = kind === "house" ? [] : formData.getAll("rooms").map(String);

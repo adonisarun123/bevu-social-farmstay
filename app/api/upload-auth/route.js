@@ -1,13 +1,12 @@
 import { getUploadAuthParams } from "@imagekit/next/server";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 
 // One-time credentials for direct browser → ImageKit uploads (components/admin/MediaUploader.jsx).
 // Admin-only: anyone holding these params can upload into the Media Library until they expire.
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const session = await auth();
-  if (session?.user?.role !== "admin") return Response.json({ error: "Forbidden" }, { status: 403 });
+  try { await requireAdmin(); } catch { return Response.json({ error: "Forbidden" }, { status: 403 }); }
 
   const privateKey = process.env.IMAGEKIT_PRIVATE_KEY; // never exposed to the client
   const publicKey = process.env.IMAGEKIT_PUBLIC_KEY;

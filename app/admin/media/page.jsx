@@ -1,10 +1,12 @@
+import { requireAdminPage } from "@/lib/auth";
 import { PageTitle, Card } from "@/components/ui";
 import MediaUploader from "@/components/admin/MediaUploader";
 import { imagekitEnabled, IK_URL_ENDPOINT, serveLocalViaImageKit } from "@/lib/imagekit";
 
 export const metadata = { title: "Media" };
 
-export default function MediaPage() {
+export default async function MediaPage() {
+  await requireAdminPage();
   const keysSet = Boolean(process.env.IMAGEKIT_PUBLIC_KEY && process.env.IMAGEKIT_PRIVATE_KEY);
   const ready = imagekitEnabled && keysSet;
   return (

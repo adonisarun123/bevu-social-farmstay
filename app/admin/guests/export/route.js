@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 import { sql, toDateStr } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const session = await auth();
-  if (session?.user?.role !== "admin") return new NextResponse("Forbidden", { status: 403 });
+  try { await requireAdmin(); } catch { return new NextResponse("Forbidden", { status: 403 }); }
   const rows = await sql`
     SELECT u.name, u.email, u.phone, u.role, u.created_at,
            count(b.id) FILTER (WHERE b.status IN ('confirmed','completed'))::int AS stays,

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { sql, fmtDate } from "@/lib/db";
 import { PageTitle, money } from "@/components/ui";
+import { requireStaff } from "@/lib/auth";
+import { roleLabel } from "@/lib/roles";
 
 export default async function GuestsPage({ searchParams }) {
+  const me = await requireStaff();
   const q = (searchParams?.q || "").trim();
   const guests = await sql`
     SELECT u.id, u.name, u.email, u.phone, u.role, u.created_at, u.last_login_at,
@@ -14,7 +17,7 @@ export default async function GuestsPage({ searchParams }) {
     GROUP BY u.id ORDER BY u.created_at DESC LIMIT 300`;
   return (
     <>
-      <PageTitle eyebrow="Guests" title="Guest list" right={<a href="/admin/guests/export" className="btn-ghost">Export CSV</a>} />
+      <PageTitle eyebrow="Guests" title="Guest list" right={me.role === "admin" ? <a href="/admin/guests/export" className="btn-ghost">Export CSV</a> : null} />
       <form className="mt-6 flex gap-2"><input name="q" defaultValue={q} placeholder="Search name, email, phone" className="rounded-full border border-ink/15 bg-white/70 px-4 py-1.5 text-sm" /><button className="btn-ghost !px-4 !py-1.5 text-xs">Search</button></form>
       <div className="mt-4 overflow-x-auto rounded-2xl bg-parchment ring-1 ring-ink/5">
         <table className="w-full text-sm">
@@ -26,7 +29,7 @@ export default async function GuestsPage({ searchParams }) {
                 <td className="p-3">{g.phone || "—"}<div className="text-xs text-stone">{g.email}</div></td>
                 <td className="p-3">{g.stays}</td><td className="p-3">{money(g.spent)}</td>
                 <td className="p-3">{g.last_stay ? fmtDate(g.last_stay) : "—"}</td>
-                <td className="p-3 capitalize">{g.role}</td>
+                <td className="p-3">{roleLabel(g.role)}</td>
                 <td className="p-3 text-xs text-stone">{fmtDate(g.created_at)}</td>
               </tr>
             ))}

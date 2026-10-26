@@ -8,13 +8,14 @@ import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { navLinks, site } from "@/data/site";
 import Logo from "./Logo";
+import { isStaff, homeFor } from "@/lib/roles";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;
-  const accountHref = user ? (user.role === "admin" ? "/admin" : "/account") : "/login";
-  const accountLabel = user ? (user.role === "admin" ? "Admin" : "My stays") : "Sign in";
+  const accountHref = user ? homeFor(user.role) : "/login";
+  const accountLabel = user ? (isStaff(user.role) ? "Admin" : "My stays") : "Sign in";
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const transparentAtTop = pathname === "/"; // home has a full-bleed dark hero

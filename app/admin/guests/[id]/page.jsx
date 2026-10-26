@@ -5,17 +5,20 @@ import { updateGuestAction } from "@/actions/admin";
 import { rooms } from "@/data/rooms";
 import { StatusBadge, PageTitle, Card, money, roomsLabel, field, label } from "@/components/ui";
 import SubmitButton from "@/components/SubmitButton";
+import { requireStaff } from "@/lib/auth";
+import { roleLabel } from "@/lib/roles";
 
 const names = Object.fromEntries(rooms.map((r) => [r.slug, r.name]));
 
 export default async function GuestPage({ params }) {
+  const me = await requireStaff();
   const rows = await sql`SELECT * FROM users WHERE id = ${params.id}::uuid`;
   const g = rows[0]; if (!g) notFound();
   const bookings = await sql`SELECT * FROM bookings WHERE user_id = ${g.id} OR (guest_email = ${g.email} AND user_id IS NULL) ORDER BY check_in DESC`;
   return (
     <>
       <Link href="/admin/guests" className="text-sm text-brick">← Guests</Link>
-      <div className="mt-3"><PageTitle eyebrow={g.role} title={g.name} /></div>
+      <div className="mt-3"><PageTitle eyebrow={roleLabel(g.role)} title={g.name} /></div>
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <Card>
@@ -35,11 +38,11 @@ export default async function GuestPage({ params }) {
           </Card>
         </div>
         <Card>
-          <h2 className="font-display text-xl">Notes & role</h2>
+          <h2 className="font-display text-xl">{me.role === "admin" ? "Notes & role" : "Notes"}</h2>
           <form action={updateGuestAction} className="mt-4 space-y-4">
             <input type="hidden" name="id" value={g.id} />
             <div><label className={label} htmlFor="admin_notes">Internal notes</label><textarea id="admin_notes" name="admin_notes" rows={5} defaultValue={g.admin_notes || ""} className={field} placeholder="Preferences, allergies, how they found us…" /></div>
-            <div><label className={label} htmlFor="role">Role</label><select id="role" name="role" defaultValue={g.role} className={field}><option value="guest">Guest</option><option value="admin">Admin</option></select></div>
+            {me.role === "admin" && <div><label className={label} htmlFor="role">Role</label><select id="role" name="role" defaultValue={g.role} className={field}><option value="guest">Guest</option><option value="manager">Manager — bookings, blocks, guests, enquiries</option><option value="admin">Admin — everything</option></select></div>}
             <SubmitButton className="btn-dark" pendingText="Saving…">Save</SubmitButton>
           </form>
         </Card>

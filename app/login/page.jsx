@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import AuthForm from "@/components/AuthForm";
+import { isStaff, homeFor } from "@/lib/roles";
 
 export const metadata = { title: "Sign in", robots: { index: false } };
 
@@ -9,8 +10,8 @@ export default async function LoginPage({ searchParams }) {
   const raw = typeof searchParams?.next === "string" ? searchParams.next : typeof searchParams?.callbackUrl === "string" ? searchParams.callbackUrl : "";
   const next = raw.replace(/^https?:\/\/[^/]+/, "").startsWith("/") ? raw.replace(/^https?:\/\/[^/]+/, "") : "";
   if (session?.user) {
-    const home = session.user.role === "admin" ? "/admin" : "/account";
-    const safe = next && !(next.startsWith("/admin") && session.user.role !== "admin") ? next : home;
+    const home = homeFor(session.user.role);
+    const safe = next && !(next.startsWith("/admin") && !isStaff(session.user.role)) ? next : home;
     redirect(safe);
   }
   return (

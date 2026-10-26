@@ -7,6 +7,7 @@ import { sql } from "@/lib/db";
 import { signIn, requireUser } from "@/lib/auth";
 import { sendMail, adminEmails } from "@/lib/mail";
 import { site } from "@/data/site";
+import { homeFor } from "@/lib/roles";
 
 const clean = (v) => String(v || "").trim();
 
@@ -47,7 +48,7 @@ export async function loginAction(prev, formData) {
     throw e;
   }
   const rows = await sql`SELECT role FROM users WHERE email = ${email}`;
-  redirect(next || (rows[0]?.role === "admin" ? "/admin" : "/account"));
+  redirect(next || homeFor(rows[0]?.role));
 }
 
 export async function updateProfileAction(prev, formData) {
@@ -92,5 +93,6 @@ export async function resetPasswordAction(prev, formData) {
   await sql`UPDATE users SET password_hash = ${hash} WHERE id = ${rows[0].user_id}`;
   await sql`UPDATE password_resets SET used_at = now() WHERE token = ${token}`;
   try { await signIn("credentials", { email: rows[0].email, password, redirect: false }); } catch (e) { if (!(e instanceof AuthError)) throw e; }
-  redirect("/account?reset=1");
+  const r = await sql`SELECT role FROM users WHERE id = ${rows[0].user_id}`;
+  redirect(homeFor(r[0]?.role) === "/admin" ? "/admin" : "/account?reset=1");
 }

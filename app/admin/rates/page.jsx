@@ -1,3 +1,4 @@
+import { requireAdminPage } from "@/lib/auth";
 import { sql, fmtDate } from "@/lib/db";
 import { deleteRateAction } from "@/actions/admin";
 import RateForm from "@/components/admin/RateForm";
@@ -5,6 +6,7 @@ import { PageTitle, money } from "@/components/ui";
 import SubmitButton from "@/components/SubmitButton";
 
 export default async function RatesPage() {
+  await requireAdminPage();
   const rates = await sql`SELECT id, kind, label, weekday::float AS weekday, weekend::float AS weekend, valid_from, valid_to FROM rates ORDER BY kind, valid_from NULLS FIRST`;
   const defaults = rates.filter((r) => !r.valid_from), seasonal = rates.filter((r) => r.valid_from);
   return (
