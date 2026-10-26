@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { LayoutDashboard, CalendarDays, Ban, IndianRupee, Users, Inbox, LogOut, PlusCircle, Settings, Camera } from "lucide-react";
-import { requireAdmin } from "@/lib/auth";
+import { LayoutDashboard, CalendarDays, Ban, IndianRupee, Users, Inbox, LogOut, PlusCircle, Settings, Camera, ShieldCheck } from "lucide-react";
+import { requireStaff } from "@/lib/auth";
+import { isAdminOnlyPath, roleLabel } from "@/lib/roles";
 import SignOutButton from "@/components/SignOutButton";
 import Logo from "@/components/Logo";
 
@@ -15,17 +16,19 @@ const nav = [
   { href: "/admin/guests", label: "Guests", Icon: Users },
   { href: "/admin/enquiries", label: "Enquiries", Icon: Inbox },
   { href: "/admin/media", label: "Media", Icon: Camera },
+  { href: "/admin/team", label: "Team", Icon: ShieldCheck },
   { href: "/admin/settings", label: "Settings", Icon: Settings },
 ];
 
 export default async function AdminLayout({ children }) {
-  const admin = await requireAdmin();
+  const admin = await requireStaff();
+  const links = nav.filter(({ href }) => admin.role === "admin" || !isAdminOnlyPath(href));
   return (
     <div className="min-h-screen bg-cream pt-[76px] lg:grid lg:grid-cols-[240px_1fr]">
       <aside className="border-b border-ink/10 bg-parchment lg:border-b-0 lg:border-r">
         <div className="wrap flex items-center gap-2 overflow-x-auto py-3 lg:flex-col lg:items-stretch lg:gap-1 lg:px-4 lg:py-6">
-          <div className="hidden pb-4 lg:block"><span className="eyebrow">Admin</span><div className="mt-1 text-sm text-stone">{admin.name}</div></div>
-          {nav.map(({ href, label, Icon }) => (
+          <div className="hidden pb-4 lg:block"><span className="eyebrow">Admin</span><div className="mt-1 text-sm text-stone">{admin.name} · {roleLabel(admin.role)}</div></div>
+          {links.map(({ href, label, Icon }) => (
             <Link key={href} href={href} className="flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-ink/80 transition hover:bg-brick/10 hover:text-brick"><Icon size={16} />{label}</Link>
           ))}
           <Link href="/admin/bookings/new" className="flex shrink-0 items-center gap-2 rounded-xl bg-brick px-3 py-2 text-sm font-medium text-cream lg:mt-3"><PlusCircle size={16} />Add booking</Link>

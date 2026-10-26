@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import SignOutButton from "@/components/SignOutButton";
+import { isStaff } from "@/lib/roles";
 
 export const metadata = { title: "My account", robots: { index: false, follow: false } };
 
@@ -15,7 +16,7 @@ export default async function AccountLayout({ children }) {
             <Link href="/account" className="font-medium hover:text-brick">My stays</Link>
             <Link href="/account/book" className="font-medium hover:text-brick">Request a stay</Link>
             <Link href="/account/profile" className="font-medium hover:text-brick">Profile</Link>
-            {user?.role === "admin" && <Link href="/admin" className="font-medium text-brick">Admin →</Link>}
+            {isStaff(user?.role) && <Link href="/admin" className="font-medium text-brick">Admin →</Link>}
           </nav>
           <div className="flex items-center gap-4 text-sm text-stone">
             <span>{user?.name}</span>
