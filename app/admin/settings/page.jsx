@@ -4,16 +4,20 @@ import { rotateCalendarTokenAction } from "@/actions/admin";
 import { site } from "@/data/site";
 import { PageTitle, Card } from "@/components/ui";
 import SubmitButton from "@/components/SubmitButton";
+import InvoiceSettingsForm from "@/components/admin/InvoiceSettingsForm";
+import { getSeller } from "@/lib/invoice-server";
 
 export default async function SettingsPage() {
   await requireAdminPage();
   const t = await sql`SELECT value FROM settings WHERE key = 'calendar_token'`;
+  const seller = await getSeller();
   const feed = `${site.url}/api/calendar?token=${t[0]?.value || ""}`;
   const env = ["DATABASE_URL", "AUTH_SECRET", "ADMIN_EMAIL", "SMTP_USER", "SMTP_PASS", "ENQUIRY_TO", "WA_PHONE_NUMBER_ID", "WA_TOKEN", "WA_ADMIN_NUMBERS", "WA_TEMPLATE_NAME", "NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT", "IMAGEKIT_PUBLIC_KEY", "IMAGEKIT_PRIVATE_KEY"].map((k) => [k, Boolean(process.env[k])]);
   return (
     <>
       <PageTitle eyebrow="Settings" title="Integrations & health" />
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+      <div className="mt-8"><InvoiceSettingsForm seller={seller} /></div>
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card>
           <h2 className="font-display text-xl">Calendar feed</h2>
           <p className="mt-2 text-sm text-bark/75">Subscribe to this URL in Google Calendar (Other calendars → From URL) or Apple Calendar. Confirmed bookings, pending requests (marked "?") and blocks appear as all-day events and update every few hours. Anyone with the link can read your bookings — rotate it if it leaks.</p>

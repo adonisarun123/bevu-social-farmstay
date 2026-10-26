@@ -13,3 +13,32 @@ INSERT INTO settings (key, value) VALUES ('calendar_token', md5(random()::text))
 -- 2026-10-26: manager role (run once on existing DBs)
 ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;
 ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('guest','manager','admin'));
+
+-- 2026-10-26: invoices (GST tax invoices; numbers assigned only on issue, sequential per financial year)
+CREATE TABLE IF NOT EXISTS invoice_counters (fy text PRIMARY KEY, last int NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS invoices (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  number text UNIQUE,
+  public_token text UNIQUE NOT NULL,
+  booking_id uuid REFERENCES bookings(id) ON DELETE SET NULL,
+  status text NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','issued','cancelled')),
+  invoice_date date NOT NULL DEFAULT CURRENT_DATE,
+  bill_name text NOT NULL, bill_phone text, bill_email text, bill_address text, bill_gstin text, bill_state text,
+  tax_inclusive boolean NOT NULL DEFAULT true,
+  amount_paid numeric(12,2) NOT NULL DEFAULT 0,
+  notes text,
+  seller jsonb,
+  subtotal numeric(12,2), cgst numeric(12,2), sgst numeric(12,2), round_off numeric(12,2), total numeric(12,2),
+  cancel_reason text,
+  created_by uuid REFERENCES users(id) ON DELETE SET NULL,
+  created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(),
+  issued_at timestamptz, cancelled_at timestamptz
+);
+CREATE TABLE IF NOT EXISTS invoice_items (
+  id bigserial PRIMARY KEY,
+  invoice_id uuid NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
+  sort int NOT NULL DEFAULT 0,
+  description text NOT NULL, sac text, qty numeric(10,2) NOT NULL DEFAULT 1, unit text, rate numeric(12,2) NOT NULL DEFAULT 0,
+  tax_rate numeric(5,2) NOT NULL DEFAULT 5 CHECK (tax_rate IN (0,5,12,18,28))
+);
+CREATE INDEX IF NOT EXISTS invoices_booking_idx ON invoices(booking_id);
