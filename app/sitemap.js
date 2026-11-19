@@ -4,17 +4,19 @@ import { rooms } from "@/data/rooms";
 import { meetups } from "@/data/meetups";
 import { activities } from "@/data/activities";
 import { policies } from "@/data/policies";
+import { landings } from "@/data/landings";
 
 export default function sitemap() {
   const now = new Date();
   return [
     { url: site.url, lastModified: now, changeFrequency: "weekly", priority: 1 },
     ...navLinks.map((l) => ({ url: `${site.url}${l.href}`, lastModified: now, changeFrequency: "monthly", priority: l.href === "/stay" ? 0.9 : 0.7 })),
+    ...landings.map((l) => ({ url: `${site.url}/${l.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 })),
     ...rooms.map((r) => ({ url: `${site.url}/stay/${r.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.8 })),
     { url: `${site.url}/bhudeep`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     ...activities.map((a) => ({ url: `${site.url}/experiences/${a.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 })),
     ...meetups.map((m) => ({ url: `${site.url}/meetups/${m.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.7 })),
     ...policies.map((p) => ({ url: `${site.url}/policies/${p.slug}`, lastModified: new Date(p.updated), changeFrequency: "yearly", priority: 0.3 })),
-    ...posts.map((p) => ({ url: `${site.url}/blog/${p.slug}`, lastModified: new Date(p.date), changeFrequency: "yearly", priority: 0.5 })),
+    ...posts.map((p) => ({ url: `${site.url}/blog/${p.slug}`, lastModified: new Date(p.updated || p.date), changeFrequency: "yearly", priority: 0.6 })),
   ];
 }

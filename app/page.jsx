@@ -14,7 +14,9 @@ import { rooms } from "@/data/rooms";
 import { amenities } from "@/data/amenities";
 import { experiences, homeExperienceSlugs, idealFor } from "@/data/experiences";
 import { faqs } from "@/data/faqs";
-import { faqSchema, webPageSchema } from "@/data/schema";
+import { faqSchemaFor, webPageSchema } from "@/data/schema";
+import { landings } from "@/data/landings";
+import Reviews from "@/components/Reviews";
 import { site } from "@/data/site";
 import { posts } from "@/data/posts";
 import { meetups } from "@/data/meetups";
@@ -44,7 +46,7 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={webPageSchema({ path: "/", title: `${site.name} — Pet-Friendly Farmstay with Pool near Bangalore`, description: site.description, speakable: ["#intro-summary", "#faq h3"] })} />
-      <JsonLd data={faqSchema} />
+      <JsonLd data={faqSchemaFor(faqs.slice(0, 8))} />
       <Hero />
 
       {/* Intro */}
@@ -197,6 +199,25 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Stay guides — internal links to the intent pages in data/landings.js */}
+      <section className="section border-t border-ink/10">
+        <div className="wrap">
+          <SectionHeading eyebrow="Find your kind of stay" title="Tell us what you are looking for." lead="A room for two, the whole house for twelve, a weekend with the dog, a team offsite — the same farmstay, explained for each." />
+          <ul className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-ink/10 ring-1 ring-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+            {landings.map((l) => (
+              <li key={l.slug} className="bg-cream">
+                <Link href={`/${l.slug}`} className="group flex h-full flex-col p-6 transition hover:bg-parchment">
+                  <span className="font-display text-xl group-hover:text-brick">{l.metaTitle}</span>
+                  <span className="mt-2 text-sm leading-relaxed text-bark/70">{l.lead}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <Reviews className="border-t border-ink/10" />
+
       {/* Journal */}
       <section className="section border-t border-ink/10">
         <div className="wrap">
@@ -215,7 +236,7 @@ export default function HomePage() {
         <div className="wrap grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4"><SectionHeading eyebrow="Good to know" title="Questions we get asked most." />
             <p className="mt-4 text-sm text-stone"><Link href="/contact#faq" className="text-brick">All questions →</Link></p></div>
-          <Reveal delay={0.1} className="lg:col-span-8"><FAQ items={faqs.slice(0, 6)} /></Reveal>
+          <Reveal delay={0.1} className="lg:col-span-8"><FAQ items={faqs.slice(0, 8)} /></Reveal>
         </div>
       </section>
 

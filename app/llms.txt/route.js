@@ -9,6 +9,8 @@ import { faqs } from "@/data/faqs";
 import { posts } from "@/data/posts";
 import { meetups } from "@/data/meetups";
 import { activities } from "@/data/activities";
+import { landings } from "@/data/landings";
+import { reviews, ratingSummary } from "@/data/reviews";
 
 
 export const revalidate = 300;
@@ -28,11 +30,17 @@ export async function GET() {
   L.push(`- Rates: room ${formatRate(pricing.perRoom.weekday)} weekday / ${formatRate(pricing.perRoom.weekend)} weekend; whole house ${formatRate(pricing.wholeHouse.weekday)} / ${formatRate(pricing.wholeHouse.weekend)} (${pricing.wholeHouse.note})`);
   L.push(`- Check-in ${site.checkIn}, check-out ${site.checkOut}. By prior booking only.`);
   L.push(`- Pets: dogs welcome (pet-friendly)`);
+  L.push(`- Air-conditioning: none. Rooms are fan-cooled with thick brick walls.`);
+  L.push(`- Not offered: DJ or amplified-music events, day-pass pool access, bar, spa, restaurant menu`);
+  const rs = ratingSummary();
+  if (rs) L.push(`- Guest rating on this site: ${rs.value}/5 from ${rs.count} review${rs.count === 1 ? "" : "s"}`);
   L.push(`- Food: breakfast included; lunch and dinner cooked on site on request`);
   L.push(`- Contact: WhatsApp/phone ${site.phoneDisplay}, ${site.email}`);
   L.push(`- Instagram: ${site.social.instagram}`, "");
   L.push("## Rooms");
   rooms.forEach((r) => L.push(`- [${r.name} Room](${site.url}/stay/${r.slug}) — ${r.tag}; ${r.floor}; view: ${r.view}. ${r.blurb}`));
+  L.push("", "## Guides by what you are looking for");
+  landings.forEach((l) => L.push(`- [${l.eyebrow}](${site.url}/${l.slug}) — ${l.lead}`));
   L.push("", "## Facilities");
   amenities.forEach((a) => L.push(`- ${a.title}: ${a.description}`));
   L.push("", "## Experiences");
@@ -47,6 +55,8 @@ export async function GET() {
   houseRules.forEach((r) => L.push(`- ${r.title}: ${r.text}`));
   L.push("", "## FAQ");
   faqs.forEach((f) => L.push(`Q: ${f.question}`, `A: ${f.answer}`, ""));
+  landings.forEach((l) => l.faq.forEach((f) => L.push(`Q: ${f.q}`, `A: ${f.a}`, "")));
+  if (reviews.length) { L.push("## Guest reviews"); reviews.forEach((r) => L.push(`- ${r.rating}/5 — "${r.text}" — ${r.name}, ${r.date}${r.source ? `, via ${r.source}` : ""}`)); L.push(""); }
   L.push("## Pages");
   ["/", "/stay", "/amenities", "/experiences", "/meetups", "/about", "/gallery", "/location", "/blog", "/contact"].forEach((p) => L.push(`- ${site.url}${p}`));
   L.push("", "## Journal");

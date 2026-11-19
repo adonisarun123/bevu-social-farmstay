@@ -8,7 +8,7 @@ import { site } from "@/data/site";
 
 export const metadata = {
   title: "Journal — Notes from the Farm",
-  description: "Notes from Bevu Social Farmstay near Bangalore: getting here, the hand-built brick house, bringing your dog, a loose weekend itinerary, and around Berigai.",
+  description: "Guides from Bevu Social Farmstay near Bangalore and Hosur: choosing a farmstay, places to visit near Hosur, best season, travelling with kids and dogs, team offsites.",
   alternates: { canonical: "/blog" },
 };
 
@@ -30,7 +30,7 @@ export default function BlogPage() {
       <JsonLd data={breadcrumbSchema(crumbs)} />
       <JsonLd data={webPageSchema({ path: crumbs[crumbs.length - 1].path, title: metadata.title, description: metadata.description, type: "CollectionPage", image: "/images/hero.jpg" })} />
       <JsonLd data={blogSchema} />
-      <PageHero crumbs={crumbs} eyebrow="Journal" title="Notes from the farm." lead="How to get here, why the house is built the way it is, what to pack for the dog, and what a weekend actually looks like." />
+      <PageHero crumbs={crumbs} eyebrow="Journal" title="Notes from the farm." lead="How to choose a farmstay, what is around Hosur, when to come, what to pack — and why the house is built the way it is." />
       <section className="section">
         <div className="wrap">
           <PostCard post={first} featured />

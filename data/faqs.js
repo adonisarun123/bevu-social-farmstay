@@ -40,6 +40,26 @@ export const faqs = [
       "Full refund of the advance more than 14 days before check-in; half (or carry it forward) between 7 and 14 days; non-refundable inside 7 days. Whole-house bookings use 30 and 14 days. Full details on the Booking & Cancellation Policy page.",
   },
   {
+    question: "Is there air-conditioning?",
+    answer:
+      "No. The rooms have ceiling fans, mosquito-screened windows and thick handcrafted brick walls that stay cool, which is comfortable for most of the year. March to May afternoons are warm — guests who need an AC room should plan for another season or another stay.",
+  },
+  {
+    question: "Is Bevu a farmstay, a homestay or a resort?",
+    answer:
+      "A farmstay and a homestay: a hosted four-room brick home on farmland near Hosur. You can book one room with breakfast, or the whole house as a private farmhouse. It is not a resort — there is no restaurant menu, bar or spa.",
+  },
+  {
+    question: "How far is it from Hosur and from Bangalore?",
+    answer:
+      "About 25 km and 40 minutes east of Hosur town, towards Berigai; about 50 km and 1 hour 15 minutes from Electronic City, Bangalore, via NH44. Friday evenings take longer.",
+  },
+  {
+    question: "Do you give a GST invoice?",
+    answer:
+      "Yes. Bevu Social Farmstay is GST-registered and issues a tax invoice for stays, including in a company's name for team offsites — share the GSTIN when you book.",
+  },
+  {
     question: "How do I book?",
     answer:
       "Send us your dates and group size on WhatsApp or through the enquiry form. We confirm availability, share rates and the pin, and hold the booking on a part advance.",

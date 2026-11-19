@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Instagram, Facebook, Youtube, MapPin, Phone, Mail } from "lucide-react";
 import { navLinks, site } from "@/data/site";
 import { policies } from "@/data/policies";
+import { landingLinks } from "@/data/landings";
 import Logo from "./Logo";
 
 export default function Footer() {
@@ -49,6 +50,14 @@ export default function Footer() {
           </ul>
           <p className="mt-6 text-xs text-cream/45">Check-in {site.checkIn} · Check-out {site.checkOut} · By prior booking only</p>
         </div>
+      </div>
+      <div className="border-t border-cream/10">
+        <nav aria-label="Stay guides" className="wrap py-8">
+          <h3 className="text-[11px] font-medium uppercase tracking-[0.28em] text-brass">Find your kind of stay</h3>
+          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-cream/65">
+            {landingLinks.map((l) => <li key={l.href}><Link href={l.href} className="transition hover:text-brass">{l.title}</Link></li>)}
+          </ul>
+        </nav>
       </div>
       <div className="border-t border-cream/10">
         <div className="wrap flex flex-col gap-2 py-6 text-xs text-cream/40 sm:flex-row sm:items-center sm:justify-between">

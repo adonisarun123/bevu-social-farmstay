@@ -8,8 +8,14 @@ import { amenities } from "./amenities";
 import { gallery } from "./gallery";
 import { meetups } from "./meetups";
 import { activities } from "./activities";
+import { ratingSummary } from "./reviews";
 
 const abs = (p) => (p.startsWith("http") ? p : `${site.url}${p}`);
+// Social/preview crop. ImageKit-hosted originals are multi-MB PNGs, so ask the CDN for a 1200×630 JPEG.
+export const ogImage = (src) => (src.startsWith("https://ik.imagekit.io/") ? `${src}?tr=w-1200,h-630,f-jpg` : abs(src));
+// Real photographs of the property (from data/gallery.js), used as the business's schema images.
+const pick = (category, n) => gallery.filter((g) => g.category === category).slice(0, n).map((g) => ({ "@type": "ImageObject", url: ogImage(g.src), contentUrl: g.src, caption: g.alt }));
+const propertyPhotos = [...pick("The House", 2), ...pick("Pool & Lawn", 2), ...pick("Rooms", 2), ...pick("Interiors", 1)];
 export const ids = {
   org: `${site.url}/#organization`,
   business: `${site.url}/#business`,
@@ -50,7 +56,7 @@ export const lodgingBusinessSchema = {
   email: site.email,
   telephone: `+${site.phoneDigits}`,
   logo: { "@id": ids.logo },
-  image: [`${site.url}/images/hero.jpg`, `${site.url}/images/house-build.jpg`],
+  image: [`${site.url}/images/hero.jpg`, ...propertyPhotos.map((p) => p.url)],
   photo: { "@type": "ImageObject", url: `${site.url}/images/hero.jpg`, caption: "Bevu Social Farmstay at dusk" },
   priceRange: "₹₹₹",
   currenciesAccepted: "INR",
@@ -88,11 +94,20 @@ export const lodgingBusinessSchema = {
     "Pet friendly",
     "Yoga space",
     "Board games and library",
-  ].map((name) => ({ "@type": "LocationFeatureSpecification", name, value: true })),
+  ].map((name) => ({ "@type": "LocationFeatureSpecification", name, value: true }))
+    // Stated plainly so answer engines do not guess: the rooms are fan-cooled.
+    .concat([{ "@type": "LocationFeatureSpecification", name: "Air conditioning", value: false }, { "@type": "LocationFeatureSpecification", name: "Ceiling fans in every room", value: true }]),
   containsPlace: rooms.map((r) => ({ "@type": "HotelRoom", "@id": `${site.url}/stay/${r.slug}#room`, name: `${r.name} Room`, url: `${site.url}/stay/${r.slug}` })),
   makesOffer: offers,
+  potentialAction: {
+    "@type": "ReserveAction",
+    name: "Check availability and book",
+    target: { "@type": "EntryPoint", urlTemplate: `${site.url}/account/book`, inLanguage: "en-IN", actionPlatform: ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"] },
+    result: { "@type": "LodgingReservation", name: "Stay at Bevu Social Farmstay" },
+  },
+  knowsLanguage: ["en", "hi", "kn", "ta"],
   keywords:
-    "farmstay near Bangalore, pet friendly farmstay near Bangalore, farmstay with private pool near Bangalore, farmhouse near Hosur, sustainable farmstay Tamil Nadu, weekend getaway near Bangalore, corporate offsite near Bangalore, Berigai farmstay, Shoolagiri farmstay",
+    "farmstay near Bangalore, farmstay near Hosur, homestay near Bangalore, pet friendly farmstay near Bangalore, farmstay with private pool near Bangalore, farmhouse near Hosur, sustainable farmstay Tamil Nadu, weekend getaway near Bangalore, corporate offsite near Bangalore, Berigai farmstay, Shoolagiri farmstay",
   sameAs: Object.values(site.social).filter(Boolean),
   parentOrganization: { "@id": ids.org },
 };
@@ -136,11 +151,81 @@ export function webPageSchema({ path, title, description, type = "WebPage", imag
   };
 }
 
-export const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
-};
+// FAQPage for exactly the questions a page shows. Accepts {question, answer} or {q, a}; strips [label](/link) markup.
+const plain = (t = "") => String(t).replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, "$1");
+export function faqSchemaFor(items) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({ "@type": "Question", name: f.question || f.q, acceptedAnswer: { "@type": "Answer", text: plain(f.answer || f.a) } })),
+  };
+}
+export const faqSchema = faqSchemaFor(faqs);
+
+// ── Reviews ──────────────────────────────────────────────────────────────────
+// Emitted by <Reviews /> only, i.e. only on pages where the same reviews are visible, and only when
+// data/reviews.js has real entries. The rating is computed from those entries, never typed in.
+export function reviewsSchema(list) {
+  const summary = ratingSummary();
+  if (!summary) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LodgingBusiness", "BedAndBreakfast"],
+    "@id": ids.business,
+    name: site.name,
+    aggregateRating: { "@type": "AggregateRating", ratingValue: summary.value, reviewCount: summary.count, bestRating: 5, worstRating: 1 },
+    review: list.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name },
+      datePublished: r.date,
+      reviewBody: r.text,
+      reviewRating: { "@type": "Rating", ratingValue: Number(r.rating), bestRating: 5, worstRating: 1 },
+      ...(r.source ? { publisher: { "@type": "Organization", name: r.source } } : {}),
+      ...(r.url ? { url: r.url } : {}),
+    })),
+  };
+}
+
+// ── Intent landing pages (data/landings.js) ──────────────────────────────────
+export function landingSchemas(l) {
+  const path = `/${l.slug}`;
+  return [
+    webPageSchema({
+      path,
+      title: l.h1,
+      description: l.description,
+      type: "WebPage",
+      image: ogImage(l.image),
+      speakable: ["#landing-summary", "#faq h3"],
+      extra: { mainEntity: { "@id": ids.business }, keywords: l.keywords.join(", "), significantLink: [`${site.url}/stay`, `${site.url}/account/book`, `${site.url}/location`] },
+    }),
+    faqSchemaFor(l.faq),
+  ];
+}
+
+// ── Journal posts ────────────────────────────────────────────────────────────
+export function blogPostingSchema(post) {
+  const words = post.body.reduce((n, b) => n + plain(b.p || b.h || b.quote || (b.ul || []).join(" ")).split(/\s+/).filter(Boolean).length, 0);
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${site.url}/blog/${post.slug}#article`,
+    headline: post.title,
+    description: post.excerpt,
+    image: ogImage(post.cover),
+    datePublished: post.date,
+    dateModified: post.updated || post.date,
+    author: { "@id": ids.org },
+    publisher: { "@id": ids.org },
+    inLanguage: "en-IN",
+    articleSection: post.category,
+    wordCount: words,
+    keywords: [post.category, site.name, "farmstay near Bangalore", "farmstay near Hosur"],
+    about: { "@id": ids.business },
+    isPartOf: { "@id": `${site.url}/blog#blog` },
+    mainEntityOfPage: { "@id": `${site.url}/blog/${post.slug}#webpage` },
+  };
+}
 
 export const roomsListSchema = {
   "@context": "https://schema.org",
