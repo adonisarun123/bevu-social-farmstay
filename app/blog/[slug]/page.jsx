@@ -6,7 +6,10 @@ import PostCard from "@/components/PostCard";
 import CTABand from "@/components/CTABand";
 import JsonLd from "@/components/JsonLd";
 import { posts, getPost, formatDate } from "@/data/posts";
-import { breadcrumbSchema, webPageSchema } from "@/data/schema";
+import { breadcrumbSchema, webPageSchema, blogPostingSchema, faqSchemaFor, ogImage } from "@/data/schema";
+import RichText from "@/components/RichText";
+import FAQ from "@/components/FAQ";
+import { landings } from "@/data/landings";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { site } from "@/data/site";
 
@@ -21,14 +24,14 @@ export function generateMetadata({ params }) {
     title: post.metaTitle || post.title,
     description: post.excerpt.slice(0, 160),
     alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: { type: "article", title: post.title, description: post.excerpt, images: [{ url: post.cover }], publishedTime: post.date },
+    openGraph: { type: "article", title: post.title, description: post.excerpt, images: [{ url: ogImage(post.cover) }], publishedTime: post.date, modifiedTime: post.updated || post.date, section: post.category },
   };
 }
 
 function Block({ b }) {
   if (b.h) return <h2 className="mt-10 font-display text-2xl md:text-3xl">{b.h}</h2>;
-  if (b.p) return <p className="mt-5 leading-relaxed text-bark/85 md:text-lg">{b.p}</p>;
-  if (b.ul) return <ul className="mt-5 space-y-2 pl-1 text-bark/85 md:text-lg">{b.ul.map((li) => <li key={li} className="flex gap-3"><span className="mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full bg-brick" />{li}</li>)}</ul>;
+  if (b.p) return <p className="mt-5 leading-relaxed text-bark/85 md:text-lg"><RichText text={b.p} /></p>;
+  if (b.ul) return <ul className="mt-5 space-y-2 pl-1 text-bark/85 md:text-lg">{b.ul.map((li) => <li key={li} className="flex gap-3"><span className="mt-[0.7em] h-1.5 w-1.5 shrink-0 rounded-full bg-brick" /><span><RichText text={li} /></span></li>)}</ul>;
   if (b.quote) return <blockquote className="mt-8 border-l-2 border-brass pl-6 font-display text-2xl italic leading-snug text-ink md:text-3xl">{b.quote}</blockquote>;
   return null;
 }
@@ -36,29 +39,18 @@ function Block({ b }) {
 export default function PostPage({ params }) {
   const post = getPost(params.slug);
   if (!post) notFound();
-  const related = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+  // Related: same category first, then the rest, so "keep reading" stays on topic.
+  const related = [...posts.filter((p) => p.slug !== post.slug && p.category === post.category), ...posts.filter((p) => p.slug !== post.slug && p.category !== post.category)].slice(0, 3);
+  const guides = landings.filter((l) => l.posts.includes(post.slug)).slice(0, 4);
   const crumbs = [{ name: "Home", path: "/" }, { name: "Journal", path: "/blog" }, { name: post.metaTitle || post.title, path: `/blog/${post.slug}` }];
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    image: post.cover.startsWith("http") ? post.cover : `${site.url}${post.cover}`,
-    datePublished: post.date,
-    dateModified: post.date,
-    author: { "@id": `${site.url}/#organization` },
-    publisher: { "@id": `${site.url}/#organization` },
-    inLanguage: "en-IN",
-    wordCount: post.body.reduce((n, b) => n + ((b.p || b.h || b.quote || (b.ul || []).join(" ")).split(/\s+/).length), 0),
-    keywords: [post.category, "Bevu Social Farmstay", "farmstay near Bangalore"],
-    mainEntityOfPage: `${site.url}/blog/${post.slug}`,
-  };
+  const articleSchema = blogPostingSchema(post);
 
   return (
     <>
       <JsonLd data={breadcrumbSchema(crumbs)} />
       <JsonLd data={webPageSchema({ path: `/blog/${post.slug}`, title: post.title, description: post.excerpt, type: "ItemPage", image: post.cover, speakable: ["article h1", "article .lead"] })} />
       <JsonLd data={articleSchema} />
+      {post.faq?.length > 0 && <JsonLd data={faqSchemaFor(post.faq)} />}
       <article className="pt-[76px]">
         <div className="wrap pt-14 md:pt-20">
           <Breadcrumbs items={crumbs} />
@@ -78,6 +70,20 @@ export default function PostPage({ params }) {
         <div className="wrap">
           <div className="mx-auto max-w-3xl py-14 md:py-20">
             {post.body.map((b, i) => <Block key={i} b={b} />)}
+            {post.faq?.length > 0 && (
+              <div id="faq" className="mt-14">
+                <h2 className="font-display text-2xl md:text-3xl">Quick answers</h2>
+                <div className="mt-6"><FAQ items={post.faq.map((f) => ({ question: f.q, answer: f.a }))} openFirst={false} /></div>
+              </div>
+            )}
+            {guides.length > 0 && (
+              <div className="mt-12 rounded-2xl bg-parchment p-6 ring-1 ring-ink/5">
+                <div className="text-[11px] font-medium uppercase tracking-[0.2em] text-brick">Planning a stay</div>
+                <ul className="mt-3 space-y-2">
+                  {guides.map((l) => <li key={l.slug}><Link href={`/${l.slug}`} className="font-display text-lg transition hover:text-brick">{l.eyebrow} →</Link></li>)}
+                </ul>
+              </div>
+            )}
             <div className="mt-14 flex flex-wrap items-center gap-4 border-t border-ink/10 pt-8">
               <a href={site.whatsappHref(`Hi Bevu Social Farmstay, I read "${post.title}" and I'd like to plan a stay.`)} target="_blank" rel="noopener noreferrer" className="btn-primary">Plan a stay</a>
               <Link href="/blog" className="text-sm font-medium text-brick">More from the journal →</Link>

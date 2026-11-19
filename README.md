@@ -102,6 +102,14 @@ node scripts/e2e.mjs
 
 `NEON_FETCH_ENDPOINT` must never be set in production.
 
+## Search-intent pages, journal and reviews (added Nov 2026)
+
+- **Intent landing pages** — `data/landings.js` → `app/[slug]/page.jsx`, served at the site root (`/farmstay-near-bangalore`, `/farmstay-near-hosur`, `/homestay-near-bangalore`, `/pet-friendly-farmstay-near-bangalore`, `/farmstay-with-swimming-pool-near-bangalore`, `/farmhouse-for-groups-near-bangalore`, `/weekend-getaway-near-bangalore`, `/corporate-offsite-near-bangalore`, `/farmstay-near-electronic-city`). Each has its own copy, facts strip, FAQ (+`FAQPage`), `WebPage` schema, related pages and journal posts. Sitemap, footer, home page and `/llms.txt` pick up new entries automatically. Add a page only when it answers a different question — place-name clones are doorway pages.
+- **Journal** — posts support inline links (`[label](/path)`), an optional `faq` (rendered + `FAQPage`) and `updated` (schema `dateModified`, sitemap lastmod).
+- **Reviews** — `data/reviews.js` is empty by design. Paste real guest reviews there and `<Reviews />` appears on the home and landing pages with `Review` + `AggregateRating` JSON-LD computed from the entries. Never type in a rating. Google does not show stars for a business's own-site reviews; the stars that matter live on the Google Business Profile (`site.googleReviewUrl`).
+- **FAQ component** is now a server-rendered `<details>` accordion, so closed answers are in the HTML that crawlers read.
+- **Facts to keep true everywhere:** no air-conditioning, no lifeguard, pool sunrise–sunset, no DJ/amplified music, quiet after 10 PM.
+
 ## SEO / AEO checklist (built in)
 
 - One `<h1>` per page, titles ≤ 60 chars (`title.template` adds " · Bevu Social Farmstay"), descriptions ≤ 160, canonical + OG/Twitter on every route, `lang="en-IN"`.

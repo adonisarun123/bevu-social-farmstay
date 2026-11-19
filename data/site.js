@@ -23,6 +23,9 @@ export const site = {
   hosts: "Ankit, Priyanka & family",
   gaId: "G-D6WV75F4CD",
   verification: { google: "" }, // TODO: Search Console HTML-tag token (content value only)
+  // TODO: the "Ask for reviews" short link from your Google Business Profile (g.page/r/…/review).
+  // When set, the reviews section links to it. Stars in Google come from that profile, not from this site.
+  googleReviewUrl: "",
   social: {
     instagram: "https://www.instagram.com/bevusocialfarmstay/",
     facebook: "",
